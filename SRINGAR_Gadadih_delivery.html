@@ -1,30 +1,1296 @@
-<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SRINGAR</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f5f5f5;color:#222}.head{position:sticky;top:0;background:#fff;padding:12px;z-index:5;box-shadow:0 1px 5px #ccc}.logo{font-size:25px;font-weight:bold;color:#e91e63}.search,input,textarea,select{width:100%;padding:11px;margin-top:8px;border:1px solid #ddd;border-radius:8px}.wrap{padding:12px;max-width:900px;margin:auto}.info,.panel,.card{background:#fff;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 5px #ddd}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}.price{font-size:18px;font-weight:bold;margin:7px 0}button{padding:10px;border:0;border-radius:8px;margin:3px;cursor:pointer}.pink{background:#e91e63;color:white}.green{background:#128c7e;color:white}.panel{display:none}.panel.show{display:block}.cart{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);background:#222;color:#fff;border:0;border-radius:30px;padding:13px 22px;z-index:10}.total{font-size:18px;line-height:1.7}.small{font-size:12px;color:#666}@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}</style></head>
-<body><div class="head"><div class="logo">SRINGAR</div><input id="search" class="search" placeholder="Product search..." oninput="render()"></div><main class="wrap">
-<div class="info"><b>📍 Delivery From: Gadadih, Patan, Durg, Chhattisgarh</b><br><span class="small">Delivery charge ₹2 per km from Gadadih to customer location.</span></div>
-<h2>🛍️ Products</h2><div id="products" class="grid"></div>
-<div id="cartPanel" class="panel"><h2>🛒 View Cart</h2><div id="items"></div><div id="cartTotal" class="total"></div><button class="pink" onclick="checkout()">Proceed to Checkout</button></div>
-<div id="checkoutPanel" class="panel"><h2>📦 Checkout</h2><div class="info"><b>Fixed source:</b> Gadadih, Patan, Durg, Chhattisgarh<br><b>Rate:</b> ₹2/km</div>
-<input id="name" placeholder="Customer Name"><input id="phone" placeholder="Mobile Number"><textarea id="address" placeholder="Full delivery address"></textarea><input id="city" placeholder="City / Village"><input id="state" value="Chhattisgarh" placeholder="State"><input id="pin" placeholder="PIN Code">
-<button class="green" onclick="getLocation()">📍 Current Location Add Karein</button><p id="locText" class="small">GPS permission dene ke baad location aur distance calculate hoga.</p>
-<div id="distanceBox" class="info" style="display:none">📏 Distance: <b id="distance">0</b> km<br>🚚 Delivery Charge: <b id="deliveryCharge">₹0</b></div>
-<select id="payment"><option>Cash on Delivery</option><option>Online / UPI</option></select><div class="info">Online UPI: <b>msccreate7@okhdfcbank</b><input id="txn" placeholder="UPI Transaction / UTR (optional)"></div>
-<div id="checkoutTotal" class="total"></div><button class="pink" onclick="placeOrder()">Place Order</button></div></main>
-<button class="cart" onclick="viewCart()">🛒 View Cart (<span id="count">0</span>)</button>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SRINGAR Online Store</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#222;
+}
+
+.header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:#fff;
+  padding:12px;
+  box-shadow:0 1px 5px #ccc;
+}
+
+.logo{
+  font-size:26px;
+  font-weight:bold;
+  color:#e91e63;
+}
+
+.search{
+  width:100%;
+  padding:11px;
+  margin-top:9px;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:12px;
+}
+
+.info{
+  background:#fff;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:12px;
+  box-shadow:0 1px 5px #ddd;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.card{
+  background:#fff;
+  border-radius:12px;
+  padding:10px;
+  box-shadow:0 1px 5px #ddd;
+}
+
+.card img{
+  width:100%;
+  aspect-ratio:1;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.price{
+  font-size:19px;
+  font-weight:bold;
+  margin:7px 0;
+}
+
+button{
+  padding:10px 12px;
+  border:0;
+  border-radius:8px;
+  margin:3px;
+  cursor:pointer;
+}
+
+.pink{
+  background:#e91e63;
+  color:white;
+}
+
+.green{
+  background:#128c7e;
+  color:white;
+}
+
+.panel{
+  display:none;
+  background:white;
+  padding:14px;
+  border-radius:12px;
+  margin-top:14px;
+  box-shadow:0 1px 5px #ddd;
+}
+
+.panel.show{
+  display:block;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  padding:11px;
+  margin:7px 0;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+
+.total{
+  font-size:18px;
+  line-height:1.8;
+  margin:10px 0;
+}
+
+.small{
+  font-size:12px;
+  color:#666;
+}
+
+.cart-button{
+  position:fixed;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#222;
+  color:#fff;
+  border:0;
+  border-radius:30px;
+  padding:13px 23px;
+  z-index:20;
+}
+
+.location-box{
+  background:#fdf0f5;
+  padding:10px;
+  border-radius:9px;
+  margin-top:8px;
+}
+
+@media(min-width:700px){
+  .grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="logo">SRINGAR</div>
+
+  <input
+    id="search"
+    class="search"
+    placeholder="Product search..."
+    oninput="renderProducts()"
+  >
+</div>
+
+
+<div class="container">
+
+  <!-- PERMANENT DELIVERY SOURCE -->
+  <div class="info">
+    <b>📍 Delivery From</b><br>
+    Gadadih, Patan, Durg, Chhattisgarh
+
+    <br><br>
+
+    <b>🚚 Delivery Charge</b><br>
+    ₹2 per km from Gadadih to customer location.
+  </div>
+
+
+  <h2>🛍️ Products</h2>
+
+  <div id="products" class="grid"></div>
+
+
+  <!-- CART -->
+
+  <div id="cartPanel" class="panel">
+
+    <h2>🛒 View Cart</h2>
+
+    <div id="cartItems"></div>
+
+    <div id="cartTotal" class="total"></div>
+
+    <button
+      class="pink"
+      onclick="openCheckout()"
+    >
+      Proceed to Checkout
+    </button>
+
+  </div>
+
+
+  <!-- CHECKOUT -->
+
+  <div id="checkoutPanel" class="panel">
+
+    <h2>📦 Checkout</h2>
+
+    <div class="info">
+
+      <b>Delivery Source:</b><br>
+      Gadadih, Patan, Durg, Chhattisgarh
+
+      <br><br>
+
+      <b>Rate:</b> ₹2/km
+
+    </div>
+
+
+    <input
+      id="customerName"
+      placeholder="Customer Name"
+    >
+
+    <input
+      id="customerPhone"
+      placeholder="Mobile Number"
+      type="tel"
+    >
+
+    <textarea
+      id="customerAddress"
+      placeholder="Full Delivery Address"
+    ></textarea>
+
+    <input
+      id="customerCity"
+      placeholder="City / Village"
+    >
+
+    <input
+      id="customerState"
+      value="Chhattisgarh"
+      placeholder="State"
+    >
+
+    <input
+      id="customerPin"
+      placeholder="PIN Code"
+      type="number"
+    >
+
+
+    <!-- CURRENT LOCATION -->
+
+    <button
+      class="green"
+      onclick="getCustomerLocation()"
+    >
+      📍 Current Location Add Karein
+    </button>
+
+    <div
+      id="locationMessage"
+      class="location-box small"
+    >
+      Customer permission dene ke baad current GPS location add hogi.
+    </div>
+
+
+    <!-- DISTANCE -->
+
+    <div
+      id="distanceBox"
+      class="location-box"
+      style="display:none"
+    >
+
+      📏 Distance:
+      <b id="distanceValue">0</b> km
+
+      <br>
+
+      🚚 Delivery Charge:
+      <b id="deliveryValue">₹0</b>
+
+      <br>
+
+      💰 Rate:
+      ₹2 / km
+
+    </div>
+
+
+    <!-- PAYMENT -->
+
+    <h3>💳 Payment</h3>
+
+    <select id="paymentMethod">
+
+      <option value="COD">
+        Cash on Delivery
+      </option>
+
+      <option value="UPI">
+        Online / UPI
+      </option>
+
+    </select>
+
+
+    <div class="info">
+
+      <b>Online Payment UPI ID</b>
+
+      <br>
+
+      <b>msccreate7@okhdfcbank</b>
+
+      <input
+        id="transactionId"
+        placeholder="UPI Transaction / UTR (optional)"
+      >
+
+    </div>
+
+
+    <!-- TOTAL -->
+
+    <div
+      id="checkoutTotal"
+      class="total"
+    ></div>
+
+
+    <button
+      class="pink"
+      onclick="placeOrder()"
+    >
+      📲 Place Order
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- CART FLOATING BUTTON -->
+
+<button
+  class="cart-button"
+  onclick="openCart()"
+>
+  🛒 View Cart
+  (<span id="cartCount">0</span>)
+</button>
+
+
 <script>
-const WA="916267637741", STORE_LAT=21.031290, STORE_LON=81.424480, RATE=2;
-let P=[["Premium Fashion Product",499,"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80"],["Trending Beauty Item",399,"https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80"],["Fashion Accessory",299,"https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?auto=format&fit=crop&w=600&q=80"],["Daily Use Product",699,"https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=600&q=80"]],C=[],lat=null,lon=null;
-function dist(a,b,c,d){let r=Math.PI/180,R=6371,x=(c-a)*r,y=(d-b)*r,z=Math.sin(x/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)**2;return 2*R*Math.asin(Math.sqrt(z))}
-function sub(){return C.reduce((s,x)=>s+P[x.i][1]*x.q,0)}
-function render(){let q=search.value.toLowerCase();products.innerHTML=P.filter(x=>x[0].toLowerCase().includes(q)).map((x,i)=>'<div class="card"><img src="'+x[2]+'"><b>'+x[0]+'</b><div class="price">₹'+x[1]+'</div><button onclick="add('+i+')">Add Cart</button><button class="pink" onclick="buy('+i+')">Buy Now</button></div>').join("")}
-function add(i){let x=C.find(a=>a.i==i);x?x.q++:C.push({i:i,q:1});count.textContent=C.reduce((a,x)=>a+x.q,0);alert("Cart me add ho gaya")}
-function buy(i){C=[{i:i,q:1}];count.textContent=1;checkout()}
-function viewCart(){checkoutPanel.classList.remove("show");cartPanel.classList.add("show");items.innerHTML=C.length?C.map(x=>'<div>'+P[x.i][0]+' × '+x.q+' = ₹'+P[x.i][1]*x.q+'<br><button onclick="qty('+x.i+',-1)">−</button><button onclick="qty('+x.i+',1)">+</button><button onclick="rem('+x.i+')">Remove</button></div>').join(""):"Cart empty hai";cartTotal.innerHTML="<b>Product Total: ₹"+sub().toFixed(2)+"</b>"}
-function qty(i,d){let x=C.find(a=>a.i==i);if(!x)return;x.q+=d;if(x.q<1)C=C.filter(a=>a.i!=i);count.textContent=C.reduce((a,x)=>a+x.q,0);viewCart()}
-function rem(i){C=C.filter(a=>a.i!=i);count.textContent=C.reduce((a,x)=>a+x.q,0);viewCart()}
-function checkout(){if(!C.length)return alert("Cart empty hai");cartPanel.classList.remove("show");checkoutPanel.classList.add("show");updateTotal()}
-function getLocation(){if(!navigator.geolocation)return alert("Location supported nahi hai");locText.textContent="Location permission ka wait...";navigator.geolocation.getCurrentPosition(function(p){lat=p.coords.latitude;lon=p.coords.longitude;let d=dist(STORE_LAT,STORE_LON,lat,lon),fee=d*RATE;distance.textContent=d.toFixed(2);deliveryCharge.textContent="₹"+fee.toFixed(2);distanceBox.style.display="block";locText.textContent="✅ Current GPS location added";updateTotal()},function(){locText.textContent="❌ Location permission allow karein"},{enableHighAccuracy:true,timeout:15000,maximumAge:0})}
-function updateTotal(){let fee=lat===null?0:dist(STORE_LAT,STORE_LON,lat,lon)*RATE;checkoutTotal.innerHTML="Products: ₹"+sub().toFixed(2)+"<br>Delivery: ₹"+fee.toFixed(2)+"<br><b>Grand Total: ₹"+(sub()+fee).toFixed(2)+"</b>"}
-function placeOrder(){if(!name.value||!phone.value||!address.value||!city.value||!pin.value)return alert("Name, mobile, address, city aur PIN bharein");if(lat===null&&!confirm("GPS location add nahi hui. Bina GPS continue karein?"))return;let d=lat===null?0:dist(STORE_LAT,STORE_LON,lat,lon),fee=d*RATE,t=sub()+fee,id="SR"+Date.now().toString().slice(-8),msg="SRINGAR ORDER%0AOrder ID: "+id+"%0AName: "+encodeURIComponent(name.value)+"%0AMobile: "+encodeURIComponent(phone.value)+"%0AAddress: "+encodeURIComponent(address.value+", "+city.value+", "+state.value+" - "+pin.value)+"%0AFrom: Gadadih, Patan, Durg%0ADistance: "+d.toFixed(2)+" km%0ADelivery Charge: ₹"+fee.toFixed(2)+"%0AProduct Total: ₹"+sub().toFixed(2)+"%0AGrand Total: ₹"+t.toFixed(2)+"%0APayment: "+encodeURIComponent(payment.value)+"%0AUPI/UTR: "+encodeURIComponent(txn.value||"N/A")+"%0AGPS: "+(lat===null?"Not added":lat+","+lon);window.open("https://wa.me/"+WA+"?text="+msg,"_blank");alert("Order placed! Order ID: "+id);C=[];count.textContent=0}
-render();
-</script></body></html>
+
+/* =========================
+   STORE SETTINGS
+========================= */
+
+const WHATSAPP_NUMBER = "916267637741";
+
+const UPI_ID = "msccreate7@okhdfcbank";
+
+const DELIVERY_RATE = 2;
+
+
+/*
+  GADADIH PERMANENT SOURCE LOCATION
+
+  Important:
+  These coordinates are used as the
+  delivery calculation starting point.
+*/
+
+const GADADIH_LAT = 21.031290;
+
+const GADADIH_LON = 81.424480;
+
+
+/* =========================
+   PRODUCTS
+========================= */
+
+let products = [
+
+  {
+    id:1,
+    name:"Premium Fashion Product",
+    price:499,
+    image:
+    "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80"
+  },
+
+  {
+    id:2,
+    name:"Trending Beauty Item",
+    price:399,
+    image:
+    "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80"
+  },
+
+  {
+    id:3,
+    name:"Fashion Accessory",
+    price:299,
+    image:
+    "https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?auto=format&fit=crop&w=600&q=80"
+  },
+
+  {
+    id:4,
+    name:"Daily Use Product",
+    price:699,
+    image:
+    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=600&q=80"
+  }
+
+];
+
+
+/* =========================
+   CART
+========================= */
+
+let cart = [];
+
+
+/* =========================
+   CUSTOMER GPS
+========================= */
+
+let customerLatitude = null;
+
+let customerLongitude = null;
+
+
+/* =========================
+   RENDER PRODUCTS
+========================= */
+
+function renderProducts(){
+
+  const searchText =
+    document
+    .getElementById("search")
+    .value
+    .toLowerCase();
+
+  const box =
+    document.getElementById("products");
+
+
+  const filtered =
+    products.filter(product =>
+      product.name
+      .toLowerCase()
+      .includes(searchText)
+    );
+
+
+  box.innerHTML =
+    filtered.map(product => `
+
+      <div class="card">
+
+        <img
+          src="${product.image}"
+          onerror="this.src='https://via.placeholder.com/500?text=SRINGAR'"
+        >
+
+        <b>
+          ${product.name}
+        </b>
+
+        <div class="price">
+          ₹${product.price}
+        </div>
+
+        <button
+          onclick="addToCart(${product.id})"
+        >
+          Add Cart
+        </button>
+
+        <button
+          class="pink"
+          onclick="buyNow(${product.id})"
+        >
+          Buy Now
+        </button>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   ADD CART
+========================= */
+
+function addToCart(id){
+
+  const existing =
+    cart.find(item => item.id === id);
+
+
+  if(existing){
+
+    existing.quantity++;
+
+  }else{
+
+    cart.push({
+      id:id,
+      quantity:1
+    });
+
+  }
+
+
+  updateCartCount();
+
+  alert("Product cart me add ho gaya.");
+
+}
+
+
+/* =========================
+   BUY NOW
+========================= */
+
+function buyNow(id){
+
+  cart = [
+
+    {
+      id:id,
+      quantity:1
+    }
+
+  ];
+
+  updateCartCount();
+
+  openCheckout();
+
+}
+
+
+/* =========================
+   CART COUNT
+========================= */
+
+function updateCartCount(){
+
+  const count =
+    cart.reduce(
+      (total,item) =>
+      total + item.quantity,
+      0
+    );
+
+  document
+  .getElementById("cartCount")
+  .innerText = count;
+
+}
+
+
+/* =========================
+   CART
+========================= */
+
+function openCart(){
+
+  document
+  .getElementById("checkoutPanel")
+  .classList.remove("show");
+
+  document
+  .getElementById("cartPanel")
+  .classList.add("show");
+
+
+  renderCart();
+
+}
+
+
+function renderCart(){
+
+  const box =
+    document.getElementById("cartItems");
+
+
+  if(cart.length === 0){
+
+    box.innerHTML =
+      "<p>Cart empty hai.</p>";
+
+    document
+    .getElementById("cartTotal")
+    .innerHTML = "";
+
+    return;
+
+  }
+
+
+  let total = 0;
+
+
+  box.innerHTML =
+    cart.map(item => {
+
+      const product =
+        products.find(
+          p => p.id === item.id
+        );
+
+
+      const itemTotal =
+        product.price *
+        item.quantity;
+
+
+      total += itemTotal;
+
+
+      return `
+
+        <div
+          style="
+          padding:10px 0;
+          border-bottom:1px solid #ddd;
+          "
+        >
+
+          <b>
+            ${product.name}
+          </b>
+
+          <br>
+
+          ₹${product.price}
+          ×
+          ${item.quantity}
+
+          =
+          ₹${itemTotal}
+
+          <br>
+
+          <button
+            onclick="changeQuantity(${product.id},-1)"
+          >
+            −
+          </button>
+
+          <button
+            onclick="changeQuantity(${product.id},1)"
+          >
+            +
+          </button>
+
+          <button
+            onclick="removeFromCart(${product.id})"
+          >
+            Remove
+          </button>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+
+  document
+  .getElementById("cartTotal")
+  .innerHTML =
+    `<b>Product Total: ₹${total}</b>`;
+
+}
+
+
+/* =========================
+   QUANTITY
+========================= */
+
+function changeQuantity(id,change){
+
+  const item =
+    cart.find(
+      x => x.id === id
+    );
+
+
+  if(!item) return;
+
+
+  item.quantity += change;
+
+
+  if(item.quantity <= 0){
+
+    cart =
+      cart.filter(
+        x => x.id !== id
+      );
+
+  }
+
+
+  updateCartCount();
+
+  renderCart();
+
+}
+
+
+/* =========================
+   REMOVE
+========================= */
+
+function removeFromCart(id){
+
+  cart =
+    cart.filter(
+      item => item.id !== id
+    );
+
+
+  updateCartCount();
+
+  renderCart();
+
+}
+
+
+/* =========================
+   CHECKOUT
+========================= */
+
+function openCheckout(){
+
+  if(cart.length === 0){
+
+    alert("Cart empty hai.");
+
+    return;
+
+  }
+
+
+  document
+  .getElementById("cartPanel")
+  .classList.remove("show");
+
+
+  document
+  .getElementById("checkoutPanel")
+  .classList.add("show");
+
+
+  updateCheckoutTotal();
+
+}
+
+
+/* =========================
+   GPS LOCATION
+========================= */
+
+function getCustomerLocation(){
+
+  if(!navigator.geolocation){
+
+    alert(
+      "Is browser me GPS location supported nahi hai."
+    );
+
+    return;
+
+  }
+
+
+  document
+  .getElementById("locationMessage")
+  .innerHTML =
+  "📍 Location permission ka wait ho raha hai...";
+
+
+  navigator.geolocation.getCurrentPosition(
+
+    function(position){
+
+      customerLatitude =
+        position.coords.latitude;
+
+      customerLongitude =
+        position.coords.longitude;
+
+
+      const distance =
+        calculateDistance(
+
+          GADADIH_LAT,
+          GADADIH_LON,
+
+          customerLatitude,
+          customerLongitude
+
+        );
+
+
+      const deliveryCharge =
+        distance *
+        DELIVERY_RATE;
+
+
+      document
+      .getElementById("distanceValue")
+      .innerText =
+      distance.toFixed(2);
+
+
+      document
+      .getElementById("deliveryValue")
+      .innerText =
+      "₹" +
+      deliveryCharge.toFixed(2);
+
+
+      document
+      .getElementById("distanceBox")
+      .style.display =
+      "block";
+
+
+      document
+      .getElementById("locationMessage")
+      .innerHTML =
+
+      "✅ Customer current location successfully added.";
+
+
+      updateCheckoutTotal();
+
+    },
+
+
+    function(){
+
+      document
+      .getElementById("locationMessage")
+      .innerHTML =
+
+      "❌ Location permission nahi mili. Browser me location permission Allow karein.";
+
+    },
+
+
+    {
+      enableHighAccuracy:true,
+      timeout:15000,
+      maximumAge:0
+    }
+
+  );
+
+}
+
+
+/* =========================
+   DISTANCE CALCULATION
+========================= */
+
+function calculateDistance(
+  lat1,
+  lon1,
+  lat2,
+  lon2
+){
+
+  const R = 6371;
+
+  const rad =
+    Math.PI / 180;
+
+
+  const dLat =
+    (lat2-lat1) * rad;
+
+  const dLon =
+    (lon2-lon1) * rad;
+
+
+  const a =
+    Math.sin(dLat/2) *
+    Math.sin(dLat/2) +
+
+    Math.cos(lat1*rad) *
+    Math.cos(lat2*rad) *
+
+    Math.sin(dLon/2) *
+    Math.sin(dLon/2);
+
+
+  return
+    2 *
+    R *
+    Math.asin(
+      Math.sqrt(a)
+    );
+
+}
+
+
+/* =========================
+   PRODUCT TOTAL
+========================= */
+
+function getProductTotal(){
+
+  return cart.reduce(
+
+    (total,item) => {
+
+      const product =
+        products.find(
+          p => p.id === item.id
+        );
+
+
+      return total +
+        product.price *
+        item.quantity;
+
+    },
+
+    0
+
+  );
+
+}
+
+
+/* =========================
+   DELIVERY CHARGE
+========================= */
+
+function getDeliveryCharge(){
+
+  if(
+    customerLatitude === null ||
+    customerLongitude === null
+  ){
+
+    return 0;
+
+  }
+
+
+  const distance =
+    calculateDistance(
+
+      GADADIH_LAT,
+      GADADIH_LON,
+
+      customerLatitude,
+      customerLongitude
+
+    );
+
+
+  return distance *
+    DELIVERY_RATE;
+
+}
+
+
+/* =========================
+   CHECKOUT TOTAL
+========================= */
+
+function updateCheckoutTotal(){
+
+  const productTotal =
+    getProductTotal();
+
+
+  const deliveryCharge =
+    getDeliveryCharge();
+
+
+  const grandTotal =
+    productTotal +
+    deliveryCharge;
+
+
+  document
+  .getElementById("checkoutTotal")
+  .innerHTML = `
+
+    <div>
+      Products:
+      ₹${productTotal.toFixed(2)}
+    </div>
+
+    <div>
+      Delivery:
+      ₹${deliveryCharge.toFixed(2)}
+    </div>
+
+    <div>
+      <b>
+        Grand Total:
+        ₹${grandTotal.toFixed(2)}
+      </b>
+    </div>
+
+  `;
+
+}
+
+
+/* =========================
+   PLACE ORDER
+========================= */
+
+function placeOrder(){
+
+  const name =
+    document
+    .getElementById("customerName")
+    .value
+    .trim();
+
+
+  const phone =
+    document
+    .getElementById("customerPhone")
+    .value
+    .trim();
+
+
+  const address =
+    document
+    .getElementById("customerAddress")
+    .value
+    .trim();
+
+
+  const city =
+    document
+    .getElementById("customerCity")
+    .value
+    .trim();
+
+
+  const state =
+    document
+    .getElementById("customerState")
+    .value
+    .trim();
+
+
+  const pin =
+    document
+    .getElementById("customerPin")
+    .value
+    .trim();
+
+
+  const payment =
+    document
+    .getElementById("paymentMethod")
+    .value;
+
+
+  const transaction =
+    document
+    .getElementById("transactionId")
+    .value
+    .trim();
+
+
+  if(
+    !name ||
+    !phone ||
+    !address ||
+    !city ||
+    !state ||
+    !pin
+  ){
+
+    alert(
+      "Name, mobile, address, city aur PIN bharein."
+    );
+
+    return;
+
+  }
+
+
+  if(customerLatitude === null){
+
+    const confirmWithoutGPS =
+      confirm(
+        "Customer GPS location add nahi hui hai.\n\nKya bina GPS ke order continue karna hai?"
+      );
+
+
+    if(!confirmWithoutGPS){
+
+      return;
+
+    }
+
+  }
+
+
+  const productTotal =
+    getProductTotal();
+
+
+  const deliveryCharge =
+    getDeliveryCharge();
+
+
+  const grandTotal =
+    productTotal +
+    deliveryCharge;
+
+
+  const orderId =
+    "SR" +
+    Date.now()
+    .toString()
+    .slice(-8);
+
+
+  const distance =
+
+    customerLatitude === null
+
+      ? "GPS not added"
+
+      :
+
+    calculateDistance(
+
+      GADADIH_LAT,
+      GADADIH_LON,
+
+      customerLatitude,
+      customerLongitude
+
+    ).toFixed(2) + " km";
+
+
+  const productList =
+    cart.map(item => {
+
+      const p =
+        products.find(
+          x => x.id === item.id
+        );
+
+
+      return (
+        p.name +
+        " x " +
+        item.quantity
+      );
+
+    }).join(", ");
+
+
+  const message =
+
+    `SRINGAR ORDER
+
+Order ID: ${orderId}
+
+Products:
+${productList}
+
+Customer:
+${name}
+
+Mobile:
+${phone}
+
+Delivery Address:
+${address},
+${city},
+${state} - ${pin}
+
+Delivery From:
+Gadadih, Patan, Durg, Chhattisgarh
+
+Distance:
+${distance}
+
+Product Total:
+₹${productTotal.toFixed(2)}
+
+Delivery Charge:
+₹${deliveryCharge.toFixed(2)}
+
+Grand Total:
+₹${grandTotal.toFixed(2)}
+
+Payment:
+${payment}
+
+UPI:
+${UPI_ID}
+
+Transaction/UTR:
+${transaction || "N/A"}
+
+Customer GPS:
+${
+  customerLatitude === null
+  ?
+  "Not added"
+  :
+  customerLatitude +
+  "," +
+  customerLongitude
+}`;
+
+
+  const whatsappURL =
+
+    "https://wa.me/" +
+    WHATSAPP_NUMBER +
+    "?text=" +
+    encodeURIComponent(
+      message
+    );
+
+
+  window.open(
+    whatsappURL,
+    "_blank"
+  );
+
+
+  alert(
+    "Order placed successfully!\nOrder ID: " +
+    orderId
+  );p
+
+
+  cart = [];
+
+  updateCartCount();
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+renderProducts();
+
+updateCartCount();
+
+</script>
+
+</body>
+</html>
