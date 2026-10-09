@@ -1,1297 +1,645 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SRINGAR Online Store</title>
+<title>My Store</title>
 
 <style>
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f5f5f5;
-  color:#222;
-}
-
-.header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:#fff;
-  padding:12px;
-  box-shadow:0 1px 5px #ccc;
-}
-
-.logo{
-  font-size:26px;
-  font-weight:bold;
-  color:#e91e63;
-}
-
-.search{
-  width:100%;
-  padding:11px;
-  margin-top:9px;
-  border:1px solid #ddd;
-  border-radius:8px;
-}
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:12px;
-}
-
-.info{
-  background:#fff;
-  padding:12px;
-  border-radius:12px;
-  margin-bottom:12px;
-  box-shadow:0 1px 5px #ddd;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.card{
-  background:#fff;
-  border-radius:12px;
-  padding:10px;
-  box-shadow:0 1px 5px #ddd;
-}
-
-.card img{
-  width:100%;
-  aspect-ratio:1;
-  object-fit:cover;
-  border-radius:8px;
-}
-
-.price{
-  font-size:19px;
-  font-weight:bold;
-  margin:7px 0;
-}
-
-button{
-  padding:10px 12px;
-  border:0;
-  border-radius:8px;
-  margin:3px;
-  cursor:pointer;
-}
-
-.pink{
-  background:#e91e63;
-  color:white;
-}
-
-.green{
-  background:#128c7e;
-  color:white;
-}
-
-.panel{
-  display:none;
-  background:white;
-  padding:14px;
-  border-radius:12px;
-  margin-top:14px;
-  box-shadow:0 1px 5px #ddd;
-}
-
-.panel.show{
-  display:block;
-}
-
-input,
-textarea,
-select{
-  width:100%;
-  padding:11px;
-  margin:7px 0;
-  border:1px solid #ddd;
-  border-radius:8px;
-}
-
-.total{
-  font-size:18px;
-  line-height:1.8;
-  margin:10px 0;
-}
-
-.small{
-  font-size:12px;
-  color:#666;
-}
-
-.cart-button{
-  position:fixed;
-  bottom:15px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#222;
-  color:#fff;
-  border:0;
-  border-radius:30px;
-  padding:13px 23px;
-  z-index:20;
-}
-
-.location-box{
-  background:#fdf0f5;
-  padding:10px;
-  border-radius:9px;
-  margin-top:8px;
-}
-
-@media(min-width:700px){
-  .grid{
-    grid-template-columns:repeat(4,1fr);
-  }
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f6fa;color:#222}
+header{background:linear-gradient(135deg,#5b21b6,#8b5cf6);color:white;padding:16px}
+.head{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:23px;font-weight:bold}
+.container{max-width:1100px;margin:auto;padding:15px}
+button{border:0;padding:11px 14px;border-radius:8px;cursor:pointer;font-weight:bold}
+input,textarea,select{width:100%;padding:12px;margin:7px 0 12px;border:1px solid #ddd;border-radius:8px}
+.hero{text-align:center;background:#eee7ff;padding:25px;border-radius:15px;margin-bottom:18px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
+.card{background:white;border-radius:13px;overflow:hidden;box-shadow:0 3px 12px #0001}
+.card img{width:100%;height:180px;object-fit:cover}
+.cardBody{padding:12px}
+.price{font-size:20px;color:#5b21b6;font-weight:bold}
+.primary{background:#5b21b6;color:white}
+.green{background:#16a34a;color:white}
+.dark{background:#111827;color:white}
+.full{width:100%;margin-top:8px}
+.panel{background:white;padding:16px;margin:15px 0;border-radius:12px}
+.admin{display:none}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:10;align-items:center;justify-content:center;padding:12px}
+.box{background:white;padding:18px;border-radius:15px;width:100%;max-width:500px;max-height:94vh;overflow:auto}
+.close{float:right}
+#onlinePayBox{display:none;background:#f0fff6;border:1px solid #b8e6c8;padding:13px;border-radius:12px;margin:12px 0;text-align:center}
+.pay{display:block;color:white;text-decoration:none;padding:12px;margin-top:8px;border-radius:8px}
+.phonepe{background:#5f259f}
+.gpay{background:#4285f4}
+.paytm{background:#002970}
+.amazon{background:#ff9900}
+.note{font-size:12px;color:#666}
+.status{font-size:13px;margin:8px 0}
+footer{text-align:center;padding:25px;color:#777}
+@media(max-width:480px){.card img{height:145px}}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div class="logo">SRINGAR</div>
+<header id="header">
+  <div class="head">
+    <div class="logo" id="storeLogo">My Store</div>
+    <button onclick="adminLogin()">🔐 Admin</button>
+  </div>
+</header>
 
-  <input
-    id="search"
-    class="search"
-    placeholder="Product search..."
-    oninput="renderProducts()"
-  >
+<main id="customerPage" class="container">
+  <div class="hero">
+    <h1 id="heroTitle">Welcome to My Store</h1>
+    <p id="heroText">Best products at great prices</p>
+  </div>
+
+  <input id="search" placeholder="🔍 Product खोजें..." oninput="renderProducts()">
+
+  <div class="products" id="products"></div>
+</main>
+
+<section class="admin container" id="adminPage">
+  <div class="panel">
+    <h2>⚙️ Admin Dashboard</h2>
+    <button class="primary" onclick="showCustomer()">Customer Page</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div class="panel">
+    <h3>🏪 Store Settings</h3>
+    <label>Store Name</label>
+    <input id="storeName">
+
+    <label>Website Heading</label>
+    <input id="heading">
+
+    <label>Description</label>
+    <input id="description">
+
+    <label>WhatsApp Number</label>
+    <input id="waNumber" value="916267637741">
+
+    <button class="primary full" onclick="saveSettings()">Settings Save करें</button>
+  </div>
+
+  <div class="panel">
+    <h3>➕ Product Add करें</h3>
+
+    <input id="pName" placeholder="Product Name">
+    <input id="pPrice" type="number" placeholder="Selling Price">
+    <input id="pOldPrice" type="number" placeholder="Old Price">
+    <input id="pImage" placeholder="Product Image URL">
+    <textarea id="pDescription" placeholder="Product Description"></textarea>
+
+    <button class="primary full" onclick="saveProduct()">Product Save करें</button>
+  </div>
+
+  <div class="panel">
+    <h3>📦 Manage Products</h3>
+    <div id="adminProducts"></div>
+  </div>
+</section>
+
+<!-- PRODUCT DETAILS -->
+<div class="modal" id="detailModal">
+  <div class="box">
+    <button class="close" onclick="closeModal('detailModal')">✖</button>
+    <img id="detailImage" style="width:100%;max-height:300px;object-fit:contain">
+    <h2 id="detailName"></h2>
+    <div class="price" id="detailPrice"></div>
+    <p id="detailDescription"></p>
+    <button class="green full" onclick="openOrder()">🛒 Order करें</button>
+  </div>
 </div>
 
+<!-- COMPLETE ORDER FORM -->
+<div class="modal" id="orderModal">
+  <div class="box">
+    <button class="close" onclick="closeModal('orderModal')">✖</button>
 
-<div class="container">
+    <h2>🛒 आपका Order</h2>
+    <div id="orderSummary" class="panel"></div>
 
-  <!-- PERMANENT DELIVERY SOURCE -->
-  <div class="info">
-    <b>📍 Delivery From</b><br>
-    Gadadih, Patan, Durg, Chhattisgarh
+    <label>👤 Customer Name</label>
+    <input id="customerName" placeholder="पूरा नाम">
 
-    <br><br>
+    <label>📱 Mobile Number</label>
+    <input id="customerPhone" type="tel" maxlength="10" placeholder="10 digit mobile number">
 
-    <b>🚚 Delivery Charge</b><br>
-    ₹2 per km from Gadadih to customer location.
-  </div>
+    <label>🔢 Quantity</label>
+    <input id="quantity" type="number" min="1" value="1" oninput="updateTotal()">
 
-
-  <h2>🛍️ Products</h2>
-
-  <div id="products" class="grid"></div>
-
-
-  <!-- CART -->
-
-  <div id="cartPanel" class="panel">
-
-    <h2>🛒 View Cart</h2>
-
-    <div id="cartItems"></div>
-
-    <div id="cartTotal" class="total"></div>
-
-    <button
-      class="pink"
-      onclick="openCheckout()"
-    >
-      Proceed to Checkout
-    </button>
-
-  </div>
-
-
-  <!-- CHECKOUT -->
-
-  <div id="checkoutPanel" class="panel">
-
-    <h2>📦 Checkout</h2>
-
-    <div class="info">
-
-      <b>Delivery Source:</b><br>
-      Gadadih, Patan, Durg, Chhattisgarh
-
-      <br><br>
-
-      <b>Rate:</b> ₹2/km
-
-    </div>
-
-
-    <input
-      id="customerName"
-      placeholder="Customer Name"
-    >
-
-    <input
-      id="customerPhone"
-      placeholder="Mobile Number"
-      type="tel"
-    >
-
-    <textarea
-      id="customerAddress"
-      placeholder="Full Delivery Address"
-    ></textarea>
-
-    <input
-      id="customerCity"
-      placeholder="City / Village"
-    >
-
-    <input
-      id="customerState"
-      value="Chhattisgarh"
-      placeholder="State"
-    >
-
-    <input
-      id="customerPin"
-      placeholder="PIN Code"
-      type="number"
-    >
-
-
-    <!-- CURRENT LOCATION -->
-
-    <button
-      class="green"
-      onclick="getCustomerLocation()"
-    >
-      📍 Current Location Add Karein
-    </button>
-
-    <div
-      id="locationMessage"
-      class="location-box small"
-    >
-      Customer permission dene ke baad current GPS location add hogi.
-    </div>
-
-
-    <!-- DISTANCE -->
-
-    <div
-      id="distanceBox"
-      class="location-box"
-      style="display:none"
-    >
-
-      📏 Distance:
-      <b id="distanceValue">0</b> km
-
-      <br>
-
-      🚚 Delivery Charge:
-      <b id="deliveryValue">₹0</b>
-
-      <br>
-
-      💰 Rate:
-      ₹2 / km
-
-    </div>
-
-
-    <!-- PAYMENT -->
-
-    <h3>💳 Payment</h3>
-
-    <select id="paymentMethod">
-
-      <option value="COD">
-        Cash on Delivery
-      </option>
-
-      <option value="UPI">
-        Online / UPI
-      </option>
-
+    <label>💳 Payment Method</label>
+    <select id="paymentMethod" onchange="updateTotal()">
+      <option value="Cash on Delivery">Cash on Delivery</option>
+      <option value="Online Payment">Online Payment</option>
     </select>
 
+    <!-- ONLINE PAYMENT -->
+    <div id="onlinePayBox">
+      <h3 style="color:#0b6c4a">💰 ONLINE PAYMENT</h3>
 
-    <div class="info">
+      <p>नीचे दिए गए UPI ID से भुगतान करें।</p>
 
-      <b>Online Payment UPI ID</b>
+      <h3>कुल राशि: ₹<span id="onlinePayAmount">0</span></h3>
 
-      <br>
+      <input id="upiId" value="msccreate7@okhdfcbank" readonly>
 
-      <b>msccreate7@okhdfcbank</b>
+      <button class="green full" onclick="copyUPI()">📋 UPI ID Copy करें</button>
 
-      <input
-        id="transactionId"
-        placeholder="UPI Transaction / UTR (optional)"
-      >
+      <a class="pay phonepe" id="phonepePay" href="upi://pay?pa=msccreate7@okhdfcbank">
+        📱 PhonePe से भुगतान करें
+      </a>
 
+      <a class="pay gpay" id="gpayPay" href="upi://pay?pa=msccreate7@okhdfcbank">
+        💳 Google Pay से भुगतान करें
+      </a>
+
+      <a class="pay paytm" id="paytmPay" href="upi://pay?pa=msccreate7@okhdfcbank">
+        💰 Paytm से भुगतान करें
+      </a>
+
+      <a class="pay amazon" id="amazonPay" href="upi://pay?pa=msccreate7@okhdfcbank">
+        🛒 Amazon Pay / UPI
+      </a>
+
+      <p class="note">
+        Payment App में भुगतान पूरा करें। भुगतान की पुष्टि अपने बैंक या UPI ऐप में जाँचें।
+      </p>
     </div>
 
+    <label>📍 Delivery Address</label>
+    <textarea id="address" placeholder="पूरा पता लिखें"></textarea>
 
-    <!-- TOTAL -->
+    <button class="dark full" onclick="getLocation()">📍 Current Location लें</button>
+    <div class="status" id="locationStatus">
+      Location अभी नहीं मिली है।
+    </div>
 
-    <div
-      id="checkoutTotal"
-      class="total"
-    ></div>
-
-
-    <button
-      class="pink"
-      onclick="placeOrder()"
-    >
-      📲 Place Order
-    </button>
-
+    <button class="green full" onclick="sendOrder()">📲 WhatsApp पर Order भेजें</button>
   </div>
-
 </div>
 
-
-<!-- CART FLOATING BUTTON -->
-
-<button
-  class="cart-button"
-  onclick="openCart()"
->
-  🛒 View Cart
-  (<span id="cartCount">0</span>)
-</button>
-
+<footer>© <span id="footerName">My Store</span></footer>
 
 <script>
+/* ================= SETTINGS ================= */
 
-/* =========================
-   STORE SETTINGS
-========================= */
-
-const WHATSAPP_NUMBER = "916267637741";
-
+const DEFAULT_WHATSAPP = "916267637741";
 const UPI_ID = "msccreate7@okhdfcbank";
 
-const DELIVERY_RATE = 2;
+/* Gadadih, Patan के लिए सेट की गई base coordinates */
+const BASE_LAT = 21.031290;
+const BASE_LNG = 81.424480;
 
+/* प्रति किलोमीटर डिलीवरी चार्ज */
+const RATE_PER_KM = 5;
 
-/*
-  GADADIH PERMANENT SOURCE LOCATION
+/* ================= DATA ================= */
 
-  Important:
-  These coordinates are used as the
-  delivery calculation starting point.
-*/
-
-const GADADIH_LAT = 21.031290;
-
-const GADADIH_LON = 81.424480;
-
-
-/* =========================
-   PRODUCTS
-========================= */
-
-let products = [
-
+const defaultProducts = [
   {
     id:1,
-    name:"Premium Fashion Product",
-    price:499,
-    image:
-    "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=600&q=80"
+    name:"Moringa Powder",
+    price:299,
+    oldPrice:499,
+    image:"https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=800&q=80",
+    description:"Product की जानकारी और उपयोग के निर्देश पैकेज पर देखें।"
   },
-
   {
     id:2,
-    name:"Trending Beauty Item",
+    name:"Herbal Product",
     price:399,
-    image:
-    "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80"
-  },
-
-  {
-    id:3,
-    name:"Fashion Accessory",
-    price:299,
-    image:
-    "https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?auto=format&fit=crop&w=600&q=80"
-  },
-
-  {
-    id:4,
-    name:"Daily Use Product",
-    price:699,
-    image:
-    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=600&q=80"
+    oldPrice:599,
+    image:"https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
+    description:"Premium product."
   }
-
 ];
 
+let products = JSON.parse(localStorage.getItem("products") || "null") || defaultProducts;
 
-/* =========================
-   CART
-========================= */
+let settings = JSON.parse(localStorage.getItem("settings") || "null") || {
+  name:"My Store",
+  heading:"Welcome to My Store",
+  description:"Best products at great prices",
+  whatsapp:DEFAULT_WHATSAPP
+};
 
-let cart = [];
+let selectedProduct = null;
+let currentLocation = "";
+let distance = 0;
+let deliveryCharge = 0;
 
+/* ================= INITIALIZE ================= */
 
-/* =========================
-   CUSTOMER GPS
-========================= */
+function init(){
+  document.getElementById("storeLogo").textContent = settings.name;
+  document.getElementById("heroTitle").textContent = settings.heading;
+  document.getElementById("heroText").textContent = settings.description;
+  document.getElementById("footerName").textContent = settings.name;
 
-let customerLatitude = null;
+  document.getElementById("storeName").value = settings.name;
+  document.getElementById("heading").value = settings.heading;
+  document.getElementById("description").value = settings.description;
+  document.getElementById("waNumber").value = settings.whatsapp;
 
-let customerLongitude = null;
+  renderProducts();
+  renderAdminProducts();
+}
 
-
-/* =========================
-   RENDER PRODUCTS
-========================= */
+/* ================= PRODUCTS ================= */
 
 function renderProducts(){
+  const query = document.getElementById("search").value.toLowerCase();
 
-  const searchText =
-    document
-    .getElementById("search")
-    .value
-    .toLowerCase();
+  const list = products.filter(p =>
+    p.name.toLowerCase().includes(query)
+  );
 
-  const box =
-    document.getElementById("products");
+  const area = document.getElementById("products");
 
+  if(!list.length){
+    area.innerHTML = "<p>कोई Product नहीं मिला।</p>";
+    return;
+  }
 
-  const filtered =
-    products.filter(product =>
-      product.name
-      .toLowerCase()
-      .includes(searchText)
-    );
+  area.innerHTML = list.map(p => `
+    <div class="card">
+      <img src="${escapeHTML(p.image)}"
+           onerror="this.src='https://placehold.co/400x400?text=Product'">
 
+      <div class="cardBody">
+        <h3>${escapeHTML(p.name)}</h3>
 
-  box.innerHTML =
-    filtered.map(product => `
+        <div class="price">₹${p.price}</div>
 
-      <div class="card">
+        ${p.oldPrice ? `<del>₹${p.oldPrice}</del>` : ""}
 
-        <img
-          src="${product.image}"
-          onerror="this.src='https://via.placeholder.com/500?text=SRINGAR'"
-        >
-
-        <b>
-          ${product.name}
-        </b>
-
-        <div class="price">
-          ₹${product.price}
-        </div>
-
-        <button
-          onclick="addToCart(${product.id})"
-        >
-          Add Cart
+        <button class="primary full" onclick="showProduct(${p.id})">
+          Product देखें
         </button>
-
-        <button
-          class="pink"
-          onclick="buyNow(${product.id})"
-        >
-          Buy Now
-        </button>
-
       </div>
-
-    `).join("");
-
+    </div>
+  `).join("");
 }
 
+function showProduct(id){
+  selectedProduct = products.find(p => p.id === id);
 
-/* =========================
-   ADD CART
-========================= */
+  if(!selectedProduct) return;
 
-function addToCart(id){
+  document.getElementById("detailImage").src = selectedProduct.image;
+  document.getElementById("detailName").textContent = selectedProduct.name;
+  document.getElementById("detailPrice").textContent = "₹" + selectedProduct.price;
+  document.getElementById("detailDescription").textContent = selectedProduct.description || "";
 
-  const existing =
-    cart.find(item => item.id === id);
+  document.getElementById("detailModal").style.display = "flex";
+}
 
+/* ================= ORDER ================= */
 
-  if(existing){
+function openOrder(){
+  closeModal("detailModal");
 
-    existing.quantity++;
+  currentLocation = "";
+  distance = 0;
+  deliveryCharge = 0;
 
-  }else{
+  document.getElementById("customerName").value = "";
+  document.getElementById("customerPhone").value = "";
+  document.getElementById("quantity").value = 1;
+  document.getElementById("address").value = "";
 
-    cart.push({
-      id:id,
-      quantity:1
-    });
+  document.getElementById("locationStatus").textContent =
+    "Delivery charge calculate करने के लिए Current Location लें।";
 
+  document.getElementById("orderModal").style.display = "flex";
+
+  updateTotal();
+}
+
+function updateTotal(){
+  if(!selectedProduct) return;
+
+  const quantity = Math.max(
+    1,
+    Number(document.getElementById("quantity").value) || 1
+  );
+
+  const productTotal = selectedProduct.price * quantity;
+  const total = productTotal + deliveryCharge;
+
+  document.getElementById("orderSummary").innerHTML = `
+    <b>${escapeHTML(selectedProduct.name)}</b><br>
+    Product Price: ₹${selectedProduct.price}<br>
+    Quantity: ${quantity}<br>
+    Distance: ${distance ? distance.toFixed(1)+" km" : "अभी calculate नहीं हुई"}<br>
+    Delivery Charge: ₹${deliveryCharge} (₹${RATE_PER_KM}/km)<br>
+    <hr>
+    <b>Grand Total: ₹${total}</b>
+  `;
+
+  const online = document.getElementById("paymentMethod").value === "Online Payment";
+
+  document.getElementById("onlinePayBox").style.display =
+    online ? "block" : "none";
+
+  document.getElementById("onlinePayAmount").textContent = total;
+
+  const params =
+    "pa=" + encodeURIComponent(UPI_ID) +
+    "&pn=" + encodeURIComponent(settings.name) +
+    "&am=" + encodeURIComponent(total) +
+    "&cu=INR" +
+    "&tn=" + encodeURIComponent(selectedProduct.name);
+
+  const upiURL = "upi://pay?" + params;
+
+  document.getElementById("phonepePay").href = upiURL;
+  document.getElementById("gpayPay").href = upiURL;
+  document.getElementById("paytmPay").href = upiURL;
+  document.getElementById("amazonPay").href = upiURL;
+}
+
+/* ================= COPY UPI ================= */
+
+async function copyUPI(){
+  const field = document.getElementById("upiId");
+
+  try{
+    await navigator.clipboard.writeText(UPI_ID);
+    alert("UPI ID Copy हो गई!");
+  }catch(error){
+    field.select();
+    field.setSelectionRange(0, 99999);
+
+    const copied = document.execCommand("copy");
+
+    alert(copied ? "UPI ID Copy हो गई!" : "UPI ID को manually copy करें।");
   }
-
-
-  updateCartCount();
-
-  alert("Product cart me add ho gaya.");
-
 }
 
+/* ================= LOCATION ================= */
 
-/* =========================
-   BUY NOW
-========================= */
+function distanceKm(lat1, lon1, lat2, lon2){
+  const R = 6371;
+  const rad = Math.PI / 180;
 
-function buyNow(id){
+  const dLat = (lat2-lat1) * rad;
+  const dLon = (lon2-lon1) * rad;
 
-  cart = [
+  const a =
+    Math.sin(dLat/2) ** 2 +
+    Math.cos(lat1*rad) *
+    Math.cos(lat2*rad) *
+    Math.sin(dLon/2) ** 2;
 
-    {
-      id:id,
-      quantity:1
-    }
-
-  ];
-
-  updateCartCount();
-
-  openCheckout();
-
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
-
-/* =========================
-   CART COUNT
-========================= */
-
-function updateCartCount(){
-
-  const count =
-    cart.reduce(
-      (total,item) =>
-      total + item.quantity,
-      0
-    );
-
-  document
-  .getElementById("cartCount")
-  .innerText = count;
-
-}
-
-
-/* =========================
-   CART
-========================= */
-
-function openCart(){
-
-  document
-  .getElementById("checkoutPanel")
-  .classList.remove("show");
-
-  document
-  .getElementById("cartPanel")
-  .classList.add("show");
-
-
-  renderCart();
-
-}
-
-
-function renderCart(){
-
-  const box =
-    document.getElementById("cartItems");
-
-
-  if(cart.length === 0){
-
-    box.innerHTML =
-      "<p>Cart empty hai.</p>";
-
-    document
-    .getElementById("cartTotal")
-    .innerHTML = "";
-
-    return;
-
-  }
-
-
-  let total = 0;
-
-
-  box.innerHTML =
-    cart.map(item => {
-
-      const product =
-        products.find(
-          p => p.id === item.id
-        );
-
-
-      const itemTotal =
-        product.price *
-        item.quantity;
-
-
-      total += itemTotal;
-
-
-      return `
-
-        <div
-          style="
-          padding:10px 0;
-          border-bottom:1px solid #ddd;
-          "
-        >
-
-          <b>
-            ${product.name}
-          </b>
-
-          <br>
-
-          ₹${product.price}
-          ×
-          ${item.quantity}
-
-          =
-          ₹${itemTotal}
-
-          <br>
-
-          <button
-            onclick="changeQuantity(${product.id},-1)"
-          >
-            −
-          </button>
-
-          <button
-            onclick="changeQuantity(${product.id},1)"
-          >
-            +
-          </button>
-
-          <button
-            onclick="removeFromCart(${product.id})"
-          >
-            Remove
-          </button>
-
-        </div>
-
-      `;
-
-    }).join("");
-
-
-  document
-  .getElementById("cartTotal")
-  .innerHTML =
-    `<b>Product Total: ₹${total}</b>`;
-
-}
-
-
-/* =========================
-   QUANTITY
-========================= */
-
-function changeQuantity(id,change){
-
-  const item =
-    cart.find(
-      x => x.id === id
-    );
-
-
-  if(!item) return;
-
-
-  item.quantity += change;
-
-
-  if(item.quantity <= 0){
-
-    cart =
-      cart.filter(
-        x => x.id !== id
-      );
-
-  }
-
-
-  updateCartCount();
-
-  renderCart();
-
-}
-
-
-/* =========================
-   REMOVE
-========================= */
-
-function removeFromCart(id){
-
-  cart =
-    cart.filter(
-      item => item.id !== id
-    );
-
-
-  updateCartCount();
-
-  renderCart();
-
-}
-
-
-/* =========================
-   CHECKOUT
-========================= */
-
-function openCheckout(){
-
-  if(cart.length === 0){
-
-    alert("Cart empty hai.");
-
-    return;
-
-  }
-
-
-  document
-  .getElementById("cartPanel")
-  .classList.remove("show");
-
-
-  document
-  .getElementById("checkoutPanel")
-  .classList.add("show");
-
-
-  updateCheckoutTotal();
-
-}
-
-
-/* =========================
-   GPS LOCATION
-========================= */
-
-function getCustomerLocation(){
+function getLocation(){
+  const status = document.getElementById("locationStatus");
 
   if(!navigator.geolocation){
-
-    alert(
-      "Is browser me GPS location supported nahi hai."
-    );
-
+    status.textContent = "इस Browser में Location सुविधा उपलब्ध नहीं है।";
     return;
-
   }
 
+  if(location.protocol !== "https:" &&
+     location.hostname !== "localhost" &&
+     location.hostname !== "127.0.0.1"){
+    status.textContent =
+      "Location के लिए वेबसाइट HTTPS पर खोलें, जैसे GitHub Pages।";
+    return;
+  }
 
-  document
-  .getElementById("locationMessage")
-  .innerHTML =
-  "📍 Location permission ka wait ho raha hai...";
-
+  status.textContent = "Current Location प्राप्त हो रही है...";
 
   navigator.geolocation.getCurrentPosition(
+    position => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
 
-    function(position){
+      currentLocation =
+        "https://www.google.com/maps?q=" + lat + "," + lng;
 
-      customerLatitude =
-        position.coords.latitude;
+      distance = distanceKm(BASE_LAT, BASE_LNG, lat, lng);
 
-      customerLongitude =
-        position.coords.longitude;
+      deliveryCharge = Math.ceil(distance) * RATE_PER_KM;
 
+      status.innerHTML =
+        "✅ Location मिल गई। दूरी: " + distance.toFixed(1) +
+        " km<br>Delivery Charge: ₹" + deliveryCharge;
 
-      const distance =
-        calculateDistance(
-
-          GADADIH_LAT,
-          GADADIH_LON,
-
-          customerLatitude,
-          customerLongitude
-
-        );
-
-
-      const deliveryCharge =
-        distance *
-        DELIVERY_RATE;
-
-
-      document
-      .getElementById("distanceValue")
-      .innerText =
-      distance.toFixed(2);
-
-
-      document
-      .getElementById("deliveryValue")
-      .innerText =
-      "₹" +
-      deliveryCharge.toFixed(2);
-
-
-      document
-      .getElementById("distanceBox")
-      .style.display =
-      "block";
-
-
-      document
-      .getElementById("locationMessage")
-      .innerHTML =
-
-      "✅ Customer current location successfully added.";
-
-
-      updateCheckoutTotal();
-
+      updateTotal();
     },
 
-
-    function(){
-
-      document
-      .getElementById("locationMessage")
-      .innerHTML =
-
-      "❌ Location permission nahi mili. Browser me location permission Allow karein.";
-
+    error => {
+      status.textContent =
+        "Location नहीं मिली। GPS ON करें और Browser में Location Permission Allow करें।";
     },
-
 
     {
       enableHighAccuracy:true,
-      timeout:15000,
+      timeout:20000,
       maximumAge:0
     }
+  );
+}
 
+/* ================= SEND WHATSAPP ORDER ================= */
+
+function sendOrder(){
+  if(!selectedProduct) return;
+
+  const name = document.getElementById("customerName").value.trim();
+  const phone = document.getElementById("customerPhone").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const payment = document.getElementById("paymentMethod").value;
+
+  const quantity = Math.max(
+    1,
+    Number(document.getElementById("quantity").value) || 1
   );
 
-}
-
-
-/* =========================
-   DISTANCE CALCULATION
-========================= */
-
-function calculateDistance(
-  lat1,
-  lon1,
-  lat2,
-  lon2
-){
-
-  const R = 6371;
-
-  const rad =
-    Math.PI / 180;
-
-
-  const dLat =
-    (lat2-lat1) * rad;
-
-  const dLon =
-    (lon2-lon1) * rad;
-
-
-  const a =
-    Math.sin(dLat/2) *
-    Math.sin(dLat/2) +
-
-    Math.cos(lat1*rad) *
-    Math.cos(lat2*rad) *
-
-    Math.sin(dLon/2) *
-    Math.sin(dLon/2);
-
-
-  return
-    2 *
-    R *
-    Math.asin(
-      Math.sqrt(a)
-    );
-
-}
-
-
-/* =========================
-   PRODUCT TOTAL
-========================= */
-
-function getProductTotal(){
-
-  return cart.reduce(
-
-    (total,item) => {
-
-      const product =
-        products.find(
-          p => p.id === item.id
-        );
-
-
-      return total +
-        product.price *
-        item.quantity;
-
-    },
-
-    0
-
-  );
-
-}
-
-
-/* =========================
-   DELIVERY CHARGE
-========================= */
-
-function getDeliveryCharge(){
-
-  if(
-    customerLatitude === null ||
-    customerLongitude === null
-  ){
-
-    return 0;
-
-  }
-
-
-  const distance =
-    calculateDistance(
-
-      GADADIH_LAT,
-      GADADIH_LON,
-
-      customerLatitude,
-      customerLongitude
-
-    );
-
-
-  return distance *
-    DELIVERY_RATE;
-
-}
-
-
-/* =========================
-   CHECKOUT TOTAL
-========================= */
-
-function updateCheckoutTotal(){
-
-  const productTotal =
-    getProductTotal();
-
-
-  const deliveryCharge =
-    getDeliveryCharge();
-
-
-  const grandTotal =
-    productTotal +
-    deliveryCharge;
-
-
-  document
-  .getElementById("checkoutTotal")
-  .innerHTML = `
-
-    <div>
-      Products:
-      ₹${productTotal.toFixed(2)}
-    </div>
-
-    <div>
-      Delivery:
-      ₹${deliveryCharge.toFixed(2)}
-    </div>
-
-    <div>
-      <b>
-        Grand Total:
-        ₹${grandTotal.toFixed(2)}
-      </b>
-    </div>
-
-  `;
-
-}
-
-
-/* =========================
-   PLACE ORDER
-========================= */
-
-function placeOrder(){
-
-  const name =
-    document
-    .getElementById("customerName")
-    .value
-    .trim();
-
-
-  const phone =
-    document
-    .getElementById("customerPhone")
-    .value
-    .trim();
-
-
-  const address =
-    document
-    .getElementById("customerAddress")
-    .value
-    .trim();
-
-
-  const city =
-    document
-    .getElementById("customerCity")
-    .value
-    .trim();
-
-
-  const state =
-    document
-    .getElementById("customerState")
-    .value
-    .trim();
-
-
-  const pin =
-    document
-    .getElementById("customerPin")
-    .value
-    .trim();
-
-
-  const payment =
-    document
-    .getElementById("paymentMethod")
-    .value;
-
-
-  const transaction =
-    document
-    .getElementById("transactionId")
-    .value
-    .trim();
-
-
-  if(
-    !name ||
-    !phone ||
-    !address ||
-    !city ||
-    !state ||
-    !pin
-  ){
-
-    alert(
-      "Name, mobile, address, city aur PIN bharein."
-    );
-
+  if(!name){
+    alert("Customer Name भरें।");
     return;
-
   }
 
-
-  if(customerLatitude === null){
-
-    const confirmWithoutGPS =
-      confirm(
-        "Customer GPS location add nahi hui hai.\n\nKya bina GPS ke order continue karna hai?"
-      );
-
-
-    if(!confirmWithoutGPS){
-
-      return;
-
-    }
-
+  if(!/^[0-9]{10}$/.test(phone)){
+    alert("सही 10 अंकों का Mobile Number डालें।");
+    return;
   }
 
+  if(!address){
+    alert("Delivery Address भरें।");
+    return;
+  }
 
-  const productTotal =
-    getProductTotal();
+  if(!currentLocation){
+    alert("पहले Current Location लें ताकि Delivery Charge calculate हो सके।");
+    return;
+  }
 
+  const productTotal = selectedProduct.price * quantity;
+  const total = productTotal + deliveryCharge;
 
-  const deliveryCharge =
-    getDeliveryCharge();
+  const orderId = "ORD-" + Date.now().toString().slice(-8);
 
-
-  const grandTotal =
-    productTotal +
-    deliveryCharge;
-
-
-  const orderId =
-    "SR" +
-    Date.now()
-    .toString()
-    .slice(-8);
-
-
-  const distance =
-
-    customerLatitude === null
-
-      ? "GPS not added"
-
-      :
-
-    calculateDistance(
-
-      GADADIH_LAT,
-      GADADIH_LON,
-
-      customerLatitude,
-      customerLongitude
-
-    ).toFixed(2) + " km";
-
-
-  const productList =
-    cart.map(item => {
-
-      const p =
-        products.find(
-          x => x.id === item.id
-        );
-
-
-      return (
-        p.name +
-        " x " +
-        item.quantity
-      );
-
-    }).join(", ");
-
-
-  const message =
-
-    `SRINGAR ORDER
+  const message = `
+🛍️ NEW ORDER
 
 Order ID: ${orderId}
 
-Products:
-${productList}
+Product: ${selectedProduct.name}
+Price: ₹${selectedProduct.price}
+Quantity: ${quantity}
+Product Total: ₹${productTotal}
 
-Customer:
-${name}
+Delivery Base: Gadadih, Patan
+Distance: ${distance.toFixed(1)} km
+Rate: ₹${RATE_PER_KM}/km
+Delivery Charge: ₹${deliveryCharge}
 
-Mobile:
-${phone}
+Grand Total: ₹${total}
 
-Delivery Address:
-${address},
-${city},
-${state} - ${pin}
+Payment Method: ${payment}
+${payment === "Online Payment" ? "UPI ID: " + UPI_ID + "\nPayment Amount: ₹" + total + "\nPayment status: Customer confirmation required" : "Payment: Cash on Delivery"}
 
-Delivery From:
-Gadadih, Patan, Durg, Chhattisgarh
+Customer Name: ${name}
+Mobile: ${phone}
+Address: ${address}
 
-Distance:
-${distance}
+Customer Location:
+${currentLocation}
 
-Product Total:
-₹${productTotal.toFixed(2)}
-
-Delivery Charge:
-₹${deliveryCharge.toFixed(2)}
-
-Grand Total:
-₹${grandTotal.toFixed(2)}
-
-Payment:
-${payment}
-
-UPI:
-${UPI_ID}
-
-Transaction/UTR:
-${transaction || "N/A"}
-
-Customer GPS:
-${
-  customerLatitude === null
-  ?
-  "Not added"
-  :
-  customerLatitude +
-  "," +
-  customerLongitude
-}`;
-
+Store: ${settings.name}
+  `.trim();
 
   const whatsappURL =
-
     "https://wa.me/" +
-    WHATSAPP_NUMBER +
+    settings.whatsapp.replace(/\D/g,"") +
     "?text=" +
-    encodeURIComponent(
-      message
-    );
+    encodeURIComponent(message);
 
-
-  window.open(
-    whatsappURL,
-    "_blank"
-  );
-
-
-  alert(
-    "Order placed successfully!\nOrder ID: " +
-    orderId
-  );
-
-
-  cart = [];
-
-  updateCartCount();
-
+  window.open(whatsappURL, "_blank");
 }
 
+/* ================= ADMIN PANEL ================= */
 
-/* =========================
-   START
-========================= */
+function adminLogin(){
+  const password = prompt("Admin Password डालें:");
 
-renderProducts();
+  if(password === "admin123"){
+    document.getElementById("customerPage").style.display = "none";
+    document.getElementById("header").style.display = "none";
+    document.getElementById("adminPage").style.display = "block";
+    renderAdminProducts();
+  }else if(password !== null){
+    alert("गलत Password!");
+  }
+}
 
-updateCartCount();
+function showCustomer(){
+  document.getElementById("adminPage").style.display = "none";
+  document.getElementById("customerPage").style.display = "block";
+  document.getElementById("header").style.display = "block";
+}
 
+function logout(){
+  showCustomer();
+}
+
+function saveSettings(){
+  settings.name = document.getElementById("storeName").value.trim() || "My Store";
+  settings.heading = document.getElementById("heading").value.trim() || "Welcome to My Store";
+  settings.description = document.getElementById("description").value.trim() || "Best products at great prices";
+  settings.whatsapp = document.getElementById("waNumber").value.trim() || DEFAULT_WHATSAPP;
+
+  localStorage.setItem("settings", JSON.stringify(settings));
+
+  init();
+
+  alert("Settings Save हो गईं!");
+}
+
+function saveProduct(){
+  const name = document.getElementById("pName").value.trim();
+  const price = Number(document.getElementById("pPrice").value);
+  const oldPrice = Number(document.getElementById("pOldPrice").value) || 0;
+  const image = document.getElementById("pImage").value.trim();
+  const description = document.getElementById("pDescription").value.trim();
+
+  if(!name || price <= 0 || !image){
+    alert("Product Name, सही Price और Image URL भरें।");
+    return;
+  }
+
+  products.push({
+    id:Date.now(),
+    name,
+    price,
+    oldPrice,
+    image,
+    description
+  });
+
+  localStorage.setItem("products", JSON.stringify(products));
+
+  document.getElementById("pName").value = "";
+  document.getElementById("pPrice").value = "";
+  document.getElementById("pOldPrice").value = "";
+  document.getElementById("pImage").value = "";
+  document.getElementById("pDescription").value = "";
+
+  renderProducts();
+  renderAdminProducts();
+
+  alert("Product Add हो गया!");
+}
+
+function renderAdminProducts(){
+  const area = document.getElementById("adminProducts");
+
+  area.innerHTML = products.map(p => `
+    <div class="panel">
+      <b>${escapeHTML(p.name)}</b> — ₹${p.price}
+      <button onclick="deleteProduct(${p.id})">🗑️ Delete</button>
+    </div>
+  `).join("");
+}
+
+function deleteProduct(id){
+  if(!confirm("क्या यह Product Delete करना है?")) return;
+
+  products = products.filter(p => p.id !== id);
+
+  localStorage.setItem("products", JSON.stringify(products));
+
+  renderProducts();
+  renderAdminProducts();
+}
+
+function closeModal(id){
+  document.getElementById(id).style.display = "none";
+}
+
+function escapeHTML(value){
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+init();
 </script>
 
 </body>
-  </html>
+</html>
