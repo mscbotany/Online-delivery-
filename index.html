@@ -325,19 +325,35 @@
                     <label>मोबाइल नंबर *</label>
                     <input type="tel" id="custPhone" placeholder="10-अंकीय फ़ोन नंबर" required pattern="[0-9]{10}">
 
-                    <label>अपना गांव/क्षेत्र चुनें (पाटन से ऑटो दूरी) *</label>
+                    <label>अपना गांव/स्थान चुनें (पाटन से दूरी व चार्ज) *</label>
                     <select id="villageSelect" onchange="onVillageChange()" required>
                         <option value="">-- चुनें --</option>
-                        <option value="0">पाटन प्रॉपर (Patan Local - 0 KM)</option>
-                        <option value="6">गाडाडीह (Gadadih - 6 KM)</option>
-                        <option value="8">आमालोरी (Amalori - 8 KM)</option>
-                        <option value="10">सोनपुर (Sonpur - 10 KM)</option>
-                        <option value="12">जामगाँव (Jamgaon - 12 KM)</option>
-                        <option value="15">सेलूद (Selud - 15 KM)</option>
-                        <option value="18">उताई (Utai - 18 KM)</option>
-                        <option value="30">दुर्ग शहर (Durg City - 30 KM)</option>
-                        <option value="35">भिलाई (Bhilai - 35 KM)</option>
-                        <option value="custom">अन्य गांव (Manual Distance Enter Karein)</option>
+                        <optgroup label="पाटन / स्थानीय गांव">
+                            <option value="0">पाटन प्रॉपर (0 KM - ₹0)</option>
+                            <option value="6">गाडाडीह (6 KM - ₹18)</option>
+                            <option value="8">आमालोरी (8 KM - ₹24)</option>
+                            <option value="10">सोनपुर (10 KM - ₹30)</option>
+                            <option value="12">जामगाँव (12 KM - ₹36)</option>
+                            <option value="15">सेलूद (15 KM - ₹45)</option>
+                        </optgroup>
+                        <optgroup label="दुर्ग ज़िला">
+                            <option value="18">उताई (18 KM - ₹54)</option>
+                            <option value="25">भिलाई (25 KM - ₹75)</option>
+                            <option value="30">दुर्ग शहर (30 KM - ₹90)</option>
+                        </optgroup>
+                        <optgroup label="रायपुर ज़िला">
+                            <option value="22">अभनपुर (22 KM - ₹66)</option>
+                            <option value="35">रायपुर शहर (35 KM - ₹105)</option>
+                        </optgroup>
+                        <optgroup label="बालोद ज़िला">
+                            <option value="28">गुंडरदेही (28 KM - ₹84)</option>
+                            <option value="55">बालोद शहर (55 KM - ₹165)</option>
+                        </optgroup>
+                        <optgroup label="धमतरी ज़िला">
+                            <option value="35">कुरुद (35 KM - ₹105)</option>
+                            <option value="58">धमतरी शहर (58 KM - ₹174)</option>
+                        </optgroup>
+                        <option value="custom">अन्य गांव (मैन्युअल KM भरें)</option>
                     </select>
 
                     <label>पाटन से दूरी (KM)</label>
@@ -456,16 +472,19 @@
         <div class="admin-panel" id="adminPanel">
             <h3 style="color: #d84315; margin-bottom: 10px;">🛠️ स्टोर सेटिंग्स एडमिन पैनल</h3>
             <label>उत्पाद की कीमत (₹)</label>
-            <input type="number" id="adminBasePrice" value="280">
+            <input type="number" id="adminBasePrice">
 
             <label>डिलीवरी दर (₹ per km)</label>
-            <input type="number" id="adminRateKm" value="3">
+            <input type="number" id="adminRateKm">
 
             <label>WhatsApp नंबर (देश के कोड के साथ)</label>
-            <input type="text" id="adminPhone" value="916267637741">
+            <input type="text" id="adminPhone">
 
             <label>UPI ID</label>
-            <input type="text" id="adminUPI" value="msccreate7@okhdfcbank">
+            <input type="text" id="adminUPI">
+
+            <label>नया एडमिन PIN (पासवर्ड बदलें)</label>
+            <input type="password" id="adminPinInput" placeholder="नया PIN दर्ज करें (वैकल्पिक)">
 
             <button type="button" class="copy-btn" style="background: #2e7d32; width: 100%; margin-top: 15px;" onclick="saveAdminSettings()">सेटिंग्स सेव करें</button>
         </div>
@@ -473,10 +492,29 @@
     </div>
 
     <script>
-        let BASE_PRICE = 280;
-        let RATE_PER_KM = 3;
-        let WHATSAPP_NUMBER = "916267637741";
-        let UPI_ID = "msccreate7@okhdfcbank";
+        // Global variables initialized from LocalStorage or Default Values
+        let BASE_PRICE = parseFloat(localStorage.getItem('hwmd_base_price')) || 280;
+        let RATE_PER_KM = parseFloat(localStorage.getItem('hwmd_rate_km')) || 3;
+        let WHATSAPP_NUMBER = localStorage.getItem('hwmd_whatsapp') || "916267637741";
+        let UPI_ID = localStorage.getItem('hwmd_upi') || "msccreate7@okhdfcbank";
+        let ADMIN_PIN = localStorage.getItem('hwmd_pin') || "1234";
+
+        // Initialize UI with stored settings on page load
+        function initSettings() {
+            document.getElementById('displayPrice').innerText = "₹" + BASE_PRICE;
+            document.getElementById('rateLabel').innerText = "₹" + RATE_PER_KM;
+            document.getElementById('upi1').value = UPI_ID;
+            
+            // Populate Admin Inputs
+            document.getElementById('adminBasePrice').value = BASE_PRICE;
+            document.getElementById('adminRateKm').value = RATE_PER_KM;
+            document.getElementById('adminPhone').value = WHATSAPP_NUMBER;
+            document.getElementById('adminUPI').value = UPI_ID;
+            
+            calculateTotal();
+        }
+
+        window.onload = initSettings;
 
         // Accordion Setup
         const accButtons = document.querySelectorAll(".accordion-btn");
@@ -595,8 +633,8 @@
         }
 
         function toggleAdminPanel() {
-            const pin = prompt("एडमिन पिन दर्ज करें (Default: 1234):");
-            if (pin === "1234") {
+            const pin = prompt("एडमिन पिन दर्ज करें (Default: " + ADMIN_PIN + "):");
+            if (pin === ADMIN_PIN) {
                 const panel = document.getElementById('adminPanel');
                 panel.style.display = panel.style.display === "block" ? "none" : "block";
             } else if (pin !== null) {
@@ -604,19 +642,34 @@
             }
         }
 
+        // Save Admin Settings Permanently in LocalStorage
         function saveAdminSettings() {
-            BASE_PRICE = parseFloat(document.getElementById('adminBasePrice').value) || BASE_PRICE;
-            RATE_PER_KM = parseFloat(document.getElementById('adminRateKm').value) || RATE_PER_KM;
-            WHATSAPP_NUMBER = document.getElementById('adminPhone').value.trim() || WHATSAPP_NUMBER;
-            UPI_ID = document.getElementById('adminUPI').value.trim() || UPI_ID;
+            BASE_PRICE = parseFloat(document.getElementById('adminBasePrice').value) || 280;
+            RATE_PER_KM = parseFloat(document.getElementById('adminRateKm').value) || 3;
+            WHATSAPP_NUMBER = document.getElementById('adminPhone').value.trim() || "916267637741";
+            UPI_ID = document.getElementById('adminUPI').value.trim() || "msccreate7@okhdfcbank";
+            
+            const newPin = document.getElementById('adminPinInput').value.trim();
+            if (newPin !== "") {
+                ADMIN_PIN = newPin;
+                localStorage.setItem('hwmd_pin', ADMIN_PIN);
+            }
 
+            // Save to LocalStorage
+            localStorage.setItem('hwmd_base_price', BASE_PRICE);
+            localStorage.setItem('hwmd_rate_km', RATE_PER_KM);
+            localStorage.setItem('hwmd_whatsapp', WHATSAPP_NUMBER);
+            localStorage.setItem('hwmd_upi', UPI_ID);
+
+            // Update UI
             document.getElementById('displayPrice').innerText = "₹" + BASE_PRICE;
             document.getElementById('rateLabel').innerText = "₹" + RATE_PER_KM;
             document.getElementById('upi1').value = UPI_ID;
 
             calculateTotal();
-            alert("✅ सेटिंग्स सफलतापूर्वक अपडेट हो गईं!");
+            alert("✅ सेटिंग्स सफलतापूर्वक हमेशा के लिए सेव हो गईं!");
             document.getElementById('adminPanel').style.display = "none";
+            document.getElementById('adminPinInput').value = "";
         }
     </script>
 </body>
