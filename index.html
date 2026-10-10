@@ -1,645 +1,500 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HWMD मोरिंगा लीफ पाउडर - 100% प्राकृतिक</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f6fa;color:#222}
-header{background:linear-gradient(135deg,#5b21b6,#8b5cf6);color:white;padding:16px}
-.head{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:23px;font-weight:bold}
-.container{max-width:1100px;margin:auto;padding:15px}
-button{border:0;padding:11px 14px;border-radius:8px;cursor:pointer;font-weight:bold}
-input,textarea,select{width:100%;padding:12px;margin:7px 0 12px;border:1px solid #ddd;border-radius:8px}
-.hero{text-align:center;background:#eee7ff;padding:25px;border-radius:15px;margin-bottom:18px}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px}
-.card{background:white;border-radius:13px;overflow:hidden;box-shadow:0 3px 12px #0001}
-.card img{width:100%;height:180px;object-fit:cover}
-.cardBody{padding:12px}
-.price{font-size:20px;color:#5b21b6;font-weight:bold}
-.primary{background:#5b21b6;color:white}
-.green{background:#16a34a;color:white}
-.dark{background:#111827;color:white}
-.full{width:100%;margin-top:8px}
-.panel{background:white;padding:16px;margin:15px 0;border-radius:12px}
-.admin{display:none}
-.modal{display:none;position:fixed;inset:0;background:#0009;z-index:10;align-items:center;justify-content:center;padding:12px}
-.box{background:white;padding:18px;border-radius:15px;width:100%;max-width:500px;max-height:94vh;overflow:auto}
-.close{float:right}
-#onlinePayBox{display:none;background:#f0fff6;border:1px solid #b8e6c8;padding:13px;border-radius:12px;margin:12px 0;text-align:center}
-.pay{display:block;color:white;text-decoration:none;padding:12px;margin-top:8px;border-radius:8px}
-.phonepe{background:#5f259f}
-.gpay{background:#4285f4}
-.paytm{background:#002970}
-.amazon{background:#ff9900}
-.note{font-size:12px;color:#666}
-.status{font-size:13px;margin:8px 0}
-footer{text-align:center;padding:25px;color:#777}
-@media(max-width:480px){.card img{height:145px}}
-</style>
+        body {
+            background-color: #f4f7f4;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 30px;
+        }
+
+        header {
+            background: #1b5e20;
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            color: #1b5e20;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e8f5e9;
+            padding-bottom: 8px;
+        }
+
+        .product-img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .price-tag {
+            font-size: 1.5rem;
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .price-tag span {
+            text-decoration: line-through;
+            color: #888;
+            font-size: 1rem;
+            margin-left: 8px;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 70px;
+        }
+
+        .btn-location {
+            background: #0288d1;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-location:hover {
+            background: #0277bd;
+        }
+
+        .delivery-box {
+            background: #e8f5e9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #c8e6c9;
+        }
+
+        .delivery-info {
+            font-size: 0.9rem;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .total-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1b5e20;
+            margin-top: 8px;
+        }
+
+        .upi-box {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .upi-input {
+            border: 1px solid #ccc;
+            padding: 8px;
+            border-radius: 6px;
+            width: 70%;
+            font-size: 0.95rem;
+            text-align: center;
+            background: #f9f9f9;
+        }
+
+        .copy-btn {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            background: #10A37F;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .app-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .app-list a {
+            display: block;
+            color: #fff;
+            padding: 10px 0;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        #phonepe { background: #5f259f; }
+        #gpay { background: #4285F4; }
+        #paytm { background: #002970; }
+        #amazonpay { background: #FF9900; }
+
+        .hint {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .btn-whatsapp {
+            width: 100%;
+            background-color: #25D366;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1ebd56;
+        }
+
+        /* Admin Section Styling */
+        .admin-btn {
+            background: #555;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .admin-panel {
+            display: none;
+            background: #fff3e0;
+            border: 1px solid #ffe0b2;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        ol.instructions {
+            padding-left: 20px;
+            font-size: 0.9rem;
+            color: #444;
+        }
+    </style>
 </head>
-
 <body>
 
-<header id="header">
-  <div class="head">
-    <div class="logo" id="storeLogo">My Store</div>
-    <button onclick="adminLogin()">🔐 Admin</button>
-  </div>
-</header>
+    <header>
+        <h1>HWMD Health & Wellness</h1>
+        <p>100% प्राकृतिक और शुद्ध मोरिंगा लीफ पाउडर</p>
+    </header>
 
-<main id="customerPage" class="container">
-  <div class="hero">
-    <h1 id="heroTitle">Welcome to My Store</h1>
-    <p id="heroText">Best products at great prices</p>
-  </div>
+    <div class="container">
 
-  <input id="search" placeholder="🔍 Product खोजें..." oninput="renderProducts()">
+        <!-- Product Summary with Image -->
+        <div class="card">
+            <img src="30235.png" alt="HWMD Moringa Powder Poster" class="product-img" onerror="this.src='https://via.placeholder.com/600x1200?text=HWMD+Moringa+Powder+Poster'">
+            <h2>🌿 मोरिंगा लीफ पाउडर</h2>
+            <div class="price-tag"><span id="displayPrice">₹299</span> <span>₹599</span></div>
+            <p style="font-size: 0.9rem; color: #555;">
+                प्रकृति का सुपरफूड - 25x आयरन, 17x कैल्शियम, 10x विटामिन A और 9x प्रोटीन से भरपूर।
+            </p>
+        </div>
 
-  <div class="products" id="products"></div>
-</main>
+        <!-- Order & Address Form -->
+        <div class="card">
+            <h2>🛒 ऑर्डर डिटेल्स भरें</h2>
+            <form id="orderForm">
+                <label>आपका नाम *</label>
+                <input type="text" id="custName" placeholder="अपना नाम लिखें" required>
 
-<section class="admin container" id="adminPage">
-  <div class="panel">
-    <h2>⚙️ Admin Dashboard</h2>
-    <button class="primary" onclick="showCustomer()">Customer Page</button>
-    <button onclick="logout()">Logout</button>
-  </div>
+                <label>मोबाइल नंबर *</label>
+                <input type="tel" id="custPhone" placeholder="10-अंकीय फ़ोन नंबर" required pattern="[0-9]{10}">
 
-  <div class="panel">
-    <h3>🏪 Store Settings</h3>
-    <label>Store Name</label>
-    <input id="storeName">
+                <label>पूरा डिलीवरी पता *</label>
+                <textarea id="custAddress" placeholder="मकान नंबर, गली, गांव/शहर, पिनकोड" required></textarea>
 
-    <label>Website Heading</label>
-    <input id="heading">
+                <label>गाडाडीह (पाटन) से दूरी (km)</label>
+                <button type="button" class="btn-location" onclick="getLiveLocation()">📍 Apna Live Location Lein (Auto Distance)</button>
+                <input type="number" id="distance" placeholder="दूरी स्वचालित रूप से आएगी या मैन्युअल भरें" min="0" required oninput="calculateTotal()">
+                <small id="locStatus" style="color: #0288d1; font-size: 0.8rem;"></small>
 
-    <label>Description</label>
-    <input id="description">
+                <label>भुगतान का प्रकार (Payment Method) *</label>
+                <select id="paymentMethod" onchange="togglePaymentUI()">
+                    <option value="Online Payment">Online Payment (UPI / PhonePe / GPay)</option>
+                    <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+                </select>
 
-    <label>WhatsApp Number</label>
-    <input id="waNumber" value="916267637741">
+                <div class="delivery-box">
+                    <div class="delivery-info">🚚 डिलीवरी चार्ज (<span id="rateLabel">₹3</span>/km): <span id="deliveryCharge">₹0</span></div>
+                    <div class="total-price">कुल राशि: <span id="grandTotal">₹299</span></div>
+                </div>
+            </form>
+        </div>
 
-    <button class="primary full" onclick="saveSettings()">Settings Save करें</button>
-  </div>
+        <!-- Payment Instructions (Dynamic for Online Payment) -->
+        <div class="card" id="onlinePayCard">
+            <h2>💰 ONLINE PAYMENT निर्देश</h2>
+            <ol class="instructions">
+                <li>नीचे दिए गए UPI ID को कॉपी करें।</li>
+                <li>अपने पसंदीदा Payment App से भुगतान करें।</li>
+                <li>नीचे बटन पर क्लिक करके WhatsApp पर ऑर्डर भेजें।</li>
+            </ol>
 
-  <div class="panel">
-    <h3>➕ Product Add करें</h3>
+            <div class="upi-box">
+                <input id="upi1" class="upi-input" value="msccreate7@okhdfcbank" readonly>
+                <button type="button" class="copy-btn" onclick="copyUPI('upi1', this)">Copy</button>
+            </div>
 
-    <input id="pName" placeholder="Product Name">
-    <input id="pPrice" type="number" placeholder="Selling Price">
-    <input id="pOldPrice" type="number" placeholder="Old Price">
-    <input id="pImage" placeholder="Product Image URL">
-    <textarea id="pDescription" placeholder="Product Description"></textarea>
+            <div class="app-list">
+                <a href="#" id="phonepe">📱 PhonePe</a>
+                <a href="#" id="gpay">💸 Google Pay</a>
+                <a href="#" id="paytm">💰 Paytm</a>
+                <a href="#" id="amazonpay">🛒 Amazon Pay</a>
+            </div>
+            <div class="hint">👉 ऐप से भुगतान करने के बाद स्क्रीनशॉट ले लें।</div>
+        </div>
 
-    <button class="primary full" onclick="saveProduct()">Product Save करें</button>
-  </div>
+        <!-- Submit Button -->
+        <div class="card" style="text-align: center;">
+            <button type="button" class="btn-whatsapp" onclick="sendOrder()">📤 WhatsApp पर ऑर्डर भेजें</button>
+        </div>
 
-  <div class="panel">
-    <h3>📦 Manage Products</h3>
-    <div id="adminProducts"></div>
-  </div>
-</section>
+        <!-- Admin Control Section -->
+        <div style="text-align: center;">
+            <button class="admin-btn" onclick="toggleAdminPanel()">⚙️ Admin Settings</button>
+        </div>
 
-<!-- PRODUCT DETAILS -->
-<div class="modal" id="detailModal">
-  <div class="box">
-    <button class="close" onclick="closeModal('detailModal')">✖</button>
-    <img id="detailImage" style="width:100%;max-height:300px;object-fit:contain">
-    <h2 id="detailName"></h2>
-    <div class="price" id="detailPrice"></div>
-    <p id="detailDescription"></p>
-    <button class="green full" onclick="openOrder()">🛒 Order करें</button>
-  </div>
-</div>
+        <div class="admin-panel" id="adminPanel">
+            <h3 style="color: #d84315; margin-bottom: 10px;">🛠️ स्टोर सेटिंग्स एडमिन पैनल</h3>
+            <label>उत्पाद की कीमत (₹)</label>
+            <input type="number" id="adminBasePrice" value="299">
 
-<!-- COMPLETE ORDER FORM -->
-<div class="modal" id="orderModal">
-  <div class="box">
-    <button class="close" onclick="closeModal('orderModal')">✖</button>
+            <label>डिलीवरी दर (₹ per km)</label>
+            <input type="number" id="adminRateKm" value="3">
 
-    <h2>🛒 आपका Order</h2>
-    <div id="orderSummary" class="panel"></div>
+            <label>WhatsApp नंबर (देश के कोड के साथ)</label>
+            <input type="text" id="adminPhone" value="916267637741">
 
-    <label>👤 Customer Name</label>
-    <input id="customerName" placeholder="पूरा नाम">
+            <label>UPI ID</label>
+            <input type="text" id="adminUPI" value="msccreate7@okhdfcbank">
 
-    <label>📱 Mobile Number</label>
-    <input id="customerPhone" type="tel" maxlength="10" placeholder="10 digit mobile number">
+            <button type="button" class="copy-btn" style="background: #2e7d32; width: 100%; margin-top: 15px;" onclick="saveAdminSettings()">सेटिंग्स सेव करें</button>
+        </div>
 
-    <label>🔢 Quantity</label>
-    <input id="quantity" type="number" min="1" value="1" oninput="updateTotal()">
-
-    <label>💳 Payment Method</label>
-    <select id="paymentMethod" onchange="updateTotal()">
-      <option value="Cash on Delivery">Cash on Delivery</option>
-      <option value="Online Payment">Online Payment</option>
-    </select>
-
-    <!-- ONLINE PAYMENT -->
-    <div id="onlinePayBox">
-      <h3 style="color:#0b6c4a">💰 ONLINE PAYMENT</h3>
-
-      <p>नीचे दिए गए UPI ID से भुगतान करें।</p>
-
-      <h3>कुल राशि: ₹<span id="onlinePayAmount">0</span></h3>
-
-      <input id="upiId" value="msccreate7@okhdfcbank" readonly>
-
-      <button class="green full" onclick="copyUPI()">📋 UPI ID Copy करें</button>
-
-      <a class="pay phonepe" id="phonepePay" href="upi://pay?pa=msccreate7@okhdfcbank">
-        📱 PhonePe से भुगतान करें
-      </a>
-
-      <a class="pay gpay" id="gpayPay" href="upi://pay?pa=msccreate7@okhdfcbank">
-        💳 Google Pay से भुगतान करें
-      </a>
-
-      <a class="pay paytm" id="paytmPay" href="upi://pay?pa=msccreate7@okhdfcbank">
-        💰 Paytm से भुगतान करें
-      </a>
-
-      <a class="pay amazon" id="amazonPay" href="upi://pay?pa=msccreate7@okhdfcbank">
-        🛒 Amazon Pay / UPI
-      </a>
-
-      <p class="note">
-        Payment App में भुगतान पूरा करें। भुगतान की पुष्टि अपने बैंक या UPI ऐप में जाँचें।
-      </p>
     </div>
 
-    <label>📍 Delivery Address</label>
-    <textarea id="address" placeholder="पूरा पता लिखें"></textarea>
-
-    <button class="dark full" onclick="getLocation()">📍 Current Location लें</button>
-    <div class="status" id="locationStatus">
-      Location अभी नहीं मिली है।
-    </div>
-
-    <button class="green full" onclick="sendOrder()">📲 WhatsApp पर Order भेजें</button>
-  </div>
-</div>
-
-<footer>© <span id="footerName">My Store</span></footer>
-
-<script>
-/* ================= SETTINGS ================= */
-
-const DEFAULT_WHATSAPP = "916267637741";
-const UPI_ID = "msccreate7@okhdfcbank";
-
-/* Gadadih, Patan के लिए सेट की गई base coordinates */
-const BASE_LAT = 21.031290;
-const BASE_LNG = 81.424480;
-
-/* प्रति किलोमीटर डिलीवरी चार्ज */
-const RATE_PER_KM = 5;
-
-/* ================= DATA ================= */
-
-const defaultProducts = [
-  {
-    id:1,
-    name:"Moringa Powder",
-    price:299,
-    oldPrice:499,
-    image:"https://images.unsplash.com/photo-1615485500704-8e990f9900f7?auto=format&fit=crop&w=800&q=80",
-    description:"Product की जानकारी और उपयोग के निर्देश पैकेज पर देखें।"
-  },
-  {
-    id:2,
-    name:"Herbal Product",
-    price:399,
-    oldPrice:599,
-    image:"https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80",
-    description:"Premium product."
-  }
-];
-
-let products = JSON.parse(localStorage.getItem("products") || "null") || defaultProducts;
-
-let settings = JSON.parse(localStorage.getItem("settings") || "null") || {
-  name:"My Store",
-  heading:"Welcome to My Store",
-  description:"Best products at great prices",
-  whatsapp:DEFAULT_WHATSAPP
-};
-
-let selectedProduct = null;
-let currentLocation = "";
-let distance = 0;
-let deliveryCharge = 0;
-
-/* ================= INITIALIZE ================= */
-
-function init(){
-  document.getElementById("storeLogo").textContent = settings.name;
-  document.getElementById("heroTitle").textContent = settings.heading;
-  document.getElementById("heroText").textContent = settings.description;
-  document.getElementById("footerName").textContent = settings.name;
-
-  document.getElementById("storeName").value = settings.name;
-  document.getElementById("heading").value = settings.heading;
-  document.getElementById("description").value = settings.description;
-  document.getElementById("waNumber").value = settings.whatsapp;
-
-  renderProducts();
-  renderAdminProducts();
-}
-
-/* ================= PRODUCTS ================= */
-
-function renderProducts(){
-  const query = document.getElementById("search").value.toLowerCase();
-
-  const list = products.filter(p =>
-    p.name.toLowerCase().includes(query)
-  );
-
-  const area = document.getElementById("products");
-
-  if(!list.length){
-    area.innerHTML = "<p>कोई Product नहीं मिला।</p>";
-    return;
-  }
-
-  area.innerHTML = list.map(p => `
-    <div class="card">
-      <img src="${escapeHTML(p.image)}"
-           onerror="this.src='https://placehold.co/400x400?text=Product'">
-
-      <div class="cardBody">
-        <h3>${escapeHTML(p.name)}</h3>
-
-        <div class="price">₹${p.price}</div>
-
-        ${p.oldPrice ? `<del>₹${p.oldPrice}</del>` : ""}
-
-        <button class="primary full" onclick="showProduct(${p.id})">
-          Product देखें
-        </button>
-      </div>
-    </div>
-  `).join("");
-}
-
-function showProduct(id){
-  selectedProduct = products.find(p => p.id === id);
-
-  if(!selectedProduct) return;
-
-  document.getElementById("detailImage").src = selectedProduct.image;
-  document.getElementById("detailName").textContent = selectedProduct.name;
-  document.getElementById("detailPrice").textContent = "₹" + selectedProduct.price;
-  document.getElementById("detailDescription").textContent = selectedProduct.description || "";
-
-  document.getElementById("detailModal").style.display = "flex";
-}
-
-/* ================= ORDER ================= */
-
-function openOrder(){
-  closeModal("detailModal");
-
-  currentLocation = "";
-  distance = 0;
-  deliveryCharge = 0;
-
-  document.getElementById("customerName").value = "";
-  document.getElementById("customerPhone").value = "";
-  document.getElementById("quantity").value = 1;
-  document.getElementById("address").value = "";
-
-  document.getElementById("locationStatus").textContent =
-    "Delivery charge calculate करने के लिए Current Location लें।";
-
-  document.getElementById("orderModal").style.display = "flex";
-
-  updateTotal();
-}
-
-function updateTotal(){
-  if(!selectedProduct) return;
-
-  const quantity = Math.max(
-    1,
-    Number(document.getElementById("quantity").value) || 1
-  );
-
-  const productTotal = selectedProduct.price * quantity;
-  const total = productTotal + deliveryCharge;
-
-  document.getElementById("orderSummary").innerHTML = `
-    <b>${escapeHTML(selectedProduct.name)}</b><br>
-    Product Price: ₹${selectedProduct.price}<br>
-    Quantity: ${quantity}<br>
-    Distance: ${distance ? distance.toFixed(1)+" km" : "अभी calculate नहीं हुई"}<br>
-    Delivery Charge: ₹${deliveryCharge} (₹${RATE_PER_KM}/km)<br>
-    <hr>
-    <b>Grand Total: ₹${total}</b>
-  `;
-
-  const online = document.getElementById("paymentMethod").value === "Online Payment";
-
-  document.getElementById("onlinePayBox").style.display =
-    online ? "block" : "none";
-
-  document.getElementById("onlinePayAmount").textContent = total;
-
-  const params =
-    "pa=" + encodeURIComponent(UPI_ID) +
-    "&pn=" + encodeURIComponent(settings.name) +
-    "&am=" + encodeURIComponent(total) +
-    "&cu=INR" +
-    "&tn=" + encodeURIComponent(selectedProduct.name);
-
-  const upiURL = "upi://pay?" + params;
-
-  document.getElementById("phonepePay").href = upiURL;
-  document.getElementById("gpayPay").href = upiURL;
-  document.getElementById("paytmPay").href = upiURL;
-  document.getElementById("amazonPay").href = upiURL;
-}
-
-/* ================= COPY UPI ================= */
-
-async function copyUPI(){
-  const field = document.getElementById("upiId");
-
-  try{
-    await navigator.clipboard.writeText(UPI_ID);
-    alert("UPI ID Copy हो गई!");
-  }catch(error){
-    field.select();
-    field.setSelectionRange(0, 99999);
-
-    const copied = document.execCommand("copy");
-
-    alert(copied ? "UPI ID Copy हो गई!" : "UPI ID को manually copy करें।");
-  }
-}
-
-/* ================= LOCATION ================= */
-
-function distanceKm(lat1, lon1, lat2, lon2){
-  const R = 6371;
-  const rad = Math.PI / 180;
-
-  const dLat = (lat2-lat1) * rad;
-  const dLon = (lon2-lon1) * rad;
-
-  const a =
-    Math.sin(dLat/2) ** 2 +
-    Math.cos(lat1*rad) *
-    Math.cos(lat2*rad) *
-    Math.sin(dLon/2) ** 2;
-
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
-
-function getLocation(){
-  const status = document.getElementById("locationStatus");
-
-  if(!navigator.geolocation){
-    status.textContent = "इस Browser में Location सुविधा उपलब्ध नहीं है।";
-    return;
-  }
-
-  if(location.protocol !== "https:" &&
-     location.hostname !== "localhost" &&
-     location.hostname !== "127.0.0.1"){
-    status.textContent =
-      "Location के लिए वेबसाइट HTTPS पर खोलें, जैसे GitHub Pages।";
-    return;
-  }
-
-  status.textContent = "Current Location प्राप्त हो रही है...";
-
-  navigator.geolocation.getCurrentPosition(
-    position => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-
-      currentLocation =
-        "https://www.google.com/maps?q=" + lat + "," + lng;
-
-      distance = distanceKm(BASE_LAT, BASE_LNG, lat, lng);
-
-      deliveryCharge = Math.ceil(distance) * RATE_PER_KM;
-
-      status.innerHTML =
-        "✅ Location मिल गई। दूरी: " + distance.toFixed(1) +
-        " km<br>Delivery Charge: ₹" + deliveryCharge;
-
-      updateTotal();
-    },
-
-    error => {
-      status.textContent =
-        "Location नहीं मिली। GPS ON करें और Browser में Location Permission Allow करें।";
-    },
-
-    {
-      enableHighAccuracy:true,
-      timeout:20000,
-      maximumAge:0
-    }
-  );
-}
-
-/* ================= SEND WHATSAPP ORDER ================= */
-
-function sendOrder(){
-  if(!selectedProduct) return;
-
-  const name = document.getElementById("customerName").value.trim();
-  const phone = document.getElementById("customerPhone").value.trim();
-  const address = document.getElementById("address").value.trim();
-  const payment = document.getElementById("paymentMethod").value;
-
-  const quantity = Math.max(
-    1,
-    Number(document.getElementById("quantity").value) || 1
-  );
-
-  if(!name){
-    alert("Customer Name भरें।");
-    return;
-  }
-
-  if(!/^[0-9]{10}$/.test(phone)){
-    alert("सही 10 अंकों का Mobile Number डालें।");
-    return;
-  }
-
-  if(!address){
-    alert("Delivery Address भरें।");
-    return;
-  }
-
-  if(!currentLocation){
-    alert("पहले Current Location लें ताकि Delivery Charge calculate हो सके।");
-    return;
-  }
-
-  const productTotal = selectedProduct.price * quantity;
-  const total = productTotal + deliveryCharge;
-
-  const orderId = "ORD-" + Date.now().toString().slice(-8);
-
-  const message = `
-🛍️ NEW ORDER
-
-Order ID: ${orderId}
-
-Product: ${selectedProduct.name}
-Price: ₹${selectedProduct.price}
-Quantity: ${quantity}
-Product Total: ₹${productTotal}
-
-Delivery Base: Gadadih, Patan
-Distance: ${distance.toFixed(1)} km
-Rate: ₹${RATE_PER_KM}/km
-Delivery Charge: ₹${deliveryCharge}
-
-Grand Total: ₹${total}
-
-Payment Method: ${payment}
-${payment === "Online Payment" ? "UPI ID: " + UPI_ID + "\nPayment Amount: ₹" + total + "\nPayment status: Customer confirmation required" : "Payment: Cash on Delivery"}
-
-Customer Name: ${name}
-Mobile: ${phone}
-Address: ${address}
-
-Customer Location:
-${currentLocation}
-
-Store: ${settings.name}
-  `.trim();
-
-  const whatsappURL =
-    "https://wa.me/" +
-    settings.whatsapp.replace(/\D/g,"") +
-    "?text=" +
-    encodeURIComponent(message);
-
-  window.open(whatsappURL, "_blank");
-}
-
-/* ================= ADMIN PANEL ================= */
-
-function adminLogin(){
-  const password = prompt("Admin Password डालें:");
-
-  if(password === "admin123"){
-    document.getElementById("customerPage").style.display = "none";
-    document.getElementById("header").style.display = "none";
-    document.getElementById("adminPage").style.display = "block";
-    renderAdminProducts();
-  }else if(password !== null){
-    alert("गलत Password!");
-  }
-}
-
-function showCustomer(){
-  document.getElementById("adminPage").style.display = "none";
-  document.getElementById("customerPage").style.display = "block";
-  document.getElementById("header").style.display = "block";
-}
-
-function logout(){
-  showCustomer();
-}
-
-function saveSettings(){
-  settings.name = document.getElementById("storeName").value.trim() || "My Store";
-  settings.heading = document.getElementById("heading").value.trim() || "Welcome to My Store";
-  settings.description = document.getElementById("description").value.trim() || "Best products at great prices";
-  settings.whatsapp = document.getElementById("waNumber").value.trim() || DEFAULT_WHATSAPP;
-
-  localStorage.setItem("settings", JSON.stringify(settings));
-
-  init();
-
-  alert("Settings Save हो गईं!");
-}
-
-function saveProduct(){
-  const name = document.getElementById("pName").value.trim();
-  const price = Number(document.getElementById("pPrice").value);
-  const oldPrice = Number(document.getElementById("pOldPrice").value) || 0;
-  const image = document.getElementById("pImage").value.trim();
-  const description = document.getElementById("pDescription").value.trim();
-
-  if(!name || price <= 0 || !image){
-    alert("Product Name, सही Price और Image URL भरें।");
-    return;
-  }
-
-  products.push({
-    id:Date.now(),
-    name,
-    price,
-    oldPrice,
-    image,
-    description
-  });
-
-  localStorage.setItem("products", JSON.stringify(products));
-
-  document.getElementById("pName").value = "";
-  document.getElementById("pPrice").value = "";
-  document.getElementById("pOldPrice").value = "";
-  document.getElementById("pImage").value = "";
-  document.getElementById("pDescription").value = "";
-
-  renderProducts();
-  renderAdminProducts();
-
-  alert("Product Add हो गया!");
-}
-
-function renderAdminProducts(){
-  const area = document.getElementById("adminProducts");
-
-  area.innerHTML = products.map(p => `
-    <div class="panel">
-      <b>${escapeHTML(p.name)}</b> — ₹${p.price}
-      <button onclick="deleteProduct(${p.id})">🗑️ Delete</button>
-    </div>
-  `).join("");
-}
-
-function deleteProduct(id){
-  if(!confirm("क्या यह Product Delete करना है?")) return;
-
-  products = products.filter(p => p.id !== id);
-
-  localStorage.setItem("products", JSON.stringify(products));
-
-  renderProducts();
-  renderAdminProducts();
-}
-
-function closeModal(id){
-  document.getElementById(id).style.display = "none";
-}
-
-function escapeHTML(value){
-  return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
-
-init();
-</script>
-
+    <script>
+        // Store Configuration Variables (Editable via Admin Panel)
+        let BASE_PRICE = 299;
+        let RATE_PER_KM = 3;
+        let WHATSAPP_NUMBER = "916267637741";
+        let UPI_ID = "msccreate7@okhdfcbank";
+
+        // Fixed Store Location: Gadadih, Patan
+        const GADADIH_LAT = 21.0347;
+        const GADADIH_LNG = 81.5367;
+
+        // Calculate Distance using Haversine Formula
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth radius in KM
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        // Live Location Fetching
+        function getLiveLocation() {
+            const status = document.getElementById('locStatus');
+            status.innerText = "⏳ लोकेशन ली जा रही है...";
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const userLat = position.coords.latitude;
+                        const userLng = position.coords.longitude;
+                        const distance = calculateDistance(GADADIH_LAT, GADADIH_LNG, userLat, userLng);
+                        const roundedDist = Math.ceil(distance); // Round up to nearest KM
+
+                        document.getElementById('distance').value = roundedDist;
+                        status.innerText = `✅ गाडाडीह (पाटन) से अनुमानित दूरी: ${roundedDist} KM`;
+                        calculateTotal();
+                    },
+                    (error) => {
+                        status.innerText = "❌ लोकेशन प्राप्त करने में विफल। कृपया मैन्युअल दूरी भरें।";
+                    }
+                );
+            } else {
+                status.innerText = "❌ आपका ब्राउज़र GPS सपोर्ट नहीं करता।";
+            }
+        }
+
+        // Price Calculation
+        function calculateTotal() {
+            const distInput = document.getElementById('distance').value;
+            const km = parseFloat(distInput) || 0;
+            const delivery = km * RATE_PER_KM;
+            const total = BASE_PRICE + delivery;
+
+            document.getElementById('deliveryCharge').innerText = "₹" + delivery;
+            document.getElementById('grandTotal').innerText = "₹" + total;
+        }
+
+        // Toggle Payment Card
+        function togglePaymentUI() {
+            const method = document.getElementById('paymentMethod').value;
+            const onlineCard = document.getElementById('onlinePayCard');
+            onlineCard.style.display = (method === "Cash on Delivery") ? "none" : "block";
+        }
+
+        // Open Payment Apps directly
+        function openApp(pkg) {
+            window.location = `intent://#Intent;package=${pkg};end`;
+        }
+
+        document.getElementById('phonepe').onclick = (e) => { e.preventDefault(); openApp('com.phonepe.app'); };
+        document.getElementById('gpay').onclick = (e) => { e.preventDefault(); openApp('com.google.android.apps.nbu.paisa.user'); };
+        document.getElementById('paytm').onclick = (e) => { e.preventDefault(); openApp('net.one97.paytm'); };
+        document.getElementById('amazonpay').onclick = (e) => { e.preventDefault(); openApp('in.amazon.mShop.android.shopping'); };
+
+        // Copy UPI function
+        async function copyUPI(id, btn) {
+            try {
+                const upiText = document.getElementById(id).value;
+                await navigator.clipboard.writeText(upiText);
+                btn.textContent = "Copied!";
+                setTimeout(() => btn.textContent = "Copy", 1500);
+            } catch (err) {
+                alert("UPI ID: " + UPI_ID);
+            }
+        }
+
+        // Submit Order to WhatsApp
+        function sendOrder() {
+            const name = document.getElementById('custName').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
+            const distance = document.getElementById('distance').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            if (!name || !phone || !address || !distance) {
+                alert("❌ कृपया सभी आवश्यक जानकारी (नाम, फ़ोन, पता और दूरी) भरें।");
+                return;
+            }
+
+            const km = parseFloat(distance) || 0;
+            const deliveryCharge = km * RATE_PER_KM;
+            const totalAmount = BASE_PRICE + deliveryCharge;
+
+            const message = `*📦 नया मोरिंगा पाउडर ऑर्डर!*%0A%0A` +
+                `👤 *नाम:* ${name}%0A` +
+                `📱 *मोबाइल:* ${phone}%0A` +
+                `📍 *डिलीवरी पता:* ${address}%0A` +
+                `🛣️ *गाडाडीह (पाटन) से दूरी:* ${km} km%0A%0A` +
+                `💵 *उत्पाद मूल्य:* ₹${BASE_PRICE}%0A` +
+                `🚚 *डिलीवरी शुल्क (₹${RATE_PER_KM}/km):* ₹${deliveryCharge}%0A` +
+                `💰 *कुल देय राशि:* ₹${totalAmount}%0A` +
+                `💳 *भुगतान का प्रकार:* ${paymentMethod}`;
+
+            const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+            window.open(whatsappURL, '_blank');
+        }
+
+        // Admin Panel Controls
+        function toggleAdminPanel() {
+            const pin = prompt("एडमिन पिन दर्ज करें (Default: 1234):");
+            if (pin === "1234") {
+                const panel = document.getElementById('adminPanel');
+                panel.style.display = panel.style.display === "block" ? "none" : "block";
+            } else if (pin !== null) {
+                alert("❌ गलत पिन!");
+            }
+        }
+
+        function saveAdminSettings() {
+            BASE_PRICE = parseFloat(document.getElementById('adminBasePrice').value) || BASE_PRICE;
+            RATE_PER_KM = parseFloat(document.getElementById('adminRateKm').value) || RATE_PER_KM;
+            WHATSAPP_NUMBER = document.getElementById('adminPhone').value.trim() || WHATSAPP_NUMBER;
+            UPI_ID = document.getElementById('adminUPI').value.trim() || UPI_ID;
+
+            document.getElementById('displayPrice').innerText = "₹" + BASE_PRICE;
+            document.getElementById('rateLabel').innerText = "₹" + RATE_PER_KM;
+            document.getElementById('upi1').value = UPI_ID;
+
+            calculateTotal();
+            alert("✅ सेटिंग्स सफलतापूर्वक अपडेट हो गईं!");
+            document.getElementById('adminPanel').style.display = "none";
+        }
+    </script>
 </body>
 </html>
