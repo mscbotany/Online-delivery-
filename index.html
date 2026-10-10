@@ -74,7 +74,7 @@
             margin-bottom: 10px;
         }
 
-        /* Description Accordion (Clickable Sections) */
+        /* Accordion (Clickable Sections) */
         .accordion-btn {
             background-color: #e8f5e9;
             color: #1b5e20;
@@ -298,7 +298,7 @@
 
     <div class="container">
 
-        <!-- Product Summary & Image -->
+        <!-- Product Details -->
         <div class="card">
             <img src="https://lh3.googleusercontent.com/d/1j-NSDvtOGRN-oub4OGHThPuTkylMU9R5=s1000" alt="HWMD Moringa Powder Poster" class="product-img" onerror="this.src='https://via.placeholder.com/600x1200?text=HWMD+Moringa+Powder'">
             <h2>🌿 मोरिंगा लीफ पाउडर</h2>
@@ -307,7 +307,7 @@
                 प्रकृति का सुपरफूड, सेहत का वरदान
             </p>
 
-            <!-- Clickable Product Description Sections (Accordions) -->
+            <!-- Clickable Accordions -->
             <button type="button" class="accordion-btn">📄 उत्पाद विवरण (Description) <span>▼</span></button>
             <div class="accordion-content">
                 <p>मोरिंगा लीफ पाउडर विटामिन, मिनरल्स, एंटीऑक्सीडेंट और अमीनो एसिड से भरपूर है, जो आपके संपूर्ण स्वास्थ्य और संपूर्ण जीवन को बेहतर बनाने में सहायक है।</p>
@@ -364,7 +364,7 @@
             </div>
         </div>
 
-        <!-- Order & Address Form -->
+        <!-- Order Form -->
         <div class="card">
             <h2>🛒 ऑर्डर डिटेल्स भरें</h2>
             <form id="orderForm">
@@ -377,9 +377,9 @@
                 <label>पूरा डिलीवरी पता *</label>
                 <textarea id="custAddress" placeholder="मकान नंबर, गली, गांव/शहर, पिनकोड" required></textarea>
 
-                <label>गाडाडीह (पाटन) से दूरी (km)</label>
+                <label>विक्रेता स्थान: गाडाडीह (पाटन) से दूरी (km)</label>
                 <button type="button" class="btn-location" onclick="getLiveLocation()">📍 Apna Live Location Lein (Auto Distance)</button>
-                <input type="number" id="distance" placeholder="दूरी स्वचालित रूप से आएगी या मैन्युअल भरें" min="0" required oninput="calculateTotal()">
+                <input type="number" id="distance" placeholder="GPS से ऑटो दूरी आएगी या मैन्युअल भरें" min="0" required oninput="calculateTotal()">
                 <small id="locStatus" style="color: #0288d1; font-size: 0.8rem;"></small>
 
                 <label>भुगतान का प्रकार (Payment Method) *</label>
@@ -395,7 +395,7 @@
             </form>
         </div>
 
-        <!-- Payment Instructions -->
+        <!-- Payment Section (Toggles On Demand) -->
         <div class="card" id="onlinePayCard">
             <h2>💰 ONLINE PAYMENT निर्देश</h2>
             <ol class="instructions">
@@ -418,12 +418,12 @@
             <div class="hint">👉 ऐप से भुगतान करने के बाद स्क्रीनशॉट ले लें।</div>
         </div>
 
-        <!-- Submit Button -->
+        <!-- Order Button -->
         <div class="card" style="text-align: center;">
             <button type="button" class="btn-whatsapp" onclick="sendOrder()">📤 WhatsApp पर ऑर्डर भेजें</button>
         </div>
 
-        <!-- Admin Control Section -->
+        <!-- Admin Panel -->
         <div style="text-align: center;">
             <button class="admin-btn" onclick="toggleAdminPanel()">⚙️ Admin Settings</button>
         </div>
@@ -453,10 +453,11 @@
         let WHATSAPP_NUMBER = "916267637741";
         let UPI_ID = "msccreate7@okhdfcbank";
 
+        // Permanent Seller Coordinates for Gadadih, Patan
         const GADADIH_LAT = 21.0347;
         const GADADIH_LNG = 81.5367;
 
-        // Accordion Toggle Script for Clickable Description
+        // Accordion functionality
         const accButtons = document.querySelectorAll(".accordion-btn");
         accButtons.forEach(btn => {
             btn.addEventListener("click", function() {
@@ -474,8 +475,9 @@
             });
         });
 
+        // Haversine formula to compute exact distance from Gadadih, Patan
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371;
+            const R = 6371; // Earth Radius in KM
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -485,28 +487,31 @@
             return R * c;
         }
 
+        // Live location capture
         function getLiveLocation() {
             const status = document.getElementById('locStatus');
-            status.innerText = "⏳ लोकेशन ली जा रही है...";
+            status.innerText = "⏳ आपकी लोकेशन ली जा रही है...";
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        const userLat = position.coords.latitude;
-                        const userLng = position.coords.longitude;
-                        const distance = calculateDistance(GADADIH_LAT, GADADIH_LNG, userLat, userLng);
-                        const roundedDist = Math.ceil(distance);
+                        const custLat = position.coords.latitude;
+                        const custLng = position.coords.longitude;
+                        
+                        // Distance from Gadadih, Patan to Customer GPS
+                        const dist = calculateDistance(GADADIH_LAT, GADADIH_LNG, custLat, custLng);
+                        const roundedKm = Math.ceil(dist);
 
-                        document.getElementById('distance').value = roundedDist;
-                        status.innerText = `✅ गाडाडीह (पाटन) से अनुमानित दूरी: ${roundedDist} KM`;
+                        document.getElementById('distance').value = roundedKm;
+                        status.innerText = `✅ गाडाडीह (पाटन) से ऑटोमैटिक दूरी: ${roundedKm} KM`;
                         calculateTotal();
                     },
                     (error) => {
-                        status.innerText = "❌ लोकेशन प्राप्त करने में विफल। कृपया मैन्युअल दूरी भरें।";
+                        status.innerText = "❌ लोकेशन की अनुमति नहीं मिली। कृपया मैन्युअल दूरी भरें।";
                     }
                 );
             } else {
-                status.innerText = "❌ आपका ब्राउज़र GPS सपोर्ट नहीं करता।";
+                status.innerText = "❌ आपका डिवाइस GPS सपोर्ट नहीं करता।";
             }
         }
 
