@@ -74,11 +74,53 @@
             margin-bottom: 10px;
         }
 
-        .price-tag span {
-            text-decoration: line-through;
-            color: #888;
-            font-size: 1rem;
-            margin-left: 8px;
+        /* Description Accordion (Clickable Sections) */
+        .accordion-btn {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+            cursor: pointer;
+            padding: 12px 15px;
+            width: 100%;
+            border: 1px solid #c8e6c9;
+            text-align: left;
+            outline: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 6px;
+            margin-top: 10px;
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-btn:hover, .accordion-btn.active {
+            background-color: #c8e6c9;
+        }
+
+        .accordion-content {
+            padding: 0 15px;
+            background-color: #fafafa;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-left: 3px solid #2e7d32;
+            margin-bottom: 5px;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .accordion-content p, .accordion-content ul {
+            padding: 10px 0;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        .accordion-content ul {
+            padding-left: 20px;
+        }
+
+        .accordion-content li {
+            margin-bottom: 6px;
         }
 
         label {
@@ -220,7 +262,6 @@
             background-color: #1ebd56;
         }
 
-        /* Admin Section Styling */
         .admin-btn {
             background: #555;
             color: white;
@@ -257,14 +298,70 @@
 
     <div class="container">
 
-        <!-- Product Summary with Image -->
+        <!-- Product Summary & Image -->
         <div class="card">
-            <img src="30235.png" alt="HWMD Moringa Powder Poster" class="product-img" onerror="this.src='https://drive.google.com/file/d/1j-NSDvtOGRN-oub4OGHThPuTkylMU9R5/view?usp=drivesdk'">
+            <img src="https://lh3.googleusercontent.com/d/1j-NSDvtOGRN-oub4OGHThPuTkylMU9R5=s1000" alt="HWMD Moringa Powder Poster" class="product-img" onerror="this.src='https://via.placeholder.com/600x1200?text=HWMD+Moringa+Powder'">
             <h2>🌿 मोरिंगा लीफ पाउडर</h2>
-            <div class="price-tag"><span id="displayPrice">₹299</span> <span>₹599</span></div>
-            <p style="font-size: 0.9rem; color: #555;">
-                प्रकृति का सुपरफूड - 25x आयरन, 17x कैल्शियम, 10x विटामिन A और 9x प्रोटीन से भरपूर।
+            <div class="price-tag"><span id="displayPrice">₹280</span></div>
+            <p style="font-size: 0.9rem; color: #1b5e20; font-weight: 600; margin-bottom: 10px;">
+                प्रकृति का सुपरफूड, सेहत का वरदान
             </p>
+
+            <!-- Clickable Product Description Sections (Accordions) -->
+            <button type="button" class="accordion-btn">📄 उत्पाद विवरण (Description) <span>▼</span></button>
+            <div class="accordion-content">
+                <p>मोरिंगा लीफ पाउडर विटामिन, मिनरल्स, एंटीऑक्सीडेंट और अमीनो एसिड से भरपूर है, जो आपके संपूर्ण स्वास्थ्य और संपूर्ण जीवन को बेहतर बनाने में सहायक है।</p>
+                <p><strong>रोज़ थोड़ा मोरिंगा, सेहत रहेगी हमेशा दुरुस्त।</strong><br><em>शुद्ध पोषण • बेहतर स्वास्थ्य • खुशहाल जीवन</em></p>
+            </div>
+
+            <button type="button" class="accordion-btn">🥗 पोषक तत्वों की तुलना (Nutritional Value) <span>▼</span></button>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>आयरन में पालक से 25 गुना ज्यादा:</strong> हीमोग्लोबिन बढ़ाने में मदद करता है और एनीमिया से लड़ने में सहायक।</li>
+                    <li><strong>प्रोटीन में दही से 9 गुना ज्यादा:</strong> मांसपेशियों की वृद्धि, टिश्यू रिपेयर और शरीर की संपूर्ण मरम्मत में मदद करता है।</li>
+                    <li><strong>विटामिन C में संतरे से 7 गुना ज्यादा:</strong> इम्युनिटी बढ़ाता है और संक्रमण से बचाव में मदद करता है।</li>
+                    <li><strong>कैल्शियम में दूध से 4 गुना ज्यादा:</strong> हड्डियों और दांतों को मजबूत बनाता है और हड्डियों की घनत्व बढ़ाने में सहायक।</li>
+                    <li><strong>पोटैशियम में केले से 15 गुना ज्यादा:</strong> ब्लड प्रेशर को नियंत्रित रखने और हृदय स्वास्थ्य के लिए सहायक।</li>
+                    <li><strong>विटामिन A में गाजर से 10 गुना ज्यादा:</strong> आंखों की रोशनी, त्वचा और इम्युनिटी बढ़ाने में मदद करता है।</li>
+                    <li><strong>विटामिन E में बादाम से 2 गुना ज्यादा:</strong> शक्तिशाली एंटीऑक्सीडेंट जो त्वचा को जवां रखता है और कोशिकाओं की सुरक्षा करता है।</li>
+                    <li><strong>ओमेगा 3, 6, 9 और अमीनो एसिड से भरपूर:</strong> ब्रेन फंक्शन, हार्मोन बैलेंस और शरीर के समग्र विकास में सहायक।</li>
+                </ul>
+            </div>
+
+            <button type="button" class="accordion-btn">💡 मोरिंगा लीफ पाउडर के प्रमुख लाभ <span>▼</span></button>
+            <div class="accordion-content">
+                <ul>
+                    <li>इम्युनिटी बढ़ाए</li>
+                    <li>ऊर्जा बढ़ाए</li>
+                    <li>शरीर को डिटॉक्स करे</li>
+                    <li>पाचन तंत्र सुधारे</li>
+                    <li>त्वचा और बालों के लिए फायदेमंद</li>
+                    <li>हृदय स्वास्थ्य में सहायक</li>
+                    <li>वजन नियंत्रण में मदद करे</li>
+                    <li>हड्डियों को मजबूत बनाए</li>
+                </ul>
+            </div>
+
+            <button type="button" class="accordion-btn">⭐ क्यों चुनें HWMD मोरिंगा? <span>▼</span></button>
+            <div class="accordion-content">
+                <ul>
+                    <li>100% शुद्ध और प्राकृतिक</li>
+                    <li>बिना मिलावट</li>
+                    <li>उच्च पोषक तत्वों से भरपूर</li>
+                    <li>प्रतिदिन के उपयोग के लिए सुरक्षित</li>
+                    <li>आपके स्वास्थ्य का सच्चा साथी</li>
+                </ul>
+            </div>
+
+            <button type="button" class="accordion-btn">🥄 कैसे करें उपयोग (1 चम्मच / 3-5 ग्राम)? <span>▼</span></button>
+            <div class="accordion-content">
+                <ul>
+                    <li>गुनगुने पानी के साथ मिलाकर</li>
+                    <li>जूस या स्मूदी में मिलाकर</li>
+                    <li>सलाद या सूप में मिलाकर</li>
+                    <li>दही के साथ मिलाकर</li>
+                </ul>
+            </div>
         </div>
 
         <!-- Order & Address Form -->
@@ -293,12 +390,12 @@
 
                 <div class="delivery-box">
                     <div class="delivery-info">🚚 डिलीवरी चार्ज (<span id="rateLabel">₹3</span>/km): <span id="deliveryCharge">₹0</span></div>
-                    <div class="total-price">कुल राशि: <span id="grandTotal">₹299</span></div>
+                    <div class="total-price">कुल राशि: <span id="grandTotal">₹280</span></div>
                 </div>
             </form>
         </div>
 
-        <!-- Payment Instructions (Dynamic for Online Payment) -->
+        <!-- Payment Instructions -->
         <div class="card" id="onlinePayCard">
             <h2>💰 ONLINE PAYMENT निर्देश</h2>
             <ol class="instructions">
@@ -334,7 +431,7 @@
         <div class="admin-panel" id="adminPanel">
             <h3 style="color: #d84315; margin-bottom: 10px;">🛠️ स्टोर सेटिंग्स एडमिन पैनल</h3>
             <label>उत्पाद की कीमत (₹)</label>
-            <input type="number" id="adminBasePrice" value="299">
+            <input type="number" id="adminBasePrice" value="280">
 
             <label>डिलीवरी दर (₹ per km)</label>
             <input type="number" id="adminRateKm" value="3">
@@ -351,19 +448,34 @@
     </div>
 
     <script>
-        // Store Configuration Variables (Editable via Admin Panel)
-        let BASE_PRICE = 299;
+        let BASE_PRICE = 280;
         let RATE_PER_KM = 3;
         let WHATSAPP_NUMBER = "916267637741";
         let UPI_ID = "msccreate7@okhdfcbank";
 
-        // Fixed Store Location: Gadadih, Patan
         const GADADIH_LAT = 21.0347;
         const GADADIH_LNG = 81.5367;
 
-        // Calculate Distance using Haversine Formula
+        // Accordion Toggle Script for Clickable Description
+        const accButtons = document.querySelectorAll(".accordion-btn");
+        accButtons.forEach(btn => {
+            btn.addEventListener("click", function() {
+                this.classList.toggle("active");
+                const content = this.nextElementSibling;
+                const arrow = this.querySelector("span");
+
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    arrow.innerText = "▼";
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    arrow.innerText = "▲";
+                }
+            });
+        });
+
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Earth radius in KM
+            const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -373,7 +485,6 @@
             return R * c;
         }
 
-        // Live Location Fetching
         function getLiveLocation() {
             const status = document.getElementById('locStatus');
             status.innerText = "⏳ लोकेशन ली जा रही है...";
@@ -384,7 +495,7 @@
                         const userLat = position.coords.latitude;
                         const userLng = position.coords.longitude;
                         const distance = calculateDistance(GADADIH_LAT, GADADIH_LNG, userLat, userLng);
-                        const roundedDist = Math.ceil(distance); // Round up to nearest KM
+                        const roundedDist = Math.ceil(distance);
 
                         document.getElementById('distance').value = roundedDist;
                         status.innerText = `✅ गाडाडीह (पाटन) से अनुमानित दूरी: ${roundedDist} KM`;
@@ -399,7 +510,6 @@
             }
         }
 
-        // Price Calculation
         function calculateTotal() {
             const distInput = document.getElementById('distance').value;
             const km = parseFloat(distInput) || 0;
@@ -410,14 +520,16 @@
             document.getElementById('grandTotal').innerText = "₹" + total;
         }
 
-        // Toggle Payment Card
         function togglePaymentUI() {
             const method = document.getElementById('paymentMethod').value;
             const onlineCard = document.getElementById('onlinePayCard');
-            onlineCard.style.display = (method === "Cash on Delivery") ? "none" : "block";
+            if (method === "Cash on Delivery") {
+                onlineCard.style.display = "none";
+            } else {
+                onlineCard.style.display = "block";
+            }
         }
 
-        // Open Payment Apps directly
         function openApp(pkg) {
             window.location = `intent://#Intent;package=${pkg};end`;
         }
@@ -427,7 +539,6 @@
         document.getElementById('paytm').onclick = (e) => { e.preventDefault(); openApp('net.one97.paytm'); };
         document.getElementById('amazonpay').onclick = (e) => { e.preventDefault(); openApp('in.amazon.mShop.android.shopping'); };
 
-        // Copy UPI function
         async function copyUPI(id, btn) {
             try {
                 const upiText = document.getElementById(id).value;
@@ -439,7 +550,6 @@
             }
         }
 
-        // Submit Order to WhatsApp
         function sendOrder() {
             const name = document.getElementById('custName').value.trim();
             const phone = document.getElementById('custPhone').value.trim();
@@ -470,7 +580,6 @@
             window.open(whatsappURL, '_blank');
         }
 
-        // Admin Panel Controls
         function toggleAdminPanel() {
             const pin = prompt("एडमिन पिन दर्ज करें (Default: 1234):");
             if (pin === "1234") {
