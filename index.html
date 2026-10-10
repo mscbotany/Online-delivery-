@@ -74,7 +74,6 @@
             margin-bottom: 15px;
         }
 
-        /* Main Single Click Order Trigger Button */
         .btn-main-order {
             width: 100%;
             background-color: #ff9800;
@@ -95,7 +94,6 @@
             background-color: #f57c00;
         }
 
-        /* Hidden Form Container */
         #orderSectionContainer {
             display: none;
             margin-bottom: 20px;
@@ -121,26 +119,6 @@
         textarea {
             resize: vertical;
             height: 70px;
-        }
-
-        .btn-location {
-            background: #0288d1;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: 600;
-            width: 100%;
-            cursor: pointer;
-            margin-top: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-location:hover {
-            background: #0277bd;
         }
 
         .delivery-box {
@@ -240,7 +218,6 @@
             background-color: #1ebd56;
         }
 
-        /* Accordion (Clickable Sections) */
         .accordion-btn {
             background-color: #e8f5e9;
             color: #1b5e20;
@@ -325,7 +302,7 @@
 
     <div class="container">
 
-        <!-- Product Image & Price Card -->
+        <!-- Product Summary -->
         <div class="card">
             <img src="https://lh3.googleusercontent.com/d/1j-NSDvtOGRN-oub4OGHThPuTkylMU9R5=s1000" alt="HWMD Moringa Powder Poster" class="product-img" onerror="this.src='https://via.placeholder.com/600x1200?text=HWMD+Moringa+Powder'">
             <h2>🌿 मोरिंगा लीफ पाउडर</h2>
@@ -334,11 +311,10 @@
                 प्रकृति का सुपरफूड, सेहत का वरदान
             </p>
 
-            <!-- Single Click Order Trigger Button -->
             <button type="button" class="btn-main-order" onclick="toggleOrderForm()">🛒 अभी ऑर्डर करें (Form खोलें)</button>
         </div>
 
-        <!-- Order Form Section (Hidden until clicked) -->
+        <!-- Order Form Section -->
         <div id="orderSectionContainer">
             <div class="card">
                 <h2>🛒 ऑर्डर डिटेल्स भरें</h2>
@@ -349,13 +325,26 @@
                     <label>मोबाइल नंबर *</label>
                     <input type="tel" id="custPhone" placeholder="10-अंकीय फ़ोन नंबर" required pattern="[0-9]{10}">
 
+                    <label>अपना गांव/क्षेत्र चुनें (पाटन से ऑटो दूरी) *</label>
+                    <select id="villageSelect" onchange="onVillageChange()" required>
+                        <option value="">-- चुनें --</option>
+                        <option value="0">पाटन प्रॉपर (Patan Local - 0 KM)</option>
+                        <option value="6">गाडाडीह (Gadadih - 6 KM)</option>
+                        <option value="8">आमालोरी (Amalori - 8 KM)</option>
+                        <option value="10">सोनपुर (Sonpur - 10 KM)</option>
+                        <option value="12">जामगाँव (Jamgaon - 12 KM)</option>
+                        <option value="15">सेलूद (Selud - 15 KM)</option>
+                        <option value="18">उताई (Utai - 18 KM)</option>
+                        <option value="30">दुर्ग शहर (Durg City - 30 KM)</option>
+                        <option value="35">भिलाई (Bhilai - 35 KM)</option>
+                        <option value="custom">अन्य गांव (Manual Distance Enter Karein)</option>
+                    </select>
+
+                    <label>पाटन से दूरी (KM)</label>
+                    <input type="number" id="distance" placeholder="दूरी ऑटो आ जाएगी या खुद भरें" min="0" required oninput="calculateTotal()">
+
                     <label>पूरा डिलीवरी पता *</label>
                     <textarea id="custAddress" placeholder="मकान नंबर, गली, गांव/शहर, पिनकोड" required></textarea>
-
-                    <label>पाटन से दूरी (km)</label>
-                    <button type="button" class="btn-location" onclick="getLiveLocation()">📍 Apna Live Location Lein (Auto Distance)</button>
-                    <input type="number" id="distance" placeholder="GPS से ऑटो आएगी या मैन्युअल भरें" min="0" required oninput="calculateTotal()">
-                    <small id="locStatus" style="color: #0288d1; font-size: 0.8rem;"></small>
 
                     <label>भुगतान का प्रकार (Payment Method) *</label>
                     <select id="paymentMethod" onchange="togglePaymentUI()">
@@ -370,7 +359,7 @@
                 </form>
             </div>
 
-            <!-- Payment Section -->
+            <!-- Payment Instructions -->
             <div class="card" id="onlinePayCard">
                 <h2>💰 ONLINE PAYMENT निर्देश</h2>
                 <ol class="instructions">
@@ -399,7 +388,7 @@
             </div>
         </div>
 
-        <!-- Product Description Sections (Accordions placed below order area) -->
+        <!-- Description Accordions -->
         <div class="card">
             <h2>📖 उत्पाद की पूरी जानकारी (Description)</h2>
 
@@ -459,7 +448,7 @@
             </div>
         </div>
 
-        <!-- Admin Control Section -->
+        <!-- Admin Control Panel -->
         <div style="text-align: center;">
             <button class="admin-btn" onclick="toggleAdminPanel()">⚙️ Admin Settings</button>
         </div>
@@ -489,11 +478,7 @@
         let WHATSAPP_NUMBER = "916267637741";
         let UPI_ID = "msccreate7@okhdfcbank";
 
-        // Permanent Seller Location set to Patan, Durg, Chhattisgarh
-        const PATAN_LAT = 21.1444;
-        const PATAN_LNG = 81.4283;
-
-        // Accordion functionality for description
+        // Accordion Setup
         const accButtons = document.querySelectorAll(".accordion-btn");
         accButtons.forEach(btn => {
             btn.addEventListener("click", function() {
@@ -511,7 +496,7 @@
             });
         });
 
-        // Toggle Order Form visibility on single click
+        // Toggle Form
         function toggleOrderForm() {
             const section = document.getElementById('orderSectionContainer');
             if (section.style.display === "block") {
@@ -522,43 +507,23 @@
             }
         }
 
-        function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c;
-        }
-
-        function getLiveLocation() {
-            const status = document.getElementById('locStatus');
-            status.innerText = "⏳ आपकी लोकेशन ली जा रही है...";
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const custLat = position.coords.latitude;
-                        const custLng = position.coords.longitude;
-                        
-                        const dist = calculateDistance(PATAN_LAT, PATAN_LNG, custLat, custLng);
-                        const roundedKm = Math.ceil(dist);
-
-                        document.getElementById('distance').value = roundedKm;
-                        status.innerText = `✅ पाटन से ऑटोमैटिक दूरी: ${roundedKm} KM`;
-                        calculateTotal();
-                    },
-                    (error) => {
-                        status.innerText = "❌ लोकेशन की अनुमति नहीं मिली। कृपया मैन्युअल दूरी भरें।";
-                    }
-                );
+        // Village Dropdown Handler
+        function onVillageChange() {
+            const val = document.getElementById('villageSelect').value;
+            const distInput = document.getElementById('distance');
+            
+            if (val === "custom") {
+                distInput.value = "";
+                distInput.focus();
+            } else if (val !== "") {
+                distInput.value = val;
             } else {
-                status.innerText = "❌ आपका डिवाइस GPS सपोर्ट नहीं करता।";
+                distInput.value = 0;
             }
+            calculateTotal();
         }
 
+        // Calculation
         function calculateTotal() {
             const distInput = document.getElementById('distance').value;
             const km = parseFloat(distInput) || 0;
@@ -606,8 +571,8 @@
             const distance = document.getElementById('distance').value;
             const paymentMethod = document.getElementById('paymentMethod').value;
 
-            if (!name || !phone || !address || !distance) {
-                alert("❌ कृपया सभी आवश्यक जानकारी (नाम, फ़ोन, पता और दूरी) भरें।");
+            if (!name || !phone || !address || distance === "") {
+                alert("❌ कृपया सभी आवश्यक जानकारी (नाम, फ़ोन, गांव/दूरी और पता) भरें।");
                 return;
             }
 
