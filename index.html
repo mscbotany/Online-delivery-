@@ -71,56 +71,34 @@
             font-size: 1.5rem;
             color: #2e7d32;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        /* Accordion (Clickable Sections) */
-        .accordion-btn {
-            background-color: #e8f5e9;
-            color: #1b5e20;
-            cursor: pointer;
-            padding: 12px 15px;
+        /* Main Single Click Order Trigger Button */
+        .btn-main-order {
             width: 100%;
-            border: 1px solid #c8e6c9;
-            text-align: left;
-            outline: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            border-radius: 6px;
-            margin-top: 10px;
-            transition: 0.3s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background-color: #ff9800;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+            margin-bottom: 15px;
+            transition: background 0.3s;
         }
 
-        .accordion-btn:hover, .accordion-btn.active {
-            background-color: #c8e6c9;
+        .btn-main-order:hover {
+            background-color: #f57c00;
         }
 
-        .accordion-content {
-            padding: 0 15px;
-            background-color: #fafafa;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            border-left: 3px solid #2e7d32;
-            margin-bottom: 5px;
-            border-radius: 0 0 6px 6px;
-        }
-
-        .accordion-content p, .accordion-content ul {
-            padding: 10px 0;
-            font-size: 0.9rem;
-            color: #444;
-        }
-
-        .accordion-content ul {
-            padding-left: 20px;
-        }
-
-        .accordion-content li {
-            margin-bottom: 6px;
+        /* Hidden Form Container */
+        #orderSectionContainer {
+            display: none;
+            margin-bottom: 20px;
         }
 
         label {
@@ -262,6 +240,55 @@
             background-color: #1ebd56;
         }
 
+        /* Accordion (Clickable Sections) */
+        .accordion-btn {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+            cursor: pointer;
+            padding: 12px 15px;
+            width: 100%;
+            border: 1px solid #c8e6c9;
+            text-align: left;
+            outline: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 6px;
+            margin-top: 10px;
+            transition: 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-btn:hover, .accordion-btn.active {
+            background-color: #c8e6c9;
+        }
+
+        .accordion-content {
+            padding: 0 15px;
+            background-color: #fafafa;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-left: 3px solid #2e7d32;
+            margin-bottom: 5px;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .accordion-content p, .accordion-content ul {
+            padding: 10px 0;
+            font-size: 0.9rem;
+            color: #444;
+        }
+
+        .accordion-content ul {
+            padding-left: 20px;
+        }
+
+        .accordion-content li {
+            margin-bottom: 6px;
+        }
+
         .admin-btn {
             background: #555;
             color: white;
@@ -298,17 +325,85 @@
 
     <div class="container">
 
-        <!-- Product Details -->
+        <!-- Product Image & Price Card -->
         <div class="card">
             <img src="https://lh3.googleusercontent.com/d/1j-NSDvtOGRN-oub4OGHThPuTkylMU9R5=s1000" alt="HWMD Moringa Powder Poster" class="product-img" onerror="this.src='https://via.placeholder.com/600x1200?text=HWMD+Moringa+Powder'">
             <h2>🌿 मोरिंगा लीफ पाउडर</h2>
             <div class="price-tag"><span id="displayPrice">₹280</span></div>
-            <p style="font-size: 0.9rem; color: #1b5e20; font-weight: 600; margin-bottom: 10px;">
+            <p style="font-size: 0.9rem; color: #1b5e20; font-weight: 600; margin-bottom: 15px;">
                 प्रकृति का सुपरफूड, सेहत का वरदान
             </p>
 
-            <!-- Clickable Accordions -->
-            <button type="button" class="accordion-btn">📄 उत्पाद विवरण (Description) <span>▼</span></button>
+            <!-- Single Click Order Trigger Button -->
+            <button type="button" class="btn-main-order" onclick="toggleOrderForm()">🛒 अभी ऑर्डर करें (Form खोलें)</button>
+        </div>
+
+        <!-- Order Form Section (Hidden until clicked) -->
+        <div id="orderSectionContainer">
+            <div class="card">
+                <h2>🛒 ऑर्डर डिटेल्स भरें</h2>
+                <form id="orderForm">
+                    <label>आपका नाम *</label>
+                    <input type="text" id="custName" placeholder="अपना नाम लिखें" required>
+
+                    <label>मोबाइल नंबर *</label>
+                    <input type="tel" id="custPhone" placeholder="10-अंकीय फ़ोन नंबर" required pattern="[0-9]{10}">
+
+                    <label>पूरा डिलीवरी पता *</label>
+                    <textarea id="custAddress" placeholder="मकान नंबर, गली, गांव/शहर, पिनकोड" required></textarea>
+
+                    <label>पाटन से दूरी (km)</label>
+                    <button type="button" class="btn-location" onclick="getLiveLocation()">📍 Apna Live Location Lein (Auto Distance)</button>
+                    <input type="number" id="distance" placeholder="GPS से ऑटो आएगी या मैन्युअल भरें" min="0" required oninput="calculateTotal()">
+                    <small id="locStatus" style="color: #0288d1; font-size: 0.8rem;"></small>
+
+                    <label>भुगतान का प्रकार (Payment Method) *</label>
+                    <select id="paymentMethod" onchange="togglePaymentUI()">
+                        <option value="Online Payment">Online Payment (UPI / PhonePe / GPay)</option>
+                        <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+                    </select>
+
+                    <div class="delivery-box">
+                        <div class="delivery-info">🚚 डिलीवरी चार्ज (<span id="rateLabel">₹3</span>/km): <span id="deliveryCharge">₹0</span></div>
+                        <div class="total-price">कुल राशि: <span id="grandTotal">₹280</span></div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="card" id="onlinePayCard">
+                <h2>💰 ONLINE PAYMENT निर्देश</h2>
+                <ol class="instructions">
+                    <li>नीचे दिए गए UPI ID को कॉपी करें।</li>
+                    <li>अपने पसंदीदा Payment App से भुगतान करें।</li>
+                    <li>नीचे बटन पर क्लिक करके WhatsApp पर ऑर्डर भेजें।</li>
+                </ol>
+
+                <div class="upi-box">
+                    <input id="upi1" class="upi-input" value="msccreate7@okhdfcbank" readonly>
+                    <button type="button" class="copy-btn" onclick="copyUPI('upi1', this)">Copy</button>
+                </div>
+
+                <div class="app-list">
+                    <a href="#" id="phonepe">📱 PhonePe</a>
+                    <a href="#" id="gpay">💸 Google Pay</a>
+                    <a href="#" id="paytm">💰 Paytm</a>
+                    <a href="#" id="amazonpay">🛒 Amazon Pay</a>
+                </div>
+                <div class="hint">👉 ऐप से भुगतान करने के बाद स्क्रीनशॉट ले लें।</div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="card" style="text-align: center;">
+                <button type="button" class="btn-whatsapp" onclick="sendOrder()">📤 WhatsApp पर ऑर्डर भेजें</button>
+            </div>
+        </div>
+
+        <!-- Product Description Sections (Accordions placed below order area) -->
+        <div class="card">
+            <h2>📖 उत्पाद की पूरी जानकारी (Description)</h2>
+
+            <button type="button" class="accordion-btn">📄 उत्पाद विवरण (Overview) <span>▼</span></button>
             <div class="accordion-content">
                 <p>मोरिंगा लीफ पाउडर विटामिन, मिनरल्स, एंटीऑक्सीडेंट और अमीनो एसिड से भरपूर है, जो आपके संपूर्ण स्वास्थ्य और संपूर्ण जीवन को बेहतर बनाने में सहायक है।</p>
                 <p><strong>रोज़ थोड़ा मोरिंगा, सेहत रहेगी हमेशा दुरुस्त।</strong><br><em>शुद्ध पोषण • बेहतर स्वास्थ्य • खुशहाल जीवन</em></p>
@@ -364,66 +459,7 @@
             </div>
         </div>
 
-        <!-- Order Form -->
-        <div class="card">
-            <h2>🛒 ऑर्डर डिटेल्स भरें</h2>
-            <form id="orderForm">
-                <label>आपका नाम *</label>
-                <input type="text" id="custName" placeholder="अपना नाम लिखें" required>
-
-                <label>मोबाइल नंबर *</label>
-                <input type="tel" id="custPhone" placeholder="10-अंकीय फ़ोन नंबर" required pattern="[0-9]{10}">
-
-                <label>पूरा डिलीवरी पता *</label>
-                <textarea id="custAddress" placeholder="मकान नंबर, गली, गांव/शहर, पिनकोड" required></textarea>
-
-                <label>विक्रेता स्थान: गाडाडीह (पाटन) से दूरी (km)</label>
-                <button type="button" class="btn-location" onclick="getLiveLocation()">📍 Apna Live Location Lein (Auto Distance)</button>
-                <input type="number" id="distance" placeholder="GPS से ऑटो दूरी आएगी या मैन्युअल भरें" min="0" required oninput="calculateTotal()">
-                <small id="locStatus" style="color: #0288d1; font-size: 0.8rem;"></small>
-
-                <label>भुगतान का प्रकार (Payment Method) *</label>
-                <select id="paymentMethod" onchange="togglePaymentUI()">
-                    <option value="Online Payment">Online Payment (UPI / PhonePe / GPay)</option>
-                    <option value="Cash on Delivery">Cash on Delivery (COD)</option>
-                </select>
-
-                <div class="delivery-box">
-                    <div class="delivery-info">🚚 डिलीवरी चार्ज (<span id="rateLabel">₹3</span>/km): <span id="deliveryCharge">₹0</span></div>
-                    <div class="total-price">कुल राशि: <span id="grandTotal">₹280</span></div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Payment Section (Toggles On Demand) -->
-        <div class="card" id="onlinePayCard">
-            <h2>💰 ONLINE PAYMENT निर्देश</h2>
-            <ol class="instructions">
-                <li>नीचे दिए गए UPI ID को कॉपी करें।</li>
-                <li>अपने पसंदीदा Payment App से भुगतान करें।</li>
-                <li>नीचे बटन पर क्लिक करके WhatsApp पर ऑर्डर भेजें।</li>
-            </ol>
-
-            <div class="upi-box">
-                <input id="upi1" class="upi-input" value="msccreate7@okhdfcbank" readonly>
-                <button type="button" class="copy-btn" onclick="copyUPI('upi1', this)">Copy</button>
-            </div>
-
-            <div class="app-list">
-                <a href="#" id="phonepe">📱 PhonePe</a>
-                <a href="#" id="gpay">💸 Google Pay</a>
-                <a href="#" id="paytm">💰 Paytm</a>
-                <a href="#" id="amazonpay">🛒 Amazon Pay</a>
-            </div>
-            <div class="hint">👉 ऐप से भुगतान करने के बाद स्क्रीनशॉट ले लें।</div>
-        </div>
-
-        <!-- Order Button -->
-        <div class="card" style="text-align: center;">
-            <button type="button" class="btn-whatsapp" onclick="sendOrder()">📤 WhatsApp पर ऑर्डर भेजें</button>
-        </div>
-
-        <!-- Admin Panel -->
+        <!-- Admin Control Section -->
         <div style="text-align: center;">
             <button class="admin-btn" onclick="toggleAdminPanel()">⚙️ Admin Settings</button>
         </div>
@@ -453,11 +489,11 @@
         let WHATSAPP_NUMBER = "916267637741";
         let UPI_ID = "msccreate7@okhdfcbank";
 
-        // Permanent Seller Coordinates for Gadadih, Patan
-        const GADADIH_LAT = 21.0347;
-        const GADADIH_LNG = 81.5367;
+        // Permanent Seller Location set to Patan, Durg, Chhattisgarh
+        const PATAN_LAT = 21.1444;
+        const PATAN_LNG = 81.4283;
 
-        // Accordion functionality
+        // Accordion functionality for description
         const accButtons = document.querySelectorAll(".accordion-btn");
         accButtons.forEach(btn => {
             btn.addEventListener("click", function() {
@@ -475,9 +511,19 @@
             });
         });
 
-        // Haversine formula to compute exact distance from Gadadih, Patan
+        // Toggle Order Form visibility on single click
+        function toggleOrderForm() {
+            const section = document.getElementById('orderSectionContainer');
+            if (section.style.display === "block") {
+                section.style.display = "none";
+            } else {
+                section.style.display = "block";
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Earth Radius in KM
+            const R = 6371;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -487,7 +533,6 @@
             return R * c;
         }
 
-        // Live location capture
         function getLiveLocation() {
             const status = document.getElementById('locStatus');
             status.innerText = "⏳ आपकी लोकेशन ली जा रही है...";
@@ -498,12 +543,11 @@
                         const custLat = position.coords.latitude;
                         const custLng = position.coords.longitude;
                         
-                        // Distance from Gadadih, Patan to Customer GPS
-                        const dist = calculateDistance(GADADIH_LAT, GADADIH_LNG, custLat, custLng);
+                        const dist = calculateDistance(PATAN_LAT, PATAN_LNG, custLat, custLng);
                         const roundedKm = Math.ceil(dist);
 
                         document.getElementById('distance').value = roundedKm;
-                        status.innerText = `✅ गाडाडीह (पाटन) से ऑटोमैटिक दूरी: ${roundedKm} KM`;
+                        status.innerText = `✅ पाटन से ऑटोमैटिक दूरी: ${roundedKm} KM`;
                         calculateTotal();
                     },
                     (error) => {
@@ -575,7 +619,7 @@
                 `👤 *नाम:* ${name}%0A` +
                 `📱 *मोबाइल:* ${phone}%0A` +
                 `📍 *डिलीवरी पता:* ${address}%0A` +
-                `🛣️ *गाडाडीह (पाटन) से दूरी:* ${km} km%0A%0A` +
+                `🛣️ *पाटन से दूरी:* ${km} km%0A%0A` +
                 `💵 *उत्पाद मूल्य:* ₹${BASE_PRICE}%0A` +
                 `🚚 *डिलीवरी शुल्क (₹${RATE_PER_KM}/km):* ₹${deliveryCharge}%0A` +
                 `💰 *कुल देय राशि:* ₹${totalAmount}%0A` +
