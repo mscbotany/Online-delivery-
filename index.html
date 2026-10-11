@@ -323,26 +323,36 @@
             font-size: 0.85rem;
         }
 
+        /* FIXED PAYMENT BUTTONS STYLES */
         .app-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 8px;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        .app-list a {
-            display: block;
-            color: #fff;
-            padding: 8px 0;
-            border-radius: 6px;
+        .btn-pay-app {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #ffffff !important;
+            padding: 10px 5px;
+            border-radius: 8px;
             font-weight: bold;
             text-decoration: none;
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        #phonepe { background: #5f259f; }
-        #gpay { background: #4285F4; }
+        .btn-phonepe {
+            background-color: #5f259f !important;
+        }
+
+        .btn-gpay {
+            background-color: #4285F4 !important;
+        }
 
         .btn-whatsapp {
             width: 100%;
@@ -354,7 +364,7 @@
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 12px;
+            margin-top: 15px;
             box-shadow: 0 3px 8px rgba(37, 211, 102, 0.3);
         }
 
@@ -668,7 +678,7 @@
 
                 <label>भुगतान का प्रकार *</label>
                 <select id="modalPaymentMethod" onchange="toggleModalPaymentUI()">
-                    <option value="Online Payment">Online Payment (Google Pay / PhonePe / UPI)</option>
+                    <option value="Online Payment">Online Payment (PhonePe / Google Pay / UPI)</option>
                     <option value="Cash on Delivery">Cash on Delivery (COD)</option>
                 </select>
 
@@ -678,14 +688,14 @@
                 </div>
 
                 <div id="modalOnlinePayBox" style="margin-top:10px;">
-                    <label style="font-size:0.8rem; color:#1b5e20;">💰 Google Pay / PhonePe UPI ID:</label>
+                    <label style="font-size:0.85rem; color:#1b5e20;">💰 Google Pay / PhonePe UPI ID:</label>
                     <div class="upi-box">
                         <input id="modalUpi" class="upi-input" value="" readonly>
                         <button type="button" class="copy-btn" onclick="copyUPI('modalUpi', this)">Copy</button>
                     </div>
                     <div class="app-list">
-                        <a href="#" id="modalPhonepe">📱 PhonePe से भुगतान करें</a>
-                        <a href="#" id="modalGpay">💸 Google Pay से भुगतान करें</a>
+                        <a href="#" id="modalPhonepe" class="btn-pay-app btn-phonepe">📱 PhonePe</a>
+                        <a href="#" id="modalGpay" class="btn-pay-app btn-gpay">💸 Google Pay</a>
                     </div>
                 </div>
 
