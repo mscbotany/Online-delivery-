@@ -346,13 +346,8 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .btn-phonepe {
-            background-color: #5f259f !important;
-        }
-
-        .btn-gpay {
-            background-color: #4285F4 !important;
-        }
+        .btn-phonepe { background-color: #5f259f !important; }
+        .btn-gpay { background-color: #4285F4 !important; }
 
         .btn-whatsapp {
             width: 100%;
@@ -436,20 +431,47 @@
         .timeline-step.completed::before { background: #2e7d32; }
         .timeline-step.cancelled::before { background: #d32f2f; content: '✕'; }
 
+        /* FIXED ADMIN TABLE LAYOUT & RESPONISVENESS */
         .order-table {
             width: 100%;
+            min-width: 480px;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
         }
 
         .order-table th, .order-table td {
             border: 1px solid #ddd;
-            padding: 6px;
+            padding: 6px 4px;
             text-align: left;
+            vertical-align: top;
         }
 
         .order-table th { background-color: #2e7d32; color: white; }
+
+        .status-select {
+            width: 100%;
+            padding: 4px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            border: 1px solid #aaa;
+            background: #fff;
+        }
+
+        .btn-view-track {
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 4px;
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
 
         .video-container {
             position: relative;
@@ -512,6 +534,7 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 4px;
+            width: 100%;
         }
     </style>
 </head>
@@ -536,7 +559,7 @@
             <button type="button" class="copy-btn" style="width:100%; margin-top:10px; background:#1b5e20;" onclick="searchCustomerOrder()">ऑर्डर खोजें</button>
         </div>
 
-        <!-- CUSTOMER ORDER TRACKING PAGE SECTION -->
+        <!-- CUSTOMER / ADMIN ORDER TRACKING PAGE SECTION -->
         <div class="card" id="trackingPageSection" style="display:none;">
             <h2>📦 ऑर्डर ट्रैकिंग स्थिति (Live Status)</h2>
             <div id="trackingDetails"></div>
@@ -553,10 +576,10 @@
                 <table class="order-table">
                     <thead>
                         <tr>
-                            <th>Order ID & Name</th>
-                            <th>Mobile</th>
-                            <th>Product & Total</th>
-                            <th>Status & Notify</th>
+                            <th style="width:25%;">Order ID</th>
+                            <th style="width:22%;">Mobile</th>
+                            <th style="width:25%;">Product</th>
+                            <th style="width:28%;">Status & Action</th>
                         </tr>
                     </thead>
                     <tbody id="adminOrdersTableBody"></tbody>
@@ -1196,22 +1219,31 @@
                 const trackingLink = window.location.origin + window.location.pathname + `?orderId=${o.id}`;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><b>${o.id}</b><br>${o.name}</td>
-                    <td><a href="tel:${o.phone}">${o.phone}</a></td>
-                    <td>${o.product || 'मोरिंगा'}<br><b>₹${o.total}</b> (${o.payment})</td>
+                    <td><b>${o.id}</b><br><small>${o.name}</small></td>
+                    <td><a href="tel:${o.phone}" style="font-weight:bold; color:#1b5e20; text-decoration:none;">${o.phone}</a></td>
+                    <td>${o.product || 'मोरिंगा'}<br><b>₹${o.total}</b><br><small>(${o.payment})</small></td>
                     <td>
-                        <select onchange="updateOrderStatus(${index}, this.value)">
+                        <select class="status-select" onchange="updateOrderStatus(${index}, this.value)">
                             <option value="Confirmed" ${o.status==='Confirmed'?'selected':''}>Confirmed</option>
                             <option value="Packed" ${o.status==='Packed'?'selected':''}>Packed</option>
                             <option value="OutForDelivery" ${o.status==='OutForDelivery'?'selected':''}>Out for Delivery</option>
                             <option value="Delivered" ${o.status==='Delivered'?'selected':''}>Delivered</option>
                             <option value="Cancelled" ${o.status==='Cancelled'?'selected':''}>Cancelled</option>
-                        </select><br>
-                        <button class="notify-whatsapp-btn" onclick="sendWhatsAppNotification('${o.phone}', '${o.id}', '${o.status}', '${trackingLink}')">📤 WhatsApp नोटिफ़िकेशन</button>
+                        </select>
+                        <button class="btn-view-track" onclick="adminViewOrderTrack('${o.id}')">👁️ View Track</button>
+                        <button class="notify-whatsapp-btn" onclick="sendWhatsAppNotification('${o.phone}', '${o.id}', '${o.status}', '${trackingLink}')">📤 Notify</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        function adminViewOrderTrack(orderId) {
+            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
+            const found = orders.find(o => o.id === orderId);
+            if (found) {
+                renderTrackingUI(found);
+            }
         }
 
         function sendWhatsAppNotification(phone, orderId, status, trackingLink) {
@@ -1234,7 +1266,7 @@
             let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
             orders[index].status = newStatus;
             localStorage.setItem('hwmd_all_orders', JSON.stringify(orders));
-            alert("✅ ऑर्डर स्टेटस अपडेट हो गया!");
+            alert("✅ ऑर्डर स्टेटस अपडेट हो गया! (ग्राहक अब लाइव स्टेटस देख सकता है)");
             loadAdminOrdersTable();
         }
 
