@@ -429,54 +429,45 @@
         .timeline-step.completed::before { background: #2e7d32; }
         .timeline-step.cancelled::before { background: #d32f2f; content: '✕'; }
 
-        /* SCROLLABLE TABLE CONTAINER SO NO COLUMNS ARE HIDDEN ON MOBILE */
-        .table-responsive-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            margin-top: 8px;
-        }
-
+        /* TABLE CSS FIX */
         .order-table {
             width: 100%;
-            min-width: 500px;
             border-collapse: collapse;
             font-size: 0.78rem;
         }
 
         .order-table th, .order-table td {
             border: 1px solid #ddd;
-            padding: 6px 5px;
+            padding: 8px 6px;
             text-align: left;
-            vertical-align: top;
+            vertical-align: middle;
         }
 
-        .order-table th { background-color: #2e7d32; color: white; white-space: nowrap; }
+        .order-table th { background-color: #2e7d32; color: white; }
 
         .status-select {
             width: 100%;
-            padding: 3px;
+            padding: 4px;
             font-size: 0.75rem;
             border-radius: 4px;
             border: 1px solid #aaa;
             background: #fff;
+            margin-bottom: 4px;
         }
 
         .btn-view-track {
             background-color: #0288d1;
             color: white;
             border: none;
-            padding: 4px 6px;
+            padding: 5px 6px;
             border-radius: 4px;
             font-size: 0.7rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 4px;
             width: 100%;
             display: block;
             text-align: center;
+            margin-bottom: 4px;
         }
 
         .video-container {
@@ -534,13 +525,14 @@
             background-color: #25D366;
             color: white;
             border: none;
-            padding: 4px 6px;
+            padding: 5px 6px;
             border-radius: 4px;
             font-size: 0.7rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 4px;
             width: 100%;
+            display: block;
+            text-align: center;
         }
     </style>
 </head>
@@ -578,16 +570,14 @@
         <!-- ADMIN ORDERS DASHBOARD -->
         <div class="card" id="adminOrdersSection" style="display:none;">
             <h2>📋 सभी ग्राहकों के ऑर्डर (Admin Panel)</h2>
-            <small style="color:#666;">(बाएं/दाएं स्वाइप करें agar sabhi columns na dikhein):</small>
-            
-            <div class="table-responsive-wrapper">
+            <div style="overflow-x:auto; margin-top:8px;">
                 <table class="order-table">
                     <thead>
                         <tr>
-                            <th style="width:22%;">Order ID & Name</th>
-                            <th style="width:20%;">Mobile</th>
-                            <th style="width:25%;">Product & Total</th>
-                            <th style="width:33%;">Status & Action</th>
+                            <th>Order ID & Name</th>
+                            <th>Mobile</th>
+                            <th>Product & Total</th>
+                            <th>Status & Action</th>
                         </tr>
                     </thead>
                     <tbody id="adminOrdersTableBody"></tbody>
@@ -1059,7 +1049,7 @@
             CUSTOM_VILLAGES.forEach((v, idx) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'village-item';
-                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ बनाएं</span>`;
+                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ हटाएं</span>`;
                 adminDisplay.appendChild(itemDiv);
             });
         }
@@ -1224,7 +1214,7 @@
                 const trackingLink = window.location.origin + window.location.pathname + `?orderId=${o.id}`;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><b>${o.id}</b><br><small>${o.name}</small></td>
+                    <td><b>${o.id}</b><br>${o.name}</td>
                     <td><a href="tel:${o.phone}" style="font-weight:bold; color:#1b5e20; text-decoration:none;">${o.phone}</a></td>
                     <td>${o.product || 'मोरिंगा'}<br><b>₹${o.total}</b><br><small>(${o.payment})</small></td>
                     <td>
