@@ -15,7 +15,7 @@
         body {
             background-color: #f4f7f4;
             color: #333;
-            line-height: 1.6;
+            line-height: 1.5;
             padding-bottom: 30px;
         }
 
@@ -23,98 +23,280 @@
             background: #1b5e20;
             color: white;
             text-align: center;
-            padding: 20px 10px;
+            padding: 15px 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
         header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
+            font-size: 1.6rem;
+            margin-bottom: 3px;
         }
 
         header p {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             opacity: 0.9;
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 15px;
+            padding: 10px;
         }
 
         .card {
             background: #ffffff;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 12px;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
         h2 {
             color: #1b5e20;
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e8f5e9;
-            padding-bottom: 8px;
-        }
-
-        .product-img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .price-tag {
-            font-size: 1.5rem;
-            color: #2e7d32;
-            font-weight: bold;
+            font-size: 1.1rem;
             margin-bottom: 10px;
+            border-bottom: 2px solid #e8f5e9;
+            padding-bottom: 4px;
+        }
+
+        /* MEESHO STYLE 2-COLUMN GRID */
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .grid-product-box {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+
+        .grid-product-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #d32f2f;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-bottom-right-radius: 8px;
+            text-transform: uppercase;
+        }
+
+        .grid-product-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            background: #f9f9f9;
+        }
+
+        .grid-product-info {
+            padding: 8px;
+        }
+
+        .grid-product-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #222;
+            line-height: 1.2;
+            height: 32px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+            margin-top: 6px;
+        }
+
+        .current-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .old-price {
+            font-size: 0.75rem;
+            color: #888;
+            text-decoration: line-through;
+        }
+
+        .offer-tag {
+            font-size: 0.68rem;
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .rating-chip {
+            display: inline-block;
+            background: #2e7d32;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+
+        .btn-order-grid {
+            width: 100%;
+            background-color: #ff9800;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        /* COMPACT / CHHOTA BUTTON STYLES FOR EACH SECTION */
+        .btn-small-toggle {
+            width: 100%;
+            padding: 9px 12px;
+            border-radius: 8px;
+            border: 1px solid #c8e6c9;
+            background: #e8f5e9;
+            color: #1b5e20;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.2s;
+        }
+
+        .btn-small-toggle:hover {
+            background: #c8e6c9;
+        }
+
+        .btn-small-toggle.yt-btn {
+            background: #ffebee;
+            color: #c62828;
+            border-color: #ffcdd2;
+        }
+
+        .btn-small-toggle.yt-btn:hover {
+            background: #ffcdd2;
+        }
+
+        .collapsible-content {
+            display: none;
+            padding: 10px 0 5px 0;
+            margin-top: 8px;
+        }
+
+        /* POPUP ORDER MODAL STYLES */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 18px;
+            position: relative;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            border: none;
+            background: none;
         }
 
         label {
             display: block;
-            margin-top: 12px;
+            margin-top: 10px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #444;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
+            padding: 9px;
+            margin-top: 4px;
             border: 1px solid #ccc;
             border-radius: 6px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         textarea {
             resize: vertical;
-            height: 70px;
+            height: 60px;
         }
 
         .delivery-box {
             background: #e8f5e9;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 12px;
             border: 1px solid #c8e6c9;
         }
 
         .delivery-info {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #2e7d32;
             font-weight: 600;
         }
 
         .total-price {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             color: #1b5e20;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .upi-box {
@@ -122,99 +304,96 @@
             gap: 8px;
             justify-content: center;
             align-items: center;
-            margin: 15px 0;
+            margin: 10px 0;
         }
 
         .upi-input {
             border: 1px solid #ccc;
-            padding: 8px;
+            padding: 7px;
             border-radius: 6px;
             width: 70%;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-align: center;
             background: #f9f9f9;
         }
 
         .copy-btn {
-            padding: 8px 14px;
+            padding: 7px 12px;
             border: none;
             border-radius: 6px;
             background: #10A37F;
             color: #fff;
             font-weight: 600;
             cursor: pointer;
+            font-size: 0.85rem;
         }
 
         .app-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
+            margin-top: 8px;
         }
 
         .app-list a {
             display: block;
             color: #fff;
-            padding: 10px 0;
+            padding: 8px 0;
             border-radius: 6px;
             font-weight: bold;
             text-decoration: none;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         #phonepe { background: #5f259f; }
         #gpay { background: #4285F4; }
-        #paytm { background: #002970; }
-        #amazonpay { background: #FF9900; }
 
         .btn-whatsapp {
             width: 100%;
             background-color: #25D366;
             color: white;
-            padding: 14px;
+            padding: 12px;
             border: none;
             border-radius: 8px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+            margin-top: 12px;
+            box-shadow: 0 3px 8px rgba(37, 211, 102, 0.3);
         }
 
         .accordion-btn {
-            background-color: #e8f5e9;
+            background-color: #f1f8f1;
             color: #1b5e20;
             cursor: pointer;
-            padding: 12px 15px;
+            padding: 8px 10px;
             width: 100%;
-            border: 1px solid #c8e6c9;
+            border: 1px solid #d4ebd4;
             text-align: left;
-            outline: none;
-            font-size: 0.95rem;
+            font-size: 0.82rem;
             font-weight: 600;
             border-radius: 6px;
-            margin-top: 10px;
-            transition: 0.3s;
+            margin-top: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .accordion-content {
-            padding: 0 15px;
+            padding: 0 10px;
             background-color: #fafafa;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
             border-left: 3px solid #2e7d32;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             border-radius: 0 0 6px 6px;
         }
 
         .accordion-content p, .accordion-content ul {
-            padding: 10px 0;
-            font-size: 0.9rem;
+            padding: 6px 0;
+            font-size: 0.82rem;
             color: #444;
         }
 
@@ -226,7 +405,7 @@
             border-radius: 6px;
             font-size: 0.8rem;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .admin-panel {
@@ -241,15 +420,15 @@
         .tracking-status-box {
             background: #f9f9f9;
             border-radius: 10px;
-            padding: 15px;
+            padding: 12px;
             border: 1px solid #e0e0e0;
-            margin-top: 15px;
+            margin-top: 12px;
         }
 
         .timeline {
             position: relative;
             padding-left: 25px;
-            margin-top: 15px;
+            margin-top: 12px;
         }
 
         .timeline::before {
@@ -264,8 +443,8 @@
 
         .timeline-step {
             position: relative;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+            margin-bottom: 18px;
+            font-size: 0.85rem;
         }
 
         .timeline-step::before {
@@ -290,7 +469,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
         }
 
         .order-table th, .order-table td {
@@ -307,7 +486,7 @@
             height: 0;
             overflow: hidden;
             border-radius: 8px;
-            margin-top: 10px;
+            margin-top: 8px;
             border: 1px solid #ccc;
         }
 
@@ -323,17 +502,17 @@
             display: inline-block;
             background: #FF0000;
             color: white;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 6px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 0.85rem;
-            margin-top: 8px;
+            font-size: 0.8rem;
+            margin-top: 6px;
         }
 
         .village-list-admin {
-            margin-top: 10px;
-            max-height: 150px;
+            margin-top: 8px;
+            max-height: 120px;
             overflow-y: auto;
             border: 1px solid #ccc;
             padding: 5px;
@@ -344,55 +523,36 @@
         .village-item {
             display: flex;
             justify-content: space-between;
-            padding: 5px;
+            padding: 4px;
             border-bottom: 1px solid #eee;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
-        .del-btn {
-            color: red;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        .del-btn { color: red; cursor: pointer; font-weight: bold; }
 
         .cancel-btn {
             background-color: #d32f2f;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
             font-weight: bold;
             width: 100%;
-            margin-top: 15px;
+            margin-top: 12px;
             cursor: pointer;
+            font-size: 0.85rem;
         }
 
         .notify-whatsapp-btn {
             background-color: #25D366;
             color: white;
             border: none;
-            padding: 5px 8px;
+            padding: 4px 6px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
             cursor: pointer;
             margin-top: 4px;
-        }
-
-        .product-card-item {
-            border: 2px solid #c8e6c9;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            background: #fff;
-        }
-
-        .direct-order-box {
-            background: #f9fbf9;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-            margin-top: 15px;
         }
     </style>
 </head>
@@ -405,15 +565,11 @@
 
     <div class="container">
 
-        <!-- Product Catalog List with DIRECT ORDER FORMS -->
-        <div id="productCatalogList"></div>
-
-        <!-- Order Search Trigger Button -->
-        <div class="card" style="padding: 10px;">
-            <button type="button" style="width:100%; background:#2196F3; color:white; border:none; padding:12px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="showOrderSearch()">🔍 अपना ऑर्डर ट्रैक करें (Track Order)</button>
+        <!-- ORDER TRACKING SEARCH BAR -->
+        <div class="card" style="padding: 10px; margin-bottom: 12px;">
+            <button type="button" style="width:100%; background:#2196F3; color:white; border:none; padding:10px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="showOrderSearch()">🔍 अपना ऑर्डर ट्रैक करें (Track Order)</button>
         </div>
 
-        <!-- Order Tracking Search Box -->
         <div class="card" id="searchOrderCard" style="display:none;">
             <h2>🚚 ऑर्डर ट्रैकिंग खोजें</h2>
             <label>अपना मोबाइल नंबर या Order ID दर्ज करें:</label>
@@ -427,57 +583,69 @@
             <div id="trackingDetails"></div>
         </div>
 
-        <!-- YOUTUBE VIDEO SECTION FOR CUSTOMERS -->
-        <div class="card">
-            <h2>🎥 मोरिंगा पाउडर के फायदे व सेवन विधि (Video Guide)</h2>
-            <p style="font-size:0.85rem; color:#555;">
-                मोरिंगा (सहजन) पाउडर का सेवन कैसे करें और इसके चमत्कारी फायदों के बारे में आसान भाषा में समझने के लिए नीचे दिए गए वीडियो देखें:
-            </p>
+        <!-- MEESHO-STYLE PRODUCTS GRID CATALOG (BOX LAYOUT) -->
+        <h2 style="margin-left: 5px;">🛒 उपलब्ध उत्पाद (Products)</h2>
+        <div class="products-grid" id="productsGridContainer"></div>
 
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/kuKKWB8F_uU" title="Moringa Powder Benefits Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-            <a href="https://www.youtube.com/watch?v=kuKKWB8F_uU" target="_blank" class="video-btn-link">▶️ YouTube पर सीधे देखें (सहजन के फायदे)</a>
+        <!-- 1. YOUTUBE VIDEOS BUTTON & BOX (TOP) -->
+        <div class="card" style="padding: 10px;">
+            <button class="btn-small-toggle yt-btn" onclick="toggleSection('youtubeSection', this)">
+                <span>▶️ YouTube वीडियोस व उपयोग गाइड</span>
+                <span id="ytArrow">▼</span>
+            </button>
+            <div id="youtubeSection" class="collapsible-content">
+                <p style="font-size:0.8rem; color:#555; margin-bottom:8px;">
+                    मोरिंगा (सहजन) पाउडर का सेवन कैसे करें और इसके चमत्कारी फायदों के बारे में आसान भाषा में समझने के लिए वीडियो देखें:
+                </p>
 
-            <div class="video-container" style="margin-top:15px;">
-                <iframe src="https://www.youtube.com/embed/adrh48SuWck" title="Best Ways to Use Moringa Powder" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/kuKKWB8F_uU" title="Moringa Powder Benefits Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <a href="https://www.youtube.com/watch?v=kuKKWB8F_uU" target="_blank" class="video-btn-link">▶️ YouTube पर देखें (फायदे)</a>
+
+                <div class="video-container" style="margin-top:10px;">
+                    <iframe src="https://www.youtube.com/embed/adrh48SuWck" title="Best Ways to Use Moringa Powder" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <a href="https://www.youtube.com/watch?v=adrh48SuWck" target="_blank" class="video-btn-link">▶️ YouTube पर देखें (सेवन विधि)</a>
             </div>
-            <a href="https://www.youtube.com/watch?v=adrh48SuWck" target="_blank" class="video-btn-link">▶️ YouTube पर सीधे देखें (उपयोग की सबसे अच्छी विधि)</a>
         </div>
 
-        <!-- Description Accordions -->
-        <div class="card">
-            <h2>📖 उत्पाद की वैज्ञानिक जानकारी (Google Search Data)</h2>
+        <!-- 2. SCIENTIFIC INFO BUTTON & BOX (RIGHT BELOW YOUTUBE SECTION) -->
+        <div class="card" style="padding: 10px;">
+            <button class="btn-small-toggle" onclick="toggleSection('scientificSection', this)">
+                <span>📖 उत्पाद की वैज्ञानिक जानकारी व फायदे</span>
+                <span id="sciArrow">▼</span>
+            </button>
+            <div id="scientificSection" class="collapsible-content">
+                <button type="button" class="accordion-btn">🔬 वैज्ञानिक शोध और पोषण संबंधी तथ्य <span>▼</span></button>
+                <div class="accordion-content">
+                    <p>मोरिंगा ओलीफेरा (Moringa Oleifera) को दुनिया भर में <strong>"मिरेकल ट्री"</strong> या सुपरफूड के रूप में मान्यता प्राप्त है। वैज्ञानिक अध्ययनों के अनुसार इसमें 92 से अधिक पोषक तत्व और 46 प्रकार के एंटीऑक्सीडेंट पाए जाते हैं।</p>
+                    <ul>
+                        <li><strong>पालक से 25 गुना अधिक आयरन:</strong> शरीर में हीमोग्लोबिन बढ़ाता है।</li>
+                        <li><strong>संतरे से 7 गुना अधिक विटामिन C:</strong> प्राकृतिक इम्युनिटी मज़बूत करता है।</li>
+                        <li><strong>दूध से 4 गुना अधिक कैल्शियम:</strong> हड्डियों को मज़बूत बनाता है।</li>
+                        <li><strong>केले से 15 गुना अधिक पोटैशियम:</strong> बीपी और हार्ट को हेल्दी रखता है।</li>
+                    </ul>
+                </div>
 
-            <button type="button" class="accordion-btn">🔬 वैज्ञानिक शोध और पोषण संबंधी तथ्य (Scientific Facts) <span>▼</span></button>
-            <div class="accordion-content">
-                <p>मोरिंगा ओलीफेरा (Moringa Oleifera) को दुनिया भर में <strong>"मिरेकल ट्री (Miracle Tree)"</strong> या सुपरफूड के रूप में मान्यता प्राप्त है। वैज्ञानिक अध्ययनों के अनुसार इसमें 92 से अधिक पोषक तत्व और 46 प्रकार के एंटीऑक्सीडेंट पाए जाते हैं।</p>
-                <ul>
-                    <li><strong>पालक से 25 गुना अधिक आयरन:</strong> शरीर में हीमोग्लोबिन के स्तर को तेजी से बढ़ाता है।</li>
-                    <li><strong>संतरे से 7 गुना अधिक विटामिन C:</strong> प्राकृतिक रोग प्रतिरोधक क्षमता (Immunity) को मज़बूत करता है।</li>
-                    <li><strong>दूध से 4 गुना अधिक कैल्शियम:</strong> जोड़ों और हड्डियों की मज़बूती के लिए अत्यंत लाभकारी।</li>
-                    <li><strong>केले से 15 गुना अधिक पोटैशियम:</strong> ब्लड प्रेशर और मांसपेशियों के स्वास्थ्य को नियंत्रित रखता है।</li>
-                </ul>
-            </div>
+                <button type="button" class="accordion-btn">💡 शुगर, बीपी और मोटापा नियंत्रण <span>▼</span></button>
+                <div class="accordion-content">
+                    <ul>
+                        <li><strong>डायबिटीज:</strong> ब्लड शुगर लेवल को नियंत्रित करने में सहायक।</li>
+                        <li><strong>कोलेस्ट्रॉल:</strong> खराब कोलेस्ट्रॉल को कम करने में मददगार।</li>
+                        <li><strong>वजन घटाना:</strong> मेटाबॉलिज्म बढ़ाता है और चर्बी बर्न करता है।</li>
+                        <li><strong>त्वचा और बाल:</strong> स्किन को जवां रखता है और बाल झड़ने से रोकता है।</li>
+                    </ul>
+                </div>
 
-            <button type="button" class="accordion-btn">💡 शुगर, बीपी और मोटापा नियंत्रण (Health Benefits) <span>▼</span></button>
-            <div class="accordion-content">
-                <ul>
-                    <li><strong>डायबिटीज (Sugar):</strong> मोरिंगा में आइसोथियोसाइनेट्स (Isothiocyanates) पाए जाते हैं जो ब्लड शुगर लेवल को नियंत्रित करने में सहायक हैं।</li>
-                    <li><strong>कोलेस्ट्रॉल और हृदय:</strong> यह खराब कोलेस्ट्रॉल (LDL) को कम करके दिल की बीमारियों का खतरा घटाता है।</li>
-                    <li><strong>वजन घटाने में सहायक:</strong> यह मेटाबॉलिज्म बढ़ाता है और शरीर की अतिरिक्त चर्बी को बर्न करने में मदद करता है।</li>
-                    <li><strong>त्वचा और बाल:</strong> एंटीऑक्सीडेंट्स झुर्रियों को रोकते हैं और बालों को झड़ने से बचाते हैं।</li>
-                </ul>
-            </div>
-
-            <button type="button" class="accordion-btn">🥄 सही सेवन विधि और खुराक (How to Use) <span>▼</span></button>
-            <div class="accordion-content">
-                <p><strong>अनुशंसित खुराक:</strong> प्रतिदिन 1 चम्मच (लगभग 3-5 ग्राम)।</p>
-                <ul>
-                    <li>सुबह खाली पेट 1 गिलास गुनगुने पानी के साथ।</li>
-                    <li>दाल, सब्जी, सूप या सलाद में ऊपर से छिड़क कर।</li>
-                    <li>स्मूदी, ग्रीन टी या मट्ठे (छाछ) के साथ मिलाकर।</li>
-                </ul>
+                <button type="button" class="accordion-btn">🥄 सही सेवन विधि (How to Use) <span>▼</span></button>
+                <div class="accordion-content">
+                    <p><strong>खुराक:</strong> प्रतिदिन 1 चम्मच (3-5 ग्राम)।</p>
+                    <ul>
+                        <li>सुबह खाली पेट 1 गिलास गुनगुने पानी के साथ।</li>
+                        <li>दाल, सब्जी, सूप या मट्ठे के साथ मिलाकर।</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -491,7 +659,7 @@
                             <th>Order ID & Name</th>
                             <th>Mobile</th>
                             <th>Product & Total</th>
-                            <th>Status & WhatsApp Notify</th>
+                            <th>Status & Notify</th>
                         </tr>
                     </thead>
                     <tbody id="adminOrdersTableBody"></tbody>
@@ -499,7 +667,7 @@
             </div>
         </div>
 
-        <!-- Admin Control Panel -->
+        <!-- Admin Control Panel Trigger -->
         <div style="text-align: center;">
             <button class="admin-btn" onclick="toggleAdminPanel()">⚙️ Admin Settings</button>
             <button class="admin-btn" style="background:#2e7d32;" onclick="openAdminOrders()">📋 Manage Orders</button>
@@ -520,44 +688,120 @@
             <label>UPI ID</label>
             <input type="text" id="adminUPI">
 
-            <hr style="margin:15px 0;">
+            <hr style="margin:12px 0;">
             <h4 style="color:#1b5e20;">🛍️ नया उत्पाद जोड़ें (Add New Product)</h4>
-            <input type="text" id="newProdTitle" placeholder="उत्पाद का नाम (e.g. मोरिंगा कैप्सूल)" style="margin-top:5px;">
-            <input type="number" id="newProdPrice" placeholder="कीमत (₹)" style="margin-top:5px;">
-            <input type="text" id="newProdDesc" placeholder="छोटा विवरण (e.g. 100% शुद्ध कैप्सूल)" style="margin-top:5px;">
-            <input type="text" id="newProdImg" placeholder="Image URL (गूगल/इंटरनेट फोटो लिंक)" style="margin-top:5px;">
+            <input type="text" id="newProdTitle" placeholder="उत्पाद का नाम" style="margin-top:4px;">
+            <input type="number" id="newProdPrice" placeholder="कीमत (₹)" style="margin-top:4px;">
+            <input type="text" id="newProdDesc" placeholder="छोटा विवरण" style="margin-top:4px;">
+            <input type="text" id="newProdImg" placeholder="Image URL (गूगल/फोटो लिंक)" style="margin-top:4px;">
             <button type="button" class="copy-btn" style="background:#1b5e20; width:100%; margin-top:8px;" onclick="addNewProductAdmin()">➕ नया प्रोडक्ट सेव करें</button>
 
-            <label style="margin-top:10px;">ऐड किए गए अतिरिक्त प्रोडक्ट्स:</label>
+            <label style="margin-top:8px;">अतिरिक्त प्रोडक्ट्स:</label>
             <div class="village-list-admin" id="adminProductListDisplay"></div>
 
-            <hr style="margin:15px 0;">
-            <h4 style="color:#1b5e20;">🏘️ नया गांव/एरिया और कस्टम डिलीवरी चार्ज जोड़ें</h4>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:5px;">
+            <hr style="margin:12px 0;">
+            <h4 style="color:#1b5e20;">🏘️ नया गांव और डिलीवरी चार्ज जोड़ें</h4>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:4px;">
                 <input type="text" id="newVillageName" placeholder="गांव का नाम">
                 <input type="number" id="newVillageKm" placeholder="दूरी (KM)">
             </div>
-            <input type="number" id="newVillageCharge" placeholder="फिक्स डिलीवरी चार्ज (₹)" style="margin-top:5px;">
+            <input type="number" id="newVillageCharge" placeholder="फिक्स डिलीवरी चार्ज (₹)" style="margin-top:4px;">
             <button type="button" class="copy-btn" style="background:#1b5e20; width:100%; margin-top:8px;" onclick="addCustomVillage()">➕ गांव और रेट जोड़ें</button>
 
-            <label style="margin-top:10px;">एडमिन द्वारा जोड़े गए गांव:</label>
+            <label style="margin-top:8px;">जोड़े गए गांव:</label>
             <div class="village-list-admin" id="adminVillageListDisplay"></div>
 
-            <hr style="margin:15px 0;">
-            <h4 style="color:#1b5e20;">🔐 एडमिन पासवर्ड / PIN बदलें</h4>
-            
-            <label>वर्तमान PIN (Current PIN)</label>
-            <input type="password" id="currentPinInput" placeholder="पुराना PIN दर्ज करें">
+            <hr style="margin:12px 0;">
+            <h4 style="color:#1b5e20;">🔐 एडमिन PIN बदलें</h4>
+            <input type="password" id="currentPinInput" placeholder="पुराना PIN">
+            <input type="password" id="newPinInput" placeholder="नया PIN" style="margin-top:4px;">
+            <input type="password" id="confirmPinInput" placeholder="नया PIN दोबारा दर्ज करें" style="margin-top:4px;">
 
-            <label>नया PIN (New PIN)</label>
-            <input type="password" id="newPinInput" placeholder="नया PIN दर्ज करें">
-
-            <label>पुष्टि करें नया PIN (Confirm New PIN)</label>
-            <input type="password" id="confirmPinInput" placeholder="नया PIN दोबारा दर्ज करें">
-
-            <button type="button" class="copy-btn" style="background: #2e7d32; width: 100%; margin-top: 15px;" onclick="saveAdminSettings()">सेटिंग्स और पासवर्ड सेव करें</button>
+            <button type="button" class="copy-btn" style="background: #2e7d32; width: 100%; margin-top: 12px;" onclick="saveAdminSettings()">सेटिंग्स सेव करें</button>
         </div>
 
+    </div>
+
+    <!-- POPUP MODAL ORDER FORM WHEN PRODUCT BOX IS CLICKED -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeOrderModal()">&times;</button>
+            <h3 style="color:#1b5e20; border-bottom:2px solid #e8f5e9; padding-bottom:5px;">🛒 ऑर्डर विवरण भरें</h3>
+            
+            <form id="modalOrderForm">
+                <label>चयनित उत्पाद</label>
+                <input type="text" id="modalProdTitle" readonly style="background:#e8f5e9; font-weight:bold; color:#1b5e20;">
+
+                <label>आपका नाम *</label>
+                <input type="text" id="modalCustName" placeholder="अपना नाम लिखें" required>
+
+                <label>मोबाइल नंबर *</label>
+                <input type="tel" id="modalCustPhone" placeholder="10-अंकीय फ़ोन नंबर" required pattern="[0-9]{10}">
+
+                <label>अपना गांव/स्थान चुनें *</label>
+                <select id="modalVillageSelect" onchange="calculateModalTotal()" required>
+                    <option value="">-- चुनें --</option>
+                    <optgroup label="पाटन / स्थानीय गांव">
+                        <option value="0" data-charge="0">पाटन प्रॉपर (0 KM - ₹0)</option>
+                        <option value="6" data-charge="12">गाडाडीह (6 KM - ₹12)</option>
+                        <option value="8" data-charge="16">आमालोरी (8 KM - ₹16)</option>
+                        <option value="10" data-charge="20">सोनपुर (10 KM - ₹20)</option>
+                        <option value="12" data-charge="24">जामगाँव (12 KM - ₹24)</option>
+                        <option value="15" data-charge="30">सेलूद (15 KM - ₹30)</option>
+                    </optgroup>
+                    <optgroup label="दुर्ग ज़िला">
+                        <option value="18" data-charge="36">उताई (18 KM - ₹36)</option>
+                        <option value="25" data-charge="50">भिलाई (25 KM - ₹50)</option>
+                        <option value="30" data-charge="60">दुर्ग शहर (30 KM - ₹60)</option>
+                    </optgroup>
+                    <optgroup label="रायपुर ज़िला">
+                        <option value="22" data-charge="44">अभनपुर (22 KM - ₹44)</option>
+                        <option value="35" data-charge="70">रायपुर शहर (35 KM - ₹70)</option>
+                    </optgroup>
+                    <optgroup label="बालोद ज़िला">
+                        <option value="28" data-charge="56">गुंडरदेही (28 KM - ₹56)</option>
+                        <option value="55" data-charge="110">बालोद शहर (55 KM - ₹110)</option>
+                    </optgroup>
+                    <optgroup label="धमतरी ज़िला">
+                        <option value="35" data-charge="70">कुरुद (35 KM - ₹70)</option>
+                        <option value="58" data-charge="116">धमतरी शहर (58 KM - ₹116)</option>
+                    </optgroup>
+                    <optgroup label="विशेष एडमिन जोड़े गए गांव" id="modalCustomVillagesGroup"></optgroup>
+                    <option value="custom" data-charge="custom">अन्य गांव (मैन्युअल KM भरें)</option>
+                </select>
+
+                <label>पाटन से दूरी (KM)</label>
+                <input type="number" id="modalDistance" placeholder="दूरी ऑटो आ जाएगी या खुद भरें" min="0" required oninput="calculateModalTotal()">
+
+                <label>पूरा डिलीवरी पता *</label>
+                <textarea id="modalCustAddress" placeholder="मकान नंबर, गली, गांव/शहर, पिनकोड" required></textarea>
+
+                <label>भुगतान का प्रकार *</label>
+                <select id="modalPaymentMethod" onchange="toggleModalPaymentUI()">
+                    <option value="Online Payment">Online Payment (UPI / PhonePe / GPay)</option>
+                    <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+                </select>
+
+                <div class="delivery-box">
+                    <div class="delivery-info">🚚 डिलीवरी चार्ज: <span id="modalDelCharge">₹0</span></div>
+                    <div class="total-price">कुल देय राशि: <span id="modalGrandTotal">₹0</span></div>
+                </div>
+
+                <div id="modalOnlinePayBox" style="margin-top:10px;">
+                    <label style="font-size:0.8rem; color:#1b5e20;">💰 UPI Payment ID:</label>
+                    <div class="upi-box">
+                        <input id="modalUpi" class="upi-input" value="" readonly>
+                        <button type="button" class="copy-btn" onclick="copyUPI('modalUpi', this)">Copy</button>
+                    </div>
+                    <div class="app-list">
+                        <a href="#" id="modalPhonepe">📱 PhonePe</a>
+                        <a href="#" id="modalGpay">💸 Google Pay</a>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-whatsapp" onclick="submitModalOrder()">📤 WhatsApp पर ऑर्डर भेजें</button>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -569,14 +813,20 @@
         let CUSTOM_VILLAGES = JSON.parse(localStorage.getItem('hwmd_custom_villages')) || [];
         let CUSTOM_PRODUCTS = JSON.parse(localStorage.getItem('hwmd_custom_products')) || [];
 
+        let currentActiveProduct = null;
+
         function initSettings() {
-            document.getElementById('upi1')?.value && (document.getElementById('upi1').value = UPI_ID);
             document.getElementById('adminBasePrice').value = BASE_PRICE;
             document.getElementById('adminRateKm').value = RATE_PER_KM;
             document.getElementById('adminPhone').value = WHATSAPP_NUMBER;
             document.getElementById('adminUPI').value = UPI_ID;
+            document.getElementById('modalUpi').value = UPI_ID;
+            
+            document.getElementById('modalPhonepe').onclick = (e) => { e.preventDefault(); openApp('com.phonepe.app'); };
+            document.getElementById('modalGpay').onclick = (e) => { e.preventDefault(); openApp('com.google.android.apps.nbu.paisa.user'); };
+
             loadCustomVillagesUI();
-            renderCustomProductsStore();
+            renderProductsGrid();
         }
 
         window.onload = function() {
@@ -584,6 +834,19 @@
             checkUrlForTracking();
             setupAccordions();
         };
+
+        // COMPACT ONE-CLICK TOGGLE FUNCTION FOR SMALL BUTTONS
+        function toggleSection(sectionId, btnElement) {
+            const section = document.getElementById(sectionId);
+            const arrow = btnElement.querySelector("span:last-child");
+            if (section.style.display === "block") {
+                section.style.display = "none";
+                arrow.innerText = "▼";
+            } else {
+                section.style.display = "block";
+                arrow.innerText = "▲";
+            }
+        }
 
         function setupAccordions() {
             const accButtons = document.querySelectorAll(".accordion-btn");
@@ -603,24 +866,25 @@
             });
         }
 
-        // RENDER PRODUCTS WITH DIRECT ORDER FORM EMBEDDED
-        function renderCustomProductsStore() {
-            const catalog = document.getElementById('productCatalogList');
+        // RENDER PRODUCTS AS COMPACT MEESHO-STYLE BOXES
+        function renderProductsGrid() {
+            const gridContainer = document.getElementById('productsGridContainer');
             const adminDisplay = document.getElementById('adminProductListDisplay');
             
             let allProducts = [
                 {
                     id: "MAIN_MORINGA",
-                    title: "मोरिंगा लीफ पाउडर",
+                    title: "HWMD मोरिंगा लीफ पाउडर",
                     price: BASE_PRICE,
-                    desc: "प्रकृति का सुपरफूड, सेहत का वरदान (100% शुद्ध)",
+                    oldPrice: BASE_PRICE + 70,
+                    desc: "100% शुद्ध पाउडर",
                     img: "https://lh3.googleusercontent.com/d/1j-NSDvtOGRN-oub4OGHThPuTkylMU9R5=s1000",
-                    isMain: true
+                    rating: "4.8 ★"
                 },
                 ...CUSTOM_PRODUCTS
             ];
 
-            let catalogHTML = "";
+            let gridHTML = "";
             let adminListHTML = "";
 
             if (CUSTOM_PRODUCTS.length === 0) {
@@ -630,110 +894,58 @@
                     adminListHTML += `
                         <div class="village-item">
                             <span><b>${p.title}</b> - ₹${p.price}</span> 
-                            <span class="del-btn" onclick="removeProductAdmin(${idx})">🗑️ हटाएं</span>
+                            <span class="del-btn" onclick="removeProductAdmin(${idx})">🗑️ बताएं</span>
                         </div>
                     `;
                 });
             }
             adminDisplay.innerHTML = adminListHTML;
 
-            allProducts.forEach((p, idx) => {
-                const uniqueKey = p.id;
-                catalogHTML += `
-                    <div class="card product-card-item">
-                        <img src="${p.img}" alt="${p.title}" class="product-img" onerror="this.src='https://via.placeholder.com/600x1200?text=Product'">
-                        <h2>🌿 ${p.title}</h2>
-                        <div class="price-tag">₹${p.price}</div>
-                        <p style="font-size: 0.9rem; color: #1b5e20; font-weight: 600; margin-bottom: 15px;">${p.desc}</p>
-                        
-                        <!-- DIRECT ORDER FORM INSIDE EACH PRODUCT CARD -->
-                        <div class="direct-order-box">
-                            <h3 style="color:#1b5e20; font-size:1.1rem; margin-bottom:10px;">🛒 अभी डायरेक्ट ऑर्डर करें</h3>
-                            <form id="form_${uniqueKey}">
-                                <label>आपका नाम *</label>
-                                <input type="text" id="name_${uniqueKey}" placeholder="अपना नाम लिखें" required>
-
-                                <label>मोबाइल नंबर *</label>
-                                <input type="tel" id="phone_${uniqueKey}" placeholder="10-अंकीय फ़ोन नंबर" required pattern="[0-9]{10}">
-
-                                <label>अपना गांव/स्थान चुनें *</label>
-                                <select id="village_${uniqueKey}" onchange="calculateDirectTotal('${uniqueKey}', ${p.price})" required>
-                                    <option value="">-- चुनें --</option>
-                                    <optgroup label="पाटन / स्थानीय गांव">
-                                        <option value="0" data-charge="0">पाटन प्रॉपर (0 KM - ₹0)</option>
-                                        <option value="6" data-charge="12">गाडाडीह (6 KM - ₹12)</option>
-                                        <option value="8" data-charge="16">आमालोरी (8 KM - ₹16)</option>
-                                        <option value="10" data-charge="20">सोनपुर (10 KM - ₹20)</option>
-                                        <option value="12" data-charge="24">जामगाँव (12 KM - ₹24)</option>
-                                        <option value="15" data-charge="30">सेलूद (15 KM - ₹30)</option>
-                                    </optgroup>
-                                    <optgroup label="दुर्ग ज़िला">
-                                        <option value="18" data-charge="36">उताई (18 KM - ₹36)</option>
-                                        <option value="25" data-charge="50">भिलाई (25 KM - ₹50)</option>
-                                        <option value="30" data-charge="60">दुर्ग शहर (30 KM - ₹60)</option>
-                                    </optgroup>
-                                    <optgroup label="रायपुर ज़िला">
-                                        <option value="22" data-charge="44">अभनपुर (22 KM - ₹44)</option>
-                                        <option value="35" data-charge="70">रायपुर शहर (35 KM - ₹70)</option>
-                                    </optgroup>
-                                    <optgroup label="बालोद ज़िला">
-                                        <option value="28" data-charge="56">गुंडरदेही (28 KM - ₹56)</option>
-                                        <option value="55" data-charge="110">बालोद शहर (55 KM - ₹110)</option>
-                                    </optgroup>
-                                    <optgroup label="धमतरी ज़िला">
-                                        <option value="35" data-charge="70">कुरुद (35 KM - ₹70)</option>
-                                        <option value="58" data-charge="116">धमतरी शहर (58 KM - ₹116)</option>
-                                    </optgroup>
-                                    <optgroup label="विशेष एडमिन जोड़े गए गांव">
-                                        ${CUSTOM_VILLAGES.map(v => `<option value="${v.km}" data-charge="${v.charge}">${v.name} (${v.km} KM - ₹${v.charge})</option>`).join('')}
-                                    </optgroup>
-                                    <option value="custom" data-charge="custom">अन्य गांव (मैन्युअल KM भरें)</option>
-                                </select>
-
-                                <label>पाटन से दूरी (KM)</label>
-                                <input type="number" id="distance_${uniqueKey}" placeholder="दूरी ऑटो आ जाएगी या खुद भरें" min="0" required oninput="calculateDirectTotal('${uniqueKey}', ${p.price})">
-
-                                <label>पूरा डिलीवरी पता *</label>
-                                <textarea id="address_${uniqueKey}" placeholder="मकान नंबर, गली, गांव/शहर, पिनकोड" required></textarea>
-
-                                <label>भुगतान का प्रकार *</label>
-                                <select id="payment_${uniqueKey}" onchange="toggleDirectPaymentUI('${uniqueKey}')">
-                                    <option value="Online Payment">Online Payment (UPI / PhonePe / GPay)</option>
-                                    <option value="Cash on Delivery">Cash on Delivery (COD)</option>
-                                </select>
-
-                                <div class="delivery-box">
-                                    <div class="delivery-info">🚚 डिलीवरी चार्ज: <span id="delCharge_${uniqueKey}">₹0</span></div>
-                                    <div class="total-price">कुल देय राशि: <span id="totalPrice_${uniqueKey}">₹${p.price}</span></div>
-                                </div>
-
-                                <!-- ONLINE PAY UI INSIDE PRODUCT -->
-                                <div id="onlinePayBox_${uniqueKey}" style="margin-top:10px;">
-                                    <label style="font-size:0.85rem; color:#1b5e20;">💰 UPI Payment ID:</label>
-                                    <div class="upi-box">
-                                        <input id="upi_${uniqueKey}" class="upi-input" value="${UPI_ID}" readonly>
-                                        <button type="button" class="copy-btn" onclick="copyUPI('upi_${uniqueKey}', this)">Copy</button>
-                                    </div>
-                                    <div class="app-list">
-                                        <a href="#" onclick="event.preventDefault(); openApp('com.phonepe.app');" style="background:#5f259f;">📱 PhonePe</a>
-                                        <a href="#" onclick="event.preventDefault(); openApp('com.google.android.apps.nbu.paisa.user');" style="background:#4285F4;">💸 Google Pay</a>
-                                    </div>
-                                </div>
-
-                                <button type="button" class="btn-whatsapp" onclick="sendDirectOrder('${uniqueKey}', '${p.title}', ${p.price})">📤 WhatsApp पर ऑर्डर भेजें</button>
-                            </form>
+            allProducts.forEach((p) => {
+                const oldP = p.oldPrice || (p.price + 50);
+                gridHTML += `
+                    <div class="grid-product-box" onclick="openOrderModal('${p.title}', ${p.price})">
+                        <span class="sale-badge">Maha Deal</span>
+                        <img src="${p.img}" alt="${p.title}" class="grid-product-img" onerror="this.src='https://via.placeholder.com/300x300?text=Product'">
+                        <div class="grid-product-info">
+                            <div class="grid-product-title">${p.title}</div>
+                            <div class="price-row">
+                                <span class="current-price">₹${p.price}</span>
+                                <span class="old-price">₹${oldP}</span>
+                                <span class="offer-tag">20% off</span>
+                            </div>
+                            <span class="rating-chip">${p.rating || '4.5 ★'} Bestseller</span>
                         </div>
+                        <button type="button" class="btn-order-grid">🛒 अभी ऑर्डर करें</button>
                     </div>
                 `;
             });
 
-            catalog.innerHTML = catalogHTML;
+            gridContainer.innerHTML = gridHTML;
         }
 
-        function calculateDirectTotal(key, baseProdPrice) {
-            const select = document.getElementById(`village_${key}`);
+        // OPEN MODAL FORM WHEN A PRODUCT BOX IS CLICKED
+        function openOrderModal(title, price) {
+            currentActiveProduct = { title: title, price: price };
+            document.getElementById('modalProdTitle').value = title;
+            document.getElementById('modalGrandTotal').innerText = "₹" + price;
+            
+            const modalVillageGrp = document.getElementById('modalCustomVillagesGroup');
+            modalVillageGrp.innerHTML = CUSTOM_VILLAGES.map(v => `<option value="${v.km}" data-charge="${v.charge}">${v.name} (${v.km} KM - ₹${v.charge})</option>`).join('');
+
+            document.getElementById('orderModal').style.display = "flex";
+            calculateModalTotal();
+        }
+
+        function closeOrderModal() {
+            document.getElementById('orderModal').style.display = "none";
+        }
+
+        function calculateModalTotal() {
+            if (!currentActiveProduct) return;
+            const select = document.getElementById('modalVillageSelect');
             const selectedOpt = select.options[select.selectedIndex];
-            const distInput = document.getElementById(`distance_${key}`);
+            const distInput = document.getElementById('modalDistance');
             
             if (selectedOpt.value === "custom") {
                 if (distInput.value === "0") distInput.value = "";
@@ -749,23 +961,22 @@
                 delivery = km * RATE_PER_KM;
             }
 
-            const grandTotal = baseProdPrice + delivery;
-            document.getElementById(`delCharge_${key}`).innerText = "₹" + delivery;
-            document.getElementById(`totalPrice_${key}`).innerText = "₹" + grandTotal;
+            const total = currentActiveProduct.price + delivery;
+            document.getElementById('modalDelCharge').innerText = "₹" + delivery;
+            document.getElementById('modalGrandTotal').innerText = "₹" + total;
         }
 
-        function toggleDirectPaymentUI(key) {
-            const method = document.getElementById(`payment_${key}`).value;
-            const payBox = document.getElementById(`onlinePayBox_${key}`);
-            payBox.style.display = (method === "Cash on Delivery") ? "none" : "block";
+        function toggleModalPaymentUI() {
+            const method = document.getElementById('modalPaymentMethod').value;
+            document.getElementById('modalOnlinePayBox').style.display = (method === "Cash on Delivery") ? "none" : "block";
         }
 
-        function sendDirectOrder(key, prodTitle, baseProdPrice) {
-            const name = document.getElementById(`name_${key}`).value.trim();
-            const phone = document.getElementById(`phone_${key}`).value.trim();
-            const address = document.getElementById(`address_${key}`).value.trim();
-            const distance = document.getElementById(`distance_${key}`).value;
-            const paymentMethod = document.getElementById(`payment_${key}`).value;
+        function submitModalOrder() {
+            const name = document.getElementById('modalCustName').value.trim();
+            const phone = document.getElementById('modalCustPhone').value.trim();
+            const address = document.getElementById('modalCustAddress').value.trim();
+            const distance = document.getElementById('modalDistance').value;
+            const paymentMethod = document.getElementById('modalPaymentMethod').value;
 
             if (!name || !phone || !address || distance === "") {
                 alert("❌ कृपया सभी आवश्यक जानकारी (नाम, मोबाइल, गांव/दूरी और पता) भरें।");
@@ -773,7 +984,7 @@
             }
 
             const km = parseFloat(distance) || 0;
-            const select = document.getElementById(`village_${key}`);
+            const select = document.getElementById('modalVillageSelect');
             const selectedOpt = select.options[select.selectedIndex];
             
             let deliveryCharge = 0;
@@ -783,14 +994,14 @@
                 deliveryCharge = km * RATE_PER_KM;
             }
 
-            const totalAmount = baseProdPrice + deliveryCharge;
+            const totalAmount = currentActiveProduct.price + deliveryCharge;
             const orderId = "HWMD-" + Math.floor(1000 + Math.random() * 9000);
             const orderTimestamp = new Date().getTime();
             const orderDate = new Date().toLocaleString('hi-IN');
 
             const newOrder = {
                 id: orderId,
-                product: prodTitle,
+                product: currentActiveProduct.title,
                 name: name,
                 phone: phone,
                 address: address,
@@ -811,7 +1022,7 @@
 
             const message = `*📦 नया स्टोर ऑर्डर!*%0A%0A` +
                 `🆔 *ऑर्डर ID:* ${orderId}%0A` +
-                `🛍️ *उत्पाद:* ${prodTitle}%0A` +
+                `🛍️ *उत्पाद:* ${currentActiveProduct.title}%0A` +
                 `👤 *नाम:* ${name}%0A` +
                 `📱 *मोबाइल:* ${phone}%0A` +
                 `📍 *डिलीवरी पता:* ${address}%0A` +
@@ -821,6 +1032,7 @@
                 `💳 *भुगतान:* ${paymentMethod}%0A%0A` +
                 `🚚 *लाइव ऑर्डर ट्रैकिंग लिंक:*%0A${trackingLink}`;
 
+            closeOrderModal();
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
             renderTrackingUI(newOrder);
         }
@@ -841,8 +1053,8 @@
                 id: "PROD-" + Date.now(),
                 title: title,
                 price: parseFloat(price),
-                desc: desc || "100% प्राकृतिक शुद्ध उत्पाद",
-                img: img || "https://via.placeholder.com/600x1200?text=" + encodeURIComponent(title)
+                desc: desc || "100% शुद्ध उत्पाद",
+                img: img || "https://via.placeholder.com/300x300?text=" + encodeURIComponent(title)
             };
 
             CUSTOM_PRODUCTS.push(newProd);
@@ -853,14 +1065,14 @@
             document.getElementById('newProdDesc').value = "";
             document.getElementById('newProdImg').value = "";
 
-            renderCustomProductsStore();
+            renderProductsGrid();
             alert("✅ नया उत्पाद स्टोर में जुड़ गया है!");
         }
 
         function removeProductAdmin(index) {
             CUSTOM_PRODUCTS.splice(index, 1);
             localStorage.setItem('hwmd_custom_products', JSON.stringify(CUSTOM_PRODUCTS));
-            renderCustomProductsStore();
+            renderProductsGrid();
         }
 
         function addCustomVillage() {
@@ -882,7 +1094,6 @@
             document.getElementById('newVillageCharge').value = "";
 
             loadCustomVillagesUI();
-            renderCustomProductsStore();
             alert("✅ नया गांव और डिलीवरी चार्ज जुड़ गया!");
         }
 
@@ -890,7 +1101,6 @@
             CUSTOM_VILLAGES.splice(index, 1);
             localStorage.setItem('hwmd_custom_villages', JSON.stringify(CUSTOM_VILLAGES));
             loadCustomVillagesUI();
-            renderCustomProductsStore();
         }
 
         function loadCustomVillagesUI() {
@@ -904,7 +1114,7 @@
             CUSTOM_VILLAGES.forEach((v, idx) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'village-item';
-                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ हटाएं</span>`;
+                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ बताएं</span>`;
                 adminDisplay.appendChild(itemDiv);
             });
         }
@@ -979,11 +1189,11 @@
             if (canCancel) {
                 cancelSectionHTML = `<button class="cancel-btn" onclick="cancelCustomerOrder('${order.id}')">❌ 2 घंटे के भीतर ऑर्डर रद्द करें (Cancel Order)</button>`;
             } else if (order.status === "Cancelled") {
-                cancelSectionHTML = `<p style="color:red; font-weight:bold; margin-top:15px; text-align:center;">❌ यह ऑर्डर रद्द कर दिया गया है।</p>`;
+                cancelSectionHTML = `<p style="color:red; font-weight:bold; margin-top:12px; text-align:center;">❌ यह ऑर्डर रद्द कर दिया गया है।</p>`;
             }
 
             const html = `
-                <div style="background:#e8f5e9; padding:10px; border-radius:6px; margin-bottom:12px;">
+                <div style="background:#e8f5e9; padding:10px; border-radius:6px; margin-bottom:10px;">
                     <strong>Order ID:</strong> ${order.id}<br>
                     <strong>उत्पाद:</strong> ${order.product || 'मोरिंगा लीफ पाउडर'}<br>
                     <strong>ग्राहक का नाम:</strong> ${order.name}<br>
@@ -1073,14 +1283,14 @@
                     <td><a href="tel:${o.phone}">${o.phone}</a></td>
                     <td>${o.product || 'मोरिंगा'}<br><b>₹${o.total}</b> (${o.payment})</td>
                     <td>
-                        <select class="status-select" onchange="updateOrderStatus(${index}, this.value)">
+                        <select onchange="updateOrderStatus(${index}, this.value)">
                             <option value="Confirmed" ${o.status==='Confirmed'?'selected':''}>Confirmed</option>
                             <option value="Packed" ${o.status==='Packed'?'selected':''}>Packed</option>
                             <option value="OutForDelivery" ${o.status==='OutForDelivery'?'selected':''}>Out for Delivery</option>
                             <option value="Delivered" ${o.status==='Delivered'?'selected':''}>Delivered</option>
                             <option value="Cancelled" ${o.status==='Cancelled'?'selected':''}>Cancelled</option>
                         </select><br>
-                        <button class="notify-whatsapp-btn" onclick="sendWhatsAppNotification('${o.phone}', '${o.id}', '${o.status}', '${trackingLink}')">📤 WhatsApp नोटिफ़िकेशन भेजें</button>
+                        <button class="notify-whatsapp-btn" onclick="sendWhatsAppNotification('${o.phone}', '${o.id}', '${o.status}', '${trackingLink}')">📤 WhatsApp नोटिफ़िकेशन</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1090,7 +1300,7 @@
         function sendWhatsAppNotification(phone, orderId, status, trackingLink) {
             let statusText = "";
             if (status === "Confirmed") statusText = "आपका ऑर्डर HWMD Store की तरफ से स्वीकार (Confirm) कर लिया गया है।";
-            else if (status === "Packed") statusText = "आपका ऑर्डर पैक (Packed) हो चुका है और जल्द ही डिलीवरी के लिए निकलेगा।";
+            else if (status === "Packed") statusText = "आपका ऑर्डर पैक (Packed) हो चुका है और जल्द ही डिलीवरी के लिए निकला है।";
             else if (status === "OutForDelivery") statusText = "आपका ऑर्डर डिलीवरी के लिए रास्ते में (Out for Delivery) है।";
             else if (status === "Delivered") statusText = "आपका ऑर्डर सफलतापूर्वक डिलीवर (Delivered) हो गया है। धन्यवाद!";
             else if (status === "Cancelled") statusText = "आपका ऑर्डर रद्द (Cancelled) कर दिया गया है।";
@@ -1107,7 +1317,7 @@
             let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
             orders[index].status = newStatus;
             localStorage.setItem('hwmd_all_orders', JSON.stringify(orders));
-            alert("✅ ऑर्डर स्टेटस अपडेट हो गया! अब नीचे WhatsApp नोटिफिकेशन बटन पर क्लिक करके ग्राहक को भेज सकते हैं।");
+            alert("✅ ऑर्डर स्टेटस अपडेट हो गया!");
             loadAdminOrdersTable();
         }
 
