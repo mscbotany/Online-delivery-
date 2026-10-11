@@ -309,6 +309,7 @@
         }
 
         .timeline-step.completed::before { background: #2e7d32; }
+        .timeline-step.cancelled::before { background: #d32f2f; content: '✕'; }
 
         .order-table {
             width: 100%;
@@ -377,6 +378,18 @@
             color: red;
             cursor: pointer;
             font-weight: bold;
+        }
+
+        .cancel-btn {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 15px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -806,7 +819,8 @@
 
             const totalAmount = BASE_PRICE + deliveryCharge;
             const orderId = "HWMD-" + Math.floor(1000 + Math.random() * 9000);
-            const orderDate = new Date().toLocaleDateString('hi-IN');
+            const orderTimestamp = new Date().getTime(); // Exact time for 2-hour check
+            const orderDate = new Date().toLocaleString('hi-IN');
 
             const newOrder = {
                 id: orderId,
@@ -817,6 +831,7 @@
                 deliveryCharge: deliveryCharge,
                 total: totalAmount,
                 payment: paymentMethod,
+                timestamp: orderTimestamp,
                 date: orderDate,
                 status: "Confirmed"
             };
@@ -875,19 +890,37 @@
             let step3Class = (order.status === "OutForDelivery" || order.status === "Delivered") ? "completed" : "";
             let step4Class = (order.status === "Delivered") ? "completed" : "";
 
+            if (order.status === "Cancelled") {
+                step1Class = "cancelled";
+                step2Class = ""; step3Class = ""; step4Class = "";
+            }
+
+            // Check if within 2 hours
+            const currentTime = new Date().getTime();
+            const timeDiff = (currentTime - (order.timestamp || currentTime)) / (1000 * 60 * 60); // hours
+            const canCancel = (timeDiff <= 2 && order.status !== "Cancelled" && order.status !== "Delivered");
+
+            let cancelSectionHTML = "";
+            if (canCancel) {
+                cancelSectionHTML = `<button class="cancel-btn" onclick="cancelCustomerOrder('${order.id}')">❌ 2 घंटे के भीतर ऑर्डर रद्द करें (Cancel Order)</button>`;
+            } else if (order.status === "Cancelled") {
+                cancelSectionHTML = `<p style="color:red; font-weight:bold; margin-top:15px; text-align:center;">❌ यह ऑर्डर रद्द कर दिया गया है।</p>`;
+            }
+
             const html = `
                 <div style="background:#e8f5e9; padding:10px; border-radius:6px; margin-bottom:12px;">
                     <strong>Order ID:</strong> ${order.id}<br>
                     <strong>ग्राहक का नाम:</strong> ${order.name}<br>
-                    <strong>कुल राशि:</strong> ₹${order.total} (${order.payment})
+                    <strong>कुल राशि:</strong> ₹${order.total} (${order.payment})<br>
+                    <strong>ऑर्डर स्थिति:</strong> <span style="color:${order.status==='Cancelled'?'red':'green'}; font-weight:bold;">${order.status}</span>
                 </div>
 
                 <div class="tracking-status-box">
                     <h3>🚚 डिलीवरी स्थिति Timeline</h3>
                     <div class="timeline">
                         <div class="timeline-step ${step1Class}">
-                            <div class="timeline-title">🟢 Order Confirmed</div>
-                            <div class="timeline-date">${order.date} - ऑर्डर प्राप्त हुआ</div>
+                            <div class="timeline-title">${order.status==='Cancelled'?'❌ Order Cancelled':'🟢 Order Confirmed'}</div>
+                            <div class="timeline-date">${order.date}</div>
                         </div>
                         <div class="timeline-step ${step2Class}">
                             <div class="timeline-title">📦 Packed & Ready</div>
@@ -903,9 +936,36 @@
                         </div>
                     </div>
                 </div>
+                ${cancelSectionHTML}
             `;
             document.getElementById('trackingDetails').innerHTML = html;
             trackingSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // CANCEL ORDER FUNCTION WITH ₹30 DEDUCTION FOR ONLINE PAYMENT
+        function cancelCustomerOrder(orderId) {
+            if (!confirm("क्या आप वाकई अपना ऑर्डर रद्द करना चाहते हैं?")) return;
+
+            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
+            const index = orders.findIndex(o => o.id === orderId);
+
+            if (index !== -1) {
+                let order = orders[index];
+                order.status = "Cancelled";
+                
+                let refundMsg = "";
+                if (order.payment === "Online Payment") {
+                    let refundAmount = order.total - 30;
+                    if (refundAmount < 0) refundAmount = 0;
+                    refundMsg = `\n\n⚠️ चूंकि भुगतान ऑनलाइन हुआ था, इसलिए नियमतः ₹30 कैंसिलेशन शुल्क काटकर शेष ₹${refundAmount} आपके खाते में रिफंड कर दिया जाएगा।`;
+                } else {
+                    refundMsg = `\n\n⚠️ आपका Cash on Delivery ऑर्डर रद्द कर दिया गया है।`;
+                }
+
+                localStorage.setItem('hwmd_all_orders', JSON.stringify(orders));
+                alert("✅ आपका ऑर्डर सफलतापूर्वक रद्द कर दिया गया है।" + refundMsg);
+                renderTrackingUI(order);
+            }
         }
 
         function openAdminOrders() {
@@ -937,13 +997,14 @@
                     <td>${o.name}</td>
                     <td><a href="tel:${o.phone}">${o.phone}</a></td>
                     <td>${o.address} (${o.km} km)</td>
-                    <td>₹${o.total}</td>
+                    <td>₹${o.total} (${o.payment})</td>
                     <td>
                         <select onchange="updateOrderStatus(${index}, this.value)">
                             <option value="Confirmed" ${o.status==='Confirmed'?'selected':''}>Confirmed</option>
                             <option value="Packed" ${o.status==='Packed'?'selected':''}>Packed</option>
                             <option value="OutForDelivery" ${o.status==='OutForDelivery'?'selected':''}>Out for Delivery</option>
                             <option value="Delivered" ${o.status==='Delivered'?'selected':''}>Delivered</option>
+                            <option value="Cancelled" ${o.status==='Cancelled'?'selected':''}>Cancelled</option>
                         </select>
                     </td>
                 `;
