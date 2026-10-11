@@ -94,7 +94,7 @@
             background-color: #f57c00;
         }
 
-        #orderSectionContainer {
+        #orderSectionContainer, #trackingPageSection, #adminOrdersSection {
             display: none;
             margin-bottom: 20px;
         }
@@ -193,13 +193,6 @@
         #paytm { background: #002970; }
         #amazonpay { background: #FF9900; }
 
-        .hint {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 8px;
-            text-align: center;
-        }
-
         .btn-whatsapp {
             width: 100%;
             background-color: #25D366;
@@ -212,10 +205,6 @@
             cursor: pointer;
             margin-top: 15px;
             box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #1ebd56;
         }
 
         .accordion-btn {
@@ -237,10 +226,6 @@
             align-items: center;
         }
 
-        .accordion-btn:hover, .accordion-btn.active {
-            background-color: #c8e6c9;
-        }
-
         .accordion-content {
             padding: 0 15px;
             background-color: #fafafa;
@@ -256,14 +241,6 @@
             padding: 10px 0;
             font-size: 0.9rem;
             color: #444;
-        }
-
-        .accordion-content ul {
-            padding-left: 20px;
-        }
-
-        .accordion-content li {
-            margin-bottom: 6px;
         }
 
         .admin-btn {
@@ -286,10 +263,120 @@
             margin-top: 15px;
         }
 
-        ol.instructions {
-            padding-left: 20px;
+        .tracking-status-box {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            margin-top: 15px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 25px;
+            margin-top: 15px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 5px;
+            bottom: 5px;
+            width: 3px;
+            background: #ccc;
+        }
+
+        .timeline-step {
+            position: relative;
+            margin-bottom: 20px;
             font-size: 0.9rem;
-            color: #444;
+        }
+
+        .timeline-step::before {
+            content: '✓';
+            position: absolute;
+            left: -23px;
+            top: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ccc;
+            color: white;
+            text-align: center;
+            font-size: 0.75rem;
+            line-height: 18px;
+        }
+
+        .timeline-step.completed::before { background: #2e7d32; }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .order-table th, .order-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .order-table th { background-color: #2e7d32; color: white; }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-btn-link {
+            display: inline-block;
+            background: #FF0000;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .village-list-admin {
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 5px;
+            background: #fff;
+            border-radius: 6px;
+        }
+
+        .village-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.85rem;
+        }
+
+        .del-btn {
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -303,7 +390,7 @@
     <div class="container">
 
         <!-- Product Summary -->
-        <div class="card">
+        <div class="card" id="productCard">
             <img src="https://lh3.googleusercontent.com/d/1j-NSDvtOGRN-oub4OGHThPuTkylMU9R5=s1000" alt="HWMD Moringa Powder Poster" class="product-img" onerror="this.src='https://via.placeholder.com/600x1200?text=HWMD+Moringa+Powder'">
             <h2>🌿 मोरिंगा लीफ पाउडर</h2>
             <div class="price-tag"><span id="displayPrice">₹280</span></div>
@@ -312,6 +399,21 @@
             </p>
 
             <button type="button" class="btn-main-order" onclick="toggleOrderForm()">🛒 अभी ऑर्डर करें (Form खोलें)</button>
+            <button type="button" style="width:100%; background:#2196F3; color:white; border:none; padding:10px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="showOrderSearch()">🔍 अपना ऑर्डर ट्रैक करें (Track Order)</button>
+        </div>
+
+        <!-- Order Tracking Search Box -->
+        <div class="card" id="searchOrderCard" style="display:none;">
+            <h2>🚚 ऑर्डर ट्रैकिंग खोजें</h2>
+            <label>अपना मोबाइल नंबर या Order ID दर्ज करें:</label>
+            <input type="text" id="trackSearchInput" placeholder="उदा. 98270XXXXX या HWMD-1234">
+            <button type="button" class="copy-btn" style="width:100%; margin-top:10px; background:#1b5e20;" onclick="searchCustomerOrder()">ऑर्डर खोजें</button>
+        </div>
+
+        <!-- CUSTOMER ORDER TRACKING PAGE SECTION -->
+        <div class="card" id="trackingPageSection">
+            <h2>📦 ऑर्डर ट्रैकिंग स्थिति (Live Status)</h2>
+            <div id="trackingDetails"></div>
         </div>
 
         <!-- Order Form Section -->
@@ -328,32 +430,33 @@
                     <label>अपना गांव/स्थान चुनें (पाटन से दूरी व चार्ज) *</label>
                     <select id="villageSelect" onchange="onVillageChange()" required>
                         <option value="">-- चुनें --</option>
-                        <optgroup label="पाटन / स्थानीय गांव">
-                            <option value="0">पाटन प्रॉपर (0 KM - ₹0)</option>
-                            <option value="6">गाडाडीह (6 KM - ₹18)</option>
-                            <option value="8">आमालोरी (8 KM - ₹24)</option>
-                            <option value="10">सोनपुर (10 KM - ₹30)</option>
-                            <option value="12">जामगाँव (12 KM - ₹36)</option>
-                            <option value="15">सेलूद (15 KM - ₹45)</option>
+                        <optgroup label="पाटन / स्थानीय गांव" id="defaultVillagesGroup">
+                            <option value="0" data-charge="0">पाटन प्रॉपर (0 KM - ₹0)</option>
+                            <option value="6" data-charge="12">गाडाडीह (6 KM - ₹12)</option>
+                            <option value="8" data-charge="16">आमालोरी (8 KM - ₹16)</option>
+                            <option value="10" data-charge="20">सोनपुर (10 KM - ₹20)</option>
+                            <option value="12" data-charge="24">जामगाँव (12 KM - ₹24)</option>
+                            <option value="15" data-charge="30">सेलूद (15 KM - ₹30)</option>
                         </optgroup>
                         <optgroup label="दुर्ग ज़िला">
-                            <option value="18">उताई (18 KM - ₹54)</option>
-                            <option value="25">भिलाई (25 KM - ₹75)</option>
-                            <option value="30">दुर्ग शहर (30 KM - ₹90)</option>
+                            <option value="18" data-charge="36">उताई (18 KM - ₹36)</option>
+                            <option value="25" data-charge="50">भिलाई (25 KM - ₹50)</option>
+                            <option value="30" data-charge="60">दुर्ग शहर (30 KM - ₹60)</option>
                         </optgroup>
                         <optgroup label="रायपुर ज़िला">
-                            <option value="22">अभनपुर (22 KM - ₹66)</option>
-                            <option value="35">रायपुर शहर (35 KM - ₹105)</option>
+                            <option value="22" data-charge="44">अभनपुर (22 KM - ₹44)</option>
+                            <option value="35" data-charge="70">रायपुर शहर (35 KM - ₹70)</option>
                         </optgroup>
                         <optgroup label="बालोद ज़िला">
-                            <option value="28">गुंडरदेही (28 KM - ₹84)</option>
-                            <option value="55">बालोद शहर (55 KM - ₹165)</option>
+                            <option value="28" data-charge="56">गुंडरदेही (28 KM - ₹56)</option>
+                            <option value="55" data-charge="110">बालोद शहर (55 KM - ₹110)</option>
                         </optgroup>
                         <optgroup label="धमतरी ज़िला">
-                            <option value="35">कुरुद (35 KM - ₹105)</option>
-                            <option value="58">धमतरी शहर (58 KM - ₹174)</option>
+                            <option value="35" data-charge="70">कुरुद (35 KM - ₹70)</option>
+                            <option value="58" data-charge="116">धमतरी शहर (58 KM - ₹116)</option>
                         </optgroup>
-                        <option value="custom">अन्य गांव (मैन्युअल KM भरें)</option>
+                        <optgroup label="विशेष एडमिन जोड़े गए गांव" id="customVillagesGroup"></optgroup>
+                        <option value="custom" data-charge="custom">अन्य गांव (मैन्युअल KM भरें)</option>
                     </select>
 
                     <label>पाटन से दूरी (KM)</label>
@@ -369,7 +472,7 @@
                     </select>
 
                     <div class="delivery-box">
-                        <div class="delivery-info">🚚 डिलीवरी चार्ज (<span id="rateLabel">₹3</span>/km): <span id="deliveryCharge">₹0</span></div>
+                        <div class="delivery-info">🚚 डिलीवरी चार्ज: <span id="deliveryCharge">₹0</span></div>
                         <div class="total-price">कुल राशि: <span id="grandTotal">₹280</span></div>
                     </div>
                 </form>
@@ -378,7 +481,7 @@
             <!-- Payment Instructions -->
             <div class="card" id="onlinePayCard">
                 <h2>💰 ONLINE PAYMENT निर्देश</h2>
-                <ol class="instructions">
+                <ol style="padding-left:20px; font-size:0.9rem;">
                     <li>नीचे दिए गए UPI ID को कॉपी करें।</li>
                     <li>अपने पसंदीदा Payment App से भुगतान करें।</li>
                     <li>नीचे बटन पर क्लिक करके WhatsApp पर ऑर्डर भेजें।</li>
@@ -395,86 +498,100 @@
                     <a href="#" id="paytm">💰 Paytm</a>
                     <a href="#" id="amazonpay">🛒 Amazon Pay</a>
                 </div>
-                <div class="hint">👉 ऐप से भुगतान करने के बाद स्क्रीनशॉट ले लें।</div>
             </div>
 
-            <!-- Submit Button -->
             <div class="card" style="text-align: center;">
                 <button type="button" class="btn-whatsapp" onclick="sendOrder()">📤 WhatsApp पर ऑर्डर भेजें</button>
             </div>
         </div>
 
+        <!-- YOUTUBE VIDEO SECTION FOR CUSTOMERS -->
+        <div class="card">
+            <h2>🎥 मोरिंगा पाउडर के फायदे व सेवन विधि (Video Guide)</h2>
+            <p style="font-size:0.85rem; color:#555;">
+                मोरिंगा (सहजन) पाउडर का सेवन कैसे करें और इसके चमत्कारी फायदों के बारे में आसान भाषा में समझने के लिए नीचे दिए गए वीडियो देखें:
+            </p>
+
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/kuKKWB8F_uU" title="Moringa Powder Benefits Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <a href="https://www.youtube.com/watch?v=kuKKWB8F_uU" target="_blank" class="video-btn-link">▶️ YouTube पर सीधे देखें (सहजन के फायदे)</a>
+
+            <div class="video-container" style="margin-top:15px;">
+                <iframe src="https://www.youtube.com/embed/adrh48SuWck" title="Best Ways to Use Moringa Powder" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <a href="https://www.youtube.com/watch?v=adrh48SuWck" target="_blank" class="video-btn-link">▶️ YouTube पर सीधे देखें (उपयोग की सबसे अच्छी विधि)</a>
+        </div>
+
         <!-- Description Accordions -->
         <div class="card">
-            <h2>📖 उत्पाद की पूरी जानकारी (Description)</h2>
+            <h2>📖 उत्पाद की वैज्ञानिक जानकारी (Google Search Data)</h2>
 
-            <button type="button" class="accordion-btn">📄 उत्पाद विवरण (Overview) <span>▼</span></button>
+            <button type="button" class="accordion-btn">🔬 वैज्ञानिक शोध और पोषण संबंधी तथ्य (Scientific Facts) <span>▼</span></button>
             <div class="accordion-content">
-                <p>मोरिंगा लीफ पाउडर विटामिन, मिनरल्स, एंटीऑक्सीडेंट और अमीनो एसिड से भरपूर है, जो आपके संपूर्ण स्वास्थ्य और संपूर्ण जीवन को बेहतर बनाने में सहायक है।</p>
-                <p><strong>रोज़ थोड़ा मोरिंगा, सेहत रहेगी हमेशा दुरुस्त।</strong><br><em>शुद्ध पोषण • बेहतर स्वास्थ्य • खुशहाल जीवन</em></p>
-            </div>
-
-            <button type="button" class="accordion-btn">🥗 पोषक तत्वों की तुलना (Nutritional Value) <span>▼</span></button>
-            <div class="accordion-content">
+                <p>मोरिंगा ओलीफेरा (Moringa Oleifera) को दुनिया भर में <strong>"मिरेकल ट्री (Miracle Tree)"</strong> या सुपरफूड के रूप में मान्यता प्राप्त है। वैज्ञानिक अध्ययनों के अनुसार इसमें 92 से अधिक पोषक तत्व और 46 प्रकार के एंटीऑक्सीडेंट पाए जाते हैं।</p>
                 <ul>
-                    <li><strong>आयरन में पालक से 25 गुना ज्यादा:</strong> हीमोग्लोबिन बढ़ाने में मदद करता है और एनीमिया से लड़ने में सहायक।</li>
-                    <li><strong>प्रोटीन में दही से 9 गुना ज्यादा:</strong> मांसपेशियों की वृद्धि, टिश्यू रिपेयर और शरीर की संपूर्ण मरम्मत में मदद करता है।</li>
-                    <li><strong>विटामिन C में संतरे से 7 गुना ज्यादा:</strong> इम्युनिटी बढ़ाता है और संक्रमण से बचाव में मदद करता है।</li>
-                    <li><strong>कैल्शियम में दूध से 4 गुना ज्यादा:</strong> हड्डियों और दांतों को मजबूत बनाता है और हड्डियों की घनत्व बढ़ाने में सहायक।</li>
-                    <li><strong>पोटैशियम में केले से 15 गुना ज्यादा:</strong> ब्लड प्रेशर को नियंत्रित रखने और हृदय स्वास्थ्य के लिए सहायक।</li>
-                    <li><strong>विटामिन A में गाजर से 10 गुना ज्यादा:</strong> आंखों की रोशनी, त्वचा और इम्युनिटी बढ़ाने में मदद करता है।</li>
-                    <li><strong>विटामिन E में बादाम से 2 गुना ज्यादा:</strong> शक्तिशाली एंटीऑक्सीडेंट जो त्वचा को जवां रखता है और कोशिकाओं की सुरक्षा करता है।</li>
-                    <li><strong>ओमेगा 3, 6, 9 और अमीनो एसिड से भरपूर:</strong> ब्रेन फंक्शन, हार्मोन बैलेंस और शरीर के समग्र विकास में सहायक।</li>
+                    <li><strong>पालक से 25 गुना अधिक आयरन:</strong> शरीर में हीमोग्लोबिन के स्तर को तेजी से बढ़ाता है।</li>
+                    <li><strong>संतरे से 7 गुना अधिक विटामिन C:</strong> प्राकृतिक रोग प्रतिरोधक क्षमता (Immunity) को मज़बूत करता है।</li>
+                    <li><strong>दूध से 4 गुना अधिक कैल्शियम:</strong> जोड़ों और हड्डियों की मज़बूती के लिए अत्यंत लाभकारी।</li>
+                    <li><strong>केले से 15 गुना अधिक पोटैशियम:</strong> ब्लड प्रेशर और मांसपेशियों के स्वास्थ्य को नियंत्रित रखता है।</li>
                 </ul>
             </div>
 
-            <button type="button" class="accordion-btn">💡 मोरिंगा लीफ पाउडर के प्रमुख लाभ <span>▼</span></button>
+            <button type="button" class="accordion-btn">💡 शुगर, बीपी और मोटापा नियंत्रण (Health Benefits) <span>▼</span></button>
             <div class="accordion-content">
                 <ul>
-                    <li>इम्युनिटी बढ़ाए</li>
-                    <li>ऊर्जा बढ़ाए</li>
-                    <li>शरीर को डिटॉक्स करे</li>
-                    <li>पाचन तंत्र सुधारे</li>
-                    <li>त्वचा और बालों के लिए फायदेमंद</li>
-                    <li>हृदय स्वास्थ्य में सहायक</li>
-                    <li>वजन नियंत्रण में मदद करे</li>
-                    <li>हड्डियों को मजबूत बनाए</li>
+                    <li><strong>डायबिटीज (Sugar):</strong> मोरिंगा में आइसोथियोसाइनेट्स (Isothiocyanates) पाए जाते हैं जो ब्लड शुगर लेवल को नियंत्रित करने में सहायक हैं।</li>
+                    <li><strong>कोलेस्ट्रॉल और हृदय:</strong> यह खराब कोलेस्ट्रॉल (LDL) को कम करके दिल की बीमारियों का खतरा घटाता है।</li>
+                    <li><strong>वजन घटाने में सहायक:</strong> यह मेटाबॉलिज्म बढ़ाता है और शरीर की अतिरिक्त चर्बी को बर्न करने में मदद करता है।</li>
+                    <li><strong>त्वचा और बाल:</strong> एंटीऑक्सीडेंट्स झुर्रियों को रोकते हैं और बालों को झड़ने से बचाते हैं।</li>
                 </ul>
             </div>
 
-            <button type="button" class="accordion-btn">⭐ क्यों चुनें HWMD मोरिंगा? <span>▼</span></button>
+            <button type="button" class="accordion-btn">🥄 सही सेवन विधि और खुराक (How to Use) <span>▼</span></button>
             <div class="accordion-content">
+                <p><strong>अनुशंसित खुराक:</strong> प्रतिदिन 1 चम्मच (लगभग 3-5 ग्राम)।</p>
                 <ul>
-                    <li>100% शुद्ध और प्राकृतिक</li>
-                    <li>बिना मिलावट</li>
-                    <li>उच्च पोषक तत्वों से भरपूर</li>
-                    <li>प्रतिदिन के उपयोग के लिए सुरक्षित</li>
-                    <li>आपके स्वास्थ्य का सच्चा साथी</li>
+                    <li>सुबह खाली पेट 1 गिलास गुनगुने पानी के साथ।</li>
+                    <li>दाल, सब्जी, सूप या सलाद में ऊपर से छिड़क कर।</li>
+                    <li>स्मूदी, ग्रीन टी या मट्ठे (छाछ) के साथ मिलाकर।</li>
                 </ul>
             </div>
+        </div>
 
-            <button type="button" class="accordion-btn">🥄 कैसे करें उपयोग (1 चम्मच / 3-5 ग्राम)? <span>▼</span></button>
-            <div class="accordion-content">
-                <ul>
-                    <li>गुनगुने पानी के साथ मिलाकर</li>
-                    <li>जूस या स्मूदी में मिलाकर</li>
-                    <li>सलाद या सूप में मिलाकर</li>
-                    <li>दही के साथ मिलाकर</li>
-                </ul>
+        <!-- ADMIN ORDERS DASHBOARD -->
+        <div class="card" id="adminOrdersSection">
+            <h2>📋 सभी ग्राहकों के ऑर्डर (Admin Panel)</h2>
+            <div style="overflow-x:auto;">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>ग्राहक का नाम</th>
+                            <th>फ़ोन नंबर</th>
+                            <th>स्थान/पता</th>
+                            <th>कुल राशि</th>
+                            <th>स्थिति (Status)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminOrdersTableBody"></tbody>
+                </table>
             </div>
         </div>
 
         <!-- Admin Control Panel -->
         <div style="text-align: center;">
             <button class="admin-btn" onclick="toggleAdminPanel()">⚙️ Admin Settings</button>
+            <button class="admin-btn" style="background:#2e7d32;" onclick="openAdminOrders()">📋 Manage Orders</button>
         </div>
 
         <div class="admin-panel" id="adminPanel">
             <h3 style="color: #d84315; margin-bottom: 10px;">🛠️ स्टोर सेटिंग्स एडमिन पैनल</h3>
+            
             <label>उत्पाद की कीमत (₹)</label>
             <input type="number" id="adminBasePrice">
 
-            <label>डिलीवरी दर (₹ per km)</label>
+            <label>डिफ़ॉल्ट डिलीवरी दर (₹ per km)</label>
             <input type="number" id="adminRateKm">
 
             <label>WhatsApp नंबर (देश के कोड के साथ)</label>
@@ -483,71 +600,144 @@
             <label>UPI ID</label>
             <input type="text" id="adminUPI">
 
-            <label>नया एडमिन PIN (पासवर्ड बदलें)</label>
-            <input type="password" id="adminPinInput" placeholder="नया PIN दर्ज करें (वैकल्पिक)">
+            <hr style="margin:15px 0;">
+            <h4 style="color:#1b5e20;">🏘️ नया गांव/एरिया और कस्टम डिलीवरी चार्ज जोड़ें</h4>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:5px;">
+                <input type="text" id="newVillageName" placeholder="गांव का नाम">
+                <input type="number" id="newVillageKm" placeholder="दूरी (KM)">
+            </div>
+            <input type="number" id="newVillageCharge" placeholder="फिक्स डिलीवरी चार्ज (₹)" style="margin-top:5px;">
+            <button type="button" class="copy-btn" style="background:#1b5e20; width:100%; margin-top:8px;" onclick="addCustomVillage()">➕ गांव और रेट जोड़ें</button>
 
-            <button type="button" class="copy-btn" style="background: #2e7d32; width: 100%; margin-top: 15px;" onclick="saveAdminSettings()">सेटिंग्स सेव करें</button>
+            <label style="margin-top:10px;">एडमिन द्वारा जोड़े गए गांव:</label>
+            <div class="village-list-admin" id="adminVillageListDisplay"></div>
+
+            <hr style="margin:15px 0;">
+            <h4 style="color:#1b5e20;">🔐 एडमिन पासवर्ड / PIN बदलें</h4>
+            
+            <label>वर्तमान PIN (Current PIN)</label>
+            <input type="password" id="currentPinInput" placeholder="पुराना PIN दर्ज करें">
+
+            <label>नया PIN (New PIN)</label>
+            <input type="password" id="newPinInput" placeholder="नया PIN दर्ज करें">
+
+            <label>पुष्टि करें नया PIN (Confirm New PIN)</label>
+            <input type="password" id="confirmPinInput" placeholder="नया PIN दोबारा दर्ज करें">
+
+            <button type="button" class="copy-btn" style="background: #2e7d32; width: 100%; margin-top: 15px;" onclick="saveAdminSettings()">सेटिंग्स और पासवर्ड सेव करें</button>
         </div>
 
     </div>
 
     <script>
-        // Global variables initialized from LocalStorage or Default Values
         let BASE_PRICE = parseFloat(localStorage.getItem('hwmd_base_price')) || 280;
-        let RATE_PER_KM = parseFloat(localStorage.getItem('hwmd_rate_km')) || 3;
+        let RATE_PER_KM = parseFloat(localStorage.getItem('hwmd_rate_km')) || 2;
         let WHATSAPP_NUMBER = localStorage.getItem('hwmd_whatsapp') || "916267637741";
         let UPI_ID = localStorage.getItem('hwmd_upi') || "msccreate7@okhdfcbank";
         let ADMIN_PIN = localStorage.getItem('hwmd_pin') || "1234";
+        let CUSTOM_VILLAGES = JSON.parse(localStorage.getItem('hwmd_custom_villages')) || [];
 
-        // Initialize UI with stored settings on page load
         function initSettings() {
             document.getElementById('displayPrice').innerText = "₹" + BASE_PRICE;
-            document.getElementById('rateLabel').innerText = "₹" + RATE_PER_KM;
             document.getElementById('upi1').value = UPI_ID;
-            
-            // Populate Admin Inputs
             document.getElementById('adminBasePrice').value = BASE_PRICE;
             document.getElementById('adminRateKm').value = RATE_PER_KM;
             document.getElementById('adminPhone').value = WHATSAPP_NUMBER;
             document.getElementById('adminUPI').value = UPI_ID;
-            
+            loadCustomVillagesUI();
             calculateTotal();
         }
 
-        window.onload = initSettings;
+        window.onload = function() {
+            initSettings();
+            checkUrlForTracking();
+            setupAccordions();
+        };
 
-        // Accordion Setup
-        const accButtons = document.querySelectorAll(".accordion-btn");
-        accButtons.forEach(btn => {
-            btn.addEventListener("click", function() {
-                this.classList.toggle("active");
-                const content = this.nextElementSibling;
-                const arrow = this.querySelector("span");
-
-                if (content.style.maxHeight) {
-                    content.style.maxHeight = null;
-                    arrow.innerText = "▼";
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    arrow.innerText = "▲";
-                }
+        function setupAccordions() {
+            const accButtons = document.querySelectorAll(".accordion-btn");
+            accButtons.forEach(btn => {
+                btn.addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    const content = this.nextElementSibling;
+                    const arrow = this.querySelector("span");
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        arrow.innerText = "▼";
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        arrow.innerText = "▲";
+                    }
+                });
             });
-        });
-
-        // Toggle Form
-        function toggleOrderForm() {
-            const section = document.getElementById('orderSectionContainer');
-            if (section.style.display === "block") {
-                section.style.display = "none";
-            } else {
-                section.style.display = "block";
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
         }
 
-        // Village Dropdown Handler
+        function addCustomVillage() {
+            const name = document.getElementById('newVillageName').value.trim();
+            const km = document.getElementById('newVillageKm').value.trim();
+            const charge = document.getElementById('newVillageCharge').value.trim();
+
+            if (!name || !km || !charge) {
+                alert("❌ कृपया गांव का नाम, KM और डिलीवरी शुल्क तीनों भरें।");
+                return;
+            }
+
+            const item = { name: name, km: parseFloat(km), charge: parseFloat(charge) };
+            CUSTOM_VILLAGES.push(item);
+            localStorage.setItem('hwmd_custom_villages', JSON.stringify(CUSTOM_VILLAGES));
+            
+            document.getElementById('newVillageName').value = "";
+            document.getElementById('newVillageKm').value = "";
+            document.getElementById('newVillageCharge').value = "";
+
+            loadCustomVillagesUI();
+            alert("✅ नया गांव और डिलीवरी चार्ज जुड़ गया!");
+        }
+
+        function removeCustomVillage(index) {
+            CUSTOM_VILLAGES.splice(index, 1);
+            localStorage.setItem('hwmd_custom_villages', JSON.stringify(CUSTOM_VILLAGES));
+            loadCustomVillagesUI();
+        }
+
+        function loadCustomVillagesUI() {
+            const group = document.getElementById('customVillagesGroup');
+            const adminDisplay = document.getElementById('adminVillageListDisplay');
+            group.innerHTML = "";
+            adminDisplay.innerHTML = "";
+
+            if (CUSTOM_VILLAGES.length === 0) {
+                adminDisplay.innerHTML = "<small style='color:#777;'>कोई कस्टम गांव नहीं जुड़ा है।</small>";
+            }
+
+            CUSTOM_VILLAGES.forEach((v, idx) => {
+                const opt = document.createElement('option');
+                opt.value = v.km;
+                opt.setAttribute('data-charge', v.charge);
+                opt.textContent = `${v.name} (${v.km} KM - ₹${v.charge})`;
+                group.appendChild(opt);
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'village-item';
+                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ हटाएं</span>`;
+                adminDisplay.appendChild(itemDiv);
+            });
+        }
+
+        function toggleOrderForm() {
+            const section = document.getElementById('orderSectionContainer');
+            section.style.display = (section.style.display === "block") ? "none" : "block";
+            if(section.style.display === "block") section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showOrderSearch() {
+            const card = document.getElementById('searchOrderCard');
+            card.style.display = (card.style.display === "block") ? "none" : "block";
+        }
+
         function onVillageChange() {
-            const val = document.getElementById('villageSelect').value;
+            const select = document.getElementById('villageSelect');
+            const val = select.value;
             const distInput = document.getElementById('distance');
             
             if (val === "custom") {
@@ -561,45 +751,34 @@
             calculateTotal();
         }
 
-        // Calculation
         function calculateTotal() {
-            const distInput = document.getElementById('distance').value;
-            const km = parseFloat(distInput) || 0;
-            const delivery = km * RATE_PER_KM;
-            const total = BASE_PRICE + delivery;
+            const select = document.getElementById('villageSelect');
+            const selectedOpt = select.options[select.selectedIndex];
+            const km = parseFloat(document.getElementById('distance').value) || 0;
+            
+            let delivery = 0;
+            if (selectedOpt && selectedOpt.getAttribute('data-charge') && selectedOpt.getAttribute('data-charge') !== 'custom') {
+                delivery = parseFloat(selectedOpt.getAttribute('data-charge'));
+            } else {
+                delivery = km * RATE_PER_KM;
+            }
 
+            const total = BASE_PRICE + delivery;
             document.getElementById('deliveryCharge').innerText = "₹" + delivery;
             document.getElementById('grandTotal').innerText = "₹" + total;
         }
 
         function togglePaymentUI() {
             const method = document.getElementById('paymentMethod').value;
-            const onlineCard = document.getElementById('onlinePayCard');
-            if (method === "Cash on Delivery") {
-                onlineCard.style.display = "none";
-            } else {
-                onlineCard.style.display = "block";
-            }
+            document.getElementById('onlinePayCard').style.display = (method === "Cash on Delivery") ? "none" : "block";
         }
-
-        function openApp(pkg) {
-            window.location = `intent://#Intent;package=${pkg};end`;
-        }
-
-        document.getElementById('phonepe').onclick = (e) => { e.preventDefault(); openApp('com.phonepe.app'); };
-        document.getElementById('gpay').onclick = (e) => { e.preventDefault(); openApp('com.google.android.apps.nbu.paisa.user'); };
-        document.getElementById('paytm').onclick = (e) => { e.preventDefault(); openApp('net.one97.paytm'); };
-        document.getElementById('amazonpay').onclick = (e) => { e.preventDefault(); openApp('in.amazon.mShop.android.shopping'); };
 
         async function copyUPI(id, btn) {
             try {
-                const upiText = document.getElementById(id).value;
-                await navigator.clipboard.writeText(upiText);
+                await navigator.clipboard.writeText(document.getElementById(id).value);
                 btn.textContent = "Copied!";
                 setTimeout(() => btn.textContent = "Copy", 1500);
-            } catch (err) {
-                alert("UPI ID: " + UPI_ID);
-            }
+            } catch (err) { alert("UPI ID: " + UPI_ID); }
         }
 
         function sendOrder() {
@@ -610,66 +789,221 @@
             const paymentMethod = document.getElementById('paymentMethod').value;
 
             if (!name || !phone || !address || distance === "") {
-                alert("❌ कृपया सभी आवश्यक जानकारी (नाम, फ़ोन, गांव/दूरी और पता) भरें।");
+                alert("❌ कृपया सभी आवश्यक जानकारी भरें।");
                 return;
             }
 
             const km = parseFloat(distance) || 0;
-            const deliveryCharge = km * RATE_PER_KM;
+            const select = document.getElementById('villageSelect');
+            const selectedOpt = select.options[select.selectedIndex];
+            
+            let deliveryCharge = 0;
+            if (selectedOpt && selectedOpt.getAttribute('data-charge') && selectedOpt.getAttribute('data-charge') !== 'custom') {
+                deliveryCharge = parseFloat(selectedOpt.getAttribute('data-charge'));
+            } else {
+                deliveryCharge = km * RATE_PER_KM;
+            }
+
             const totalAmount = BASE_PRICE + deliveryCharge;
+            const orderId = "HWMD-" + Math.floor(1000 + Math.random() * 9000);
+            const orderDate = new Date().toLocaleDateString('hi-IN');
+
+            const newOrder = {
+                id: orderId,
+                name: name,
+                phone: phone,
+                address: address,
+                km: km,
+                deliveryCharge: deliveryCharge,
+                total: totalAmount,
+                payment: paymentMethod,
+                date: orderDate,
+                status: "Confirmed"
+            };
+
+            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
+            orders.unshift(newOrder);
+            localStorage.setItem('hwmd_all_orders', JSON.stringify(orders));
+
+            const trackingLink = window.location.origin + window.location.pathname + `?orderId=${orderId}`;
 
             const message = `*📦 नया मोरिंगा पाउडर ऑर्डर!*%0A%0A` +
+                `🆔 *ऑर्डर ID:* ${orderId}%0A` +
                 `👤 *नाम:* ${name}%0A` +
                 `📱 *मोबाइल:* ${phone}%0A` +
                 `📍 *डिलीवरी पता:* ${address}%0A` +
-                `🛣️ *पाटन से दूरी:* ${km} km%0A%0A` +
-                `💵 *उत्पाद मूल्य:* ₹${BASE_PRICE}%0A` +
-                `🚚 *डिलीवरी शुल्क (₹${RATE_PER_KM}/km):* ₹${deliveryCharge}%0A` +
+                `🛣️ *दूरी:* ${km} km%0A` +
+                `🚚 *डिलीवरी शुल्क:* ₹${deliveryCharge}%0A` +
                 `💰 *कुल देय राशि:* ₹${totalAmount}%0A` +
-                `💳 *भुगतान का प्रकार:* ${paymentMethod}`;
+                `💳 *भुगतान:* ${paymentMethod}%0A%0A` +
+                `🚚 *लाइव ऑर्डर ट्रैकिंग लिंक:*%0A${trackingLink}`;
 
-            const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
-            window.open(whatsappURL, '_blank');
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+            renderTrackingUI(newOrder);
         }
 
-        function toggleAdminPanel() {
-            const pin = prompt("एडमिन पिन दर्ज करें (Default: " + ADMIN_PIN + "):");
+        function searchCustomerOrder() {
+            const query = document.getElementById('trackSearchInput').value.trim();
+            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
+            const foundOrder = orders.find(o => o.id === query || o.phone === query);
+
+            if (foundOrder) {
+                renderTrackingUI(foundOrder);
+            } else {
+                alert("❌ कोई ऑर्डर नहीं मिला! सही Order ID या मोबाइल नंबर दर्ज करें।");
+            }
+        }
+
+        function checkUrlForTracking() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+            if (orderId) {
+                let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
+                const found = orders.find(o => o.id === orderId);
+                if (found) renderTrackingUI(found);
+            }
+        }
+
+        function renderTrackingUI(order) {
+            document.getElementById('orderSectionContainer').style.display = "none";
+            document.getElementById('searchOrderCard').style.display = "none";
+            const trackingSection = document.getElementById('trackingPageSection');
+            trackingSection.style.display = "block";
+
+            let step1Class = "completed";
+            let step2Class = (order.status === "Packed" || order.status === "OutForDelivery" || order.status === "Delivered") ? "completed" : "";
+            let step3Class = (order.status === "OutForDelivery" || order.status === "Delivered") ? "completed" : "";
+            let step4Class = (order.status === "Delivered") ? "completed" : "";
+
+            const html = `
+                <div style="background:#e8f5e9; padding:10px; border-radius:6px; margin-bottom:12px;">
+                    <strong>Order ID:</strong> ${order.id}<br>
+                    <strong>ग्राहक का नाम:</strong> ${order.name}<br>
+                    <strong>कुल राशि:</strong> ₹${order.total} (${order.payment})
+                </div>
+
+                <div class="tracking-status-box">
+                    <h3>🚚 डिलीवरी स्थिति Timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-step ${step1Class}">
+                            <div class="timeline-title">🟢 Order Confirmed</div>
+                            <div class="timeline-date">${order.date} - ऑर्डर प्राप्त हुआ</div>
+                        </div>
+                        <div class="timeline-step ${step2Class}">
+                            <div class="timeline-title">📦 Packed & Ready</div>
+                            <div class="timeline-date">सामान पैक हो चुका है</div>
+                        </div>
+                        <div class="timeline-step ${step3Class}">
+                            <div class="timeline-title">🛵 Out for Delivery</div>
+                            <div class="timeline-date">डिलीवरी के लिए निकला (पाटन)</div>
+                        </div>
+                        <div class="timeline-step ${step4Class}">
+                            <div class="timeline-title">🏁 Delivered</div>
+                            <div class="timeline-date">सफलतापूर्वक डिलीवर हो गया</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('trackingDetails').innerHTML = html;
+            trackingSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function openAdminOrders() {
+            const pin = prompt("एडमिन पिन दर्ज करें:");
             if (pin === ADMIN_PIN) {
-                const panel = document.getElementById('adminPanel');
-                panel.style.display = panel.style.display === "block" ? "none" : "block";
+                const section = document.getElementById('adminOrdersSection');
+                section.style.display = "block";
+                loadAdminOrdersTable();
+                section.scrollIntoView({ behavior: 'smooth' });
             } else if (pin !== null) {
                 alert("❌ गलत पिन!");
             }
         }
 
-        // Save Admin Settings Permanently in LocalStorage
-        function saveAdminSettings() {
-            BASE_PRICE = parseFloat(document.getElementById('adminBasePrice').value) || 280;
-            RATE_PER_KM = parseFloat(document.getElementById('adminRateKm').value) || 3;
-            WHATSAPP_NUMBER = document.getElementById('adminPhone').value.trim() || "916267637741";
-            UPI_ID = document.getElementById('adminUPI').value.trim() || "msccreate7@okhdfcbank";
-            
-            const newPin = document.getElementById('adminPinInput').value.trim();
-            if (newPin !== "") {
-                ADMIN_PIN = newPin;
-                localStorage.setItem('hwmd_pin', ADMIN_PIN);
+        function loadAdminOrdersTable() {
+            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
+            const tbody = document.getElementById('adminOrdersTableBody');
+            tbody.innerHTML = "";
+
+            if (orders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">कोई ऑर्डर नहीं मिला।</td></tr>`;
+                return;
             }
 
-            // Save to LocalStorage
+            orders.forEach((o, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><b>${o.id}</b></td>
+                    <td>${o.name}</td>
+                    <td><a href="tel:${o.phone}">${o.phone}</a></td>
+                    <td>${o.address} (${o.km} km)</td>
+                    <td>₹${o.total}</td>
+                    <td>
+                        <select onchange="updateOrderStatus(${index}, this.value)">
+                            <option value="Confirmed" ${o.status==='Confirmed'?'selected':''}>Confirmed</option>
+                            <option value="Packed" ${o.status==='Packed'?'selected':''}>Packed</option>
+                            <option value="OutForDelivery" ${o.status==='OutForDelivery'?'selected':''}>Out for Delivery</option>
+                            <option value="Delivered" ${o.status==='Delivered'?'selected':''}>Delivered</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateOrderStatus(index, newStatus) {
+            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
+            orders[index].status = newStatus;
+            localStorage.setItem('hwmd_all_orders', JSON.stringify(orders));
+            alert("✅ ऑर्डर स्टेटस अपडेट हो गया!");
+        }
+
+        function toggleAdminPanel() {
+            const pin = prompt("एडमिन पिन दर्ज करें:");
+            if (pin === ADMIN_PIN) {
+                const panel = document.getElementById('adminPanel');
+                panel.style.display = (panel.style.display === "block") ? "none" : "block";
+            } else if (pin !== null) {
+                alert("❌ गलत पिन!");
+            }
+        }
+
+        function saveAdminSettings() {
+            BASE_PRICE = parseFloat(document.getElementById('adminBasePrice').value) || 280;
+            RATE_PER_KM = parseFloat(document.getElementById('adminRateKm').value) || 2;
+            WHATSAPP_NUMBER = document.getElementById('adminPhone').value.trim() || "916267637741";
+            UPI_ID = document.getElementById('adminUPI').value.trim() || "msccreate7@okhdfcbank";
+
+            const currentPinInput = document.getElementById('currentPinInput').value.trim();
+            const newPinInput = document.getElementById('newPinInput').value.trim();
+            const confirmPinInput = document.getElementById('confirmPinInput').value.trim();
+
+            if (newPinInput !== "") {
+                if (currentPinInput !== ADMIN_PIN) {
+                    alert("❌ पुराना पासवर्ड/PIN गलत है!");
+                    return;
+                }
+                if (newPinInput !== confirmPinInput) {
+                    alert("❌ नया PIN और Confirm PIN आपस में मेल नहीं खा रहे हैं!");
+                    return;
+                }
+                ADMIN_PIN = newPinInput;
+                localStorage.setItem('hwmd_pin', ADMIN_PIN);
+                alert("🔐 एडमिन PIN सफलतापूर्वक बदल दिया गया है!");
+            }
+
             localStorage.setItem('hwmd_base_price', BASE_PRICE);
             localStorage.setItem('hwmd_rate_km', RATE_PER_KM);
             localStorage.setItem('hwmd_whatsapp', WHATSAPP_NUMBER);
             localStorage.setItem('hwmd_upi', UPI_ID);
 
-            // Update UI
-            document.getElementById('displayPrice').innerText = "₹" + BASE_PRICE;
-            document.getElementById('rateLabel').innerText = "₹" + RATE_PER_KM;
-            document.getElementById('upi1').value = UPI_ID;
-
-            calculateTotal();
-            alert("✅ सेटिंग्स सफलतापूर्वक हमेशा के लिए सेव हो गईं!");
+            initSettings();
+            alert("✅ सेटिंग्स सफलतापूर्वक सेव हो गईं!");
             document.getElementById('adminPanel').style.display = "none";
-            document.getElementById('adminPinInput').value = "";
+            
+            document.getElementById('currentPinInput').value = "";
+            document.getElementById('newPinInput').value = "";
+            document.getElementById('confirmPinInput').value = "";
         }
     </script>
 </body>
