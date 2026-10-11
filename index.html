@@ -76,14 +76,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
             position: relative;
-        }
-
-        .grid-product-box:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
         }
 
         .sale-badge {
@@ -101,13 +94,15 @@
 
         .grid-product-img {
             width: 100%;
-            height: 150px;
+            height: 140px;
             object-fit: cover;
             background: #f9f9f9;
+            cursor: pointer;
         }
 
         .grid-product-info {
             padding: 8px;
+            cursor: pointer;
         }
 
         .grid-product-title {
@@ -127,23 +122,23 @@
             display: flex;
             align-items: baseline;
             gap: 5px;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         .current-price {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: bold;
             color: #2e7d32;
         }
 
         .old-price {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: #888;
             text-decoration: line-through;
         }
 
         .offer-tag {
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             color: #d32f2f;
             font-weight: bold;
         }
@@ -152,46 +147,48 @@
             display: inline-block;
             background: #2e7d32;
             color: white;
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             font-weight: bold;
-            padding: 2px 5px;
+            padding: 2px 4px;
             border-radius: 4px;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .btn-order-grid {
             width: 100%;
             background-color: #ff9800;
             color: white;
-            padding: 8px;
+            padding: 7px;
             border: none;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: bold;
             cursor: pointer;
             text-align: center;
         }
 
-        /* COMPACT / CHHOTA BUTTON STYLES FOR EACH SECTION */
+        /* PRODUCT INNER BUTTONS FOR VIDEO AND SCIENTIFIC INFO */
+        .prod-extra-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 6px;
+            background: #fbfbfb;
+            border-top: 1px solid #f0f0f0;
+        }
+
         .btn-small-toggle {
             width: 100%;
-            padding: 9px 12px;
-            border-radius: 8px;
+            padding: 5px 6px;
+            border-radius: 6px;
             border: 1px solid #c8e6c9;
             background: #e8f5e9;
             color: #1b5e20;
-            font-size: 0.85rem;
+            font-size: 0.72rem;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: background 0.2s;
-        }
-
-        .btn-small-toggle:hover {
-            background: #c8e6c9;
         }
 
         .btn-small-toggle.yt-btn {
@@ -200,14 +197,12 @@
             border-color: #ffcdd2;
         }
 
-        .btn-small-toggle.yt-btn:hover {
-            background: #ffcdd2;
-        }
-
         .collapsible-content {
             display: none;
-            padding: 10px 0 5px 0;
-            margin-top: 8px;
+            padding: 8px;
+            background: #fafafa;
+            border-top: 1px dashed #ccc;
+            font-size: 0.78rem;
         }
 
         /* POPUP ORDER MODAL STYLES */
@@ -363,40 +358,6 @@
             box-shadow: 0 3px 8px rgba(37, 211, 102, 0.3);
         }
 
-        .accordion-btn {
-            background-color: #f1f8f1;
-            color: #1b5e20;
-            cursor: pointer;
-            padding: 8px 10px;
-            width: 100%;
-            border: 1px solid #d4ebd4;
-            text-align: left;
-            font-size: 0.82rem;
-            font-weight: 600;
-            border-radius: 6px;
-            margin-top: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .accordion-content {
-            padding: 0 10px;
-            background-color: #fafafa;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            border-left: 3px solid #2e7d32;
-            margin-bottom: 4px;
-            border-radius: 0 0 6px 6px;
-        }
-
-        .accordion-content p, .accordion-content ul {
-            padding: 6px 0;
-            font-size: 0.82rem;
-            color: #444;
-        }
-
         .admin-btn {
             background: #555;
             color: white;
@@ -485,8 +446,8 @@
             padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
-            border-radius: 8px;
-            margin-top: 8px;
+            border-radius: 6px;
+            margin-top: 6px;
             border: 1px solid #ccc;
         }
 
@@ -496,18 +457,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-        }
-
-        .video-btn-link {
-            display: inline-block;
-            background: #FF0000;
-            color: white;
-            padding: 6px 10px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.8rem;
-            margin-top: 6px;
         }
 
         .village-list-admin {
@@ -587,68 +536,6 @@
         <h2 style="margin-left: 5px;">🛒 उपलब्ध उत्पाद (Products)</h2>
         <div class="products-grid" id="productsGridContainer"></div>
 
-        <!-- 1. YOUTUBE VIDEOS BUTTON & BOX (TOP) -->
-        <div class="card" style="padding: 10px;">
-            <button class="btn-small-toggle yt-btn" onclick="toggleSection('youtubeSection', this)">
-                <span>▶️ YouTube वीडियोस व उपयोग गाइड</span>
-                <span id="ytArrow">▼</span>
-            </button>
-            <div id="youtubeSection" class="collapsible-content">
-                <p style="font-size:0.8rem; color:#555; margin-bottom:8px;">
-                    मोरिंगा (सहजन) पाउडर का सेवन कैसे करें और इसके चमत्कारी फायदों के बारे में आसान भाषा में समझने के लिए वीडियो देखें:
-                </p>
-
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/kuKKWB8F_uU" title="Moringa Powder Benefits Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <a href="https://www.youtube.com/watch?v=kuKKWB8F_uU" target="_blank" class="video-btn-link">▶️ YouTube पर देखें (फायदे)</a>
-
-                <div class="video-container" style="margin-top:10px;">
-                    <iframe src="https://www.youtube.com/embed/adrh48SuWck" title="Best Ways to Use Moringa Powder" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <a href="https://www.youtube.com/watch?v=adrh48SuWck" target="_blank" class="video-btn-link">▶️ YouTube पर देखें (सेवन विधि)</a>
-            </div>
-        </div>
-
-        <!-- 2. SCIENTIFIC INFO BUTTON & BOX (RIGHT BELOW YOUTUBE SECTION) -->
-        <div class="card" style="padding: 10px;">
-            <button class="btn-small-toggle" onclick="toggleSection('scientificSection', this)">
-                <span>📖 उत्पाद की वैज्ञानिक जानकारी व फायदे</span>
-                <span id="sciArrow">▼</span>
-            </button>
-            <div id="scientificSection" class="collapsible-content">
-                <button type="button" class="accordion-btn">🔬 वैज्ञानिक शोध और पोषण संबंधी तथ्य <span>▼</span></button>
-                <div class="accordion-content">
-                    <p>मोरिंगा ओलीफेरा (Moringa Oleifera) को दुनिया भर में <strong>"मिरेकल ट्री"</strong> या सुपरफूड के रूप में मान्यता प्राप्त है। वैज्ञानिक अध्ययनों के अनुसार इसमें 92 से अधिक पोषक तत्व और 46 प्रकार के एंटीऑक्सीडेंट पाए जाते हैं।</p>
-                    <ul>
-                        <li><strong>पालक से 25 गुना अधिक आयरन:</strong> शरीर में हीमोग्लोबिन बढ़ाता है।</li>
-                        <li><strong>संतरे से 7 गुना अधिक विटामिन C:</strong> प्राकृतिक इम्युनिटी मज़बूत करता है।</li>
-                        <li><strong>दूध से 4 गुना अधिक कैल्शियम:</strong> हड्डियों को मज़बूत बनाता है।</li>
-                        <li><strong>केले से 15 गुना अधिक पोटैशियम:</strong> बीपी और हार्ट को हेल्दी रखता है।</li>
-                    </ul>
-                </div>
-
-                <button type="button" class="accordion-btn">💡 शुगर, बीपी और मोटापा नियंत्रण <span>▼</span></button>
-                <div class="accordion-content">
-                    <ul>
-                        <li><strong>डायबिटीज:</strong> ब्लड शुगर लेवल को नियंत्रित करने में सहायक।</li>
-                        <li><strong>कोलेस्ट्रॉल:</strong> खराब कोलेस्ट्रॉल को कम करने में मददगार।</li>
-                        <li><strong>वजन घटाना:</strong> मेटाबॉलिज्म बढ़ाता है और चर्बी बर्न करता है।</li>
-                        <li><strong>त्वचा और बाल:</strong> स्किन को जवां रखता है और बाल झड़ने से रोकता है।</li>
-                    </ul>
-                </div>
-
-                <button type="button" class="accordion-btn">🥄 सही सेवन विधि (How to Use) <span>▼</span></button>
-                <div class="accordion-content">
-                    <p><strong>खुराक:</strong> प्रतिदिन 1 चम्मच (3-5 ग्राम)।</p>
-                    <ul>
-                        <li>सुबह खाली पेट 1 गिलास गुनगुने पानी के साथ।</li>
-                        <li>दाल, सब्जी, सूप या मट्ठे के साथ मिलाकर।</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
         <!-- ADMIN ORDERS DASHBOARD -->
         <div class="card" id="adminOrdersSection" style="display:none;">
             <h2>📋 सभी ग्राहकों के ऑर्डर (Admin Panel)</h2>
@@ -694,6 +581,9 @@
             <input type="number" id="newProdPrice" placeholder="कीमत (₹)" style="margin-top:4px;">
             <input type="text" id="newProdDesc" placeholder="छोटा विवरण" style="margin-top:4px;">
             <input type="text" id="newProdImg" placeholder="Image URL (गूगल/फोटो लिंक)" style="margin-top:4px;">
+            <input type="text" id="newProdYt" placeholder="YouTube Embed URL (Optional)" style="margin-top:4px;">
+            <textarea id="newProdInfo" placeholder="उत्पाद की वैज्ञानिक/विशेष जानकारी (Optional)" style="margin-top:4px; height:50px;"></textarea>
+            
             <button type="button" class="copy-btn" style="background:#1b5e20; width:100%; margin-top:8px;" onclick="addNewProductAdmin()">➕ नया प्रोडक्ट सेव करें</button>
 
             <label style="margin-top:8px;">अतिरिक्त प्रोडक्ट्स:</label>
@@ -778,7 +668,7 @@
 
                 <label>भुगतान का प्रकार *</label>
                 <select id="modalPaymentMethod" onchange="toggleModalPaymentUI()">
-                    <option value="Online Payment">Online Payment (UPI / PhonePe / GPay)</option>
+                    <option value="Online Payment">Online Payment (Google Pay / PhonePe / UPI)</option>
                     <option value="Cash on Delivery">Cash on Delivery (COD)</option>
                 </select>
 
@@ -788,14 +678,14 @@
                 </div>
 
                 <div id="modalOnlinePayBox" style="margin-top:10px;">
-                    <label style="font-size:0.8rem; color:#1b5e20;">💰 UPI Payment ID:</label>
+                    <label style="font-size:0.8rem; color:#1b5e20;">💰 Google Pay / PhonePe UPI ID:</label>
                     <div class="upi-box">
                         <input id="modalUpi" class="upi-input" value="" readonly>
                         <button type="button" class="copy-btn" onclick="copyUPI('modalUpi', this)">Copy</button>
                     </div>
                     <div class="app-list">
-                        <a href="#" id="modalPhonepe">📱 PhonePe</a>
-                        <a href="#" id="modalGpay">💸 Google Pay</a>
+                        <a href="#" id="modalPhonepe">📱 PhonePe से भुगतान करें</a>
+                        <a href="#" id="modalGpay">💸 Google Pay से भुगतान करें</a>
                     </div>
                 </div>
 
@@ -832,41 +722,18 @@
         window.onload = function() {
             initSettings();
             checkUrlForTracking();
-            setupAccordions();
         };
 
-        // COMPACT ONE-CLICK TOGGLE FUNCTION FOR SMALL BUTTONS
-        function toggleSection(sectionId, btnElement) {
-            const section = document.getElementById(sectionId);
-            const arrow = btnElement.querySelector("span:last-child");
-            if (section.style.display === "block") {
-                section.style.display = "none";
-                arrow.innerText = "▼";
+        function toggleProdBox(id) {
+            const el = document.getElementById(id);
+            if (el.style.display === "block") {
+                el.style.display = "none";
             } else {
-                section.style.display = "block";
-                arrow.innerText = "▲";
+                el.style.display = "block";
             }
         }
 
-        function setupAccordions() {
-            const accButtons = document.querySelectorAll(".accordion-btn");
-            accButtons.forEach(btn => {
-                btn.addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    const content = this.nextElementSibling;
-                    const arrow = this.querySelector("span");
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                        arrow.innerText = "▼";
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + "px";
-                        arrow.innerText = "▲";
-                    }
-                });
-            });
-        }
-
-        // RENDER PRODUCTS AS COMPACT MEESHO-STYLE BOXES
+        // RENDER PRODUCTS AS COMPACT BOXES WITH INSIDE BUTTONS FOR YOUTUBE/INFO
         function renderProductsGrid() {
             const gridContainer = document.getElementById('productsGridContainer');
             const adminDisplay = document.getElementById('adminProductListDisplay');
@@ -879,7 +746,11 @@
                     oldPrice: BASE_PRICE + 70,
                     desc: "100% शुद्ध पाउडर",
                     img: "https://lh3.googleusercontent.com/d/1j-NSDvtOGRN-oub4OGHThPuTkylMU9R5=s1000",
-                    rating: "4.8 ★"
+                    rating: "4.8 ★",
+                    hasVideo: true,
+                    hasInfo: true,
+                    videoUrl: "https://www.youtube.com/embed/kuKKWB8F_uU",
+                    infoText: "<b>🔬 वैज्ञानिक तथ्य:</b><br>• पालक से 25x अधिक आयरन<br>• दूध से 4x अधिक कैल्शियम<br>• संतरे से 7x अधिक विट C<br><b>💡 फायदे:</b> शुगर, बीपी व मोटापा नियंत्रण।"
                 },
                 ...CUSTOM_PRODUCTS
             ];
@@ -894,20 +765,47 @@
                     adminListHTML += `
                         <div class="village-item">
                             <span><b>${p.title}</b> - ₹${p.price}</span> 
-                            <span class="del-btn" onclick="removeProductAdmin(${idx})">🗑️ बताएं</span>
+                            <span class="del-btn" onclick="removeProductAdmin(${idx})">🗑️ हटाएं</span>
                         </div>
                     `;
                 });
             }
             adminDisplay.innerHTML = adminListHTML;
 
-            allProducts.forEach((p) => {
+            allProducts.forEach((p, idx) => {
                 const oldP = p.oldPrice || (p.price + 50);
+                const uniqueId = "prod_box_" + idx;
+                
+                let extraBtnsHTML = "";
+                if (p.hasVideo || p.videoUrl) {
+                    extraBtnsHTML += `
+                        <button class="btn-small-toggle yt-btn" onclick="toggleProdBox('yt_${uniqueId}')">
+                            <span>▶️ Video</span> <span>▼</span>
+                        </button>
+                        <div id="yt_${uniqueId}" class="collapsible-content">
+                            <div class="video-container">
+                                <iframe src="${p.videoUrl || 'https://www.youtube.com/embed/kuKKWB8F_uU'}" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (p.hasInfo || p.infoText) {
+                    extraBtnsHTML += `
+                        <button class="btn-small-toggle" onclick="toggleProdBox('info_${uniqueId}')">
+                            <span>📖 जानकारी</span> <span>▼</span>
+                        </button>
+                        <div id="info_${uniqueId}" class="collapsible-content">
+                            ${p.infoText || '100% प्राकृतिक और आयुर्वेदिक उत्पाद।'}
+                        </div>
+                    `;
+                }
+
                 gridHTML += `
-                    <div class="grid-product-box" onclick="openOrderModal('${p.title}', ${p.price})">
+                    <div class="grid-product-box">
                         <span class="sale-badge">Maha Deal</span>
-                        <img src="${p.img}" alt="${p.title}" class="grid-product-img" onerror="this.src='https://via.placeholder.com/300x300?text=Product'">
-                        <div class="grid-product-info">
+                        <img src="${p.img}" alt="${p.title}" class="grid-product-img" onclick="openOrderModal('${p.title}', ${p.price})" onerror="this.src='https://via.placeholder.com/300x300?text=Product'">
+                        <div class="grid-product-info" onclick="openOrderModal('${p.title}', ${p.price})">
                             <div class="grid-product-title">${p.title}</div>
                             <div class="price-row">
                                 <span class="current-price">₹${p.price}</span>
@@ -916,7 +814,10 @@
                             </div>
                             <span class="rating-chip">${p.rating || '4.5 ★'} Bestseller</span>
                         </div>
-                        <button type="button" class="btn-order-grid">🛒 अभी ऑर्डर करें</button>
+
+                        ${extraBtnsHTML ? `<div class="prod-extra-btns">${extraBtnsHTML}</div>` : ''}
+
+                        <button type="button" class="btn-order-grid" onclick="openOrderModal('${p.title}', ${p.price})">🛒 अभी ऑर्डर करें</button>
                     </div>
                 `;
             });
@@ -1043,6 +944,8 @@
             const price = document.getElementById('newProdPrice').value.trim();
             const desc = document.getElementById('newProdDesc').value.trim();
             const img = document.getElementById('newProdImg').value.trim();
+            const videoUrl = document.getElementById('newProdYt').value.trim();
+            const infoText = document.getElementById('newProdInfo').value.trim();
 
             if (!title || !price) {
                 alert("❌ कृपया उत्पाद का नाम और कीमत दर्ज करें!");
@@ -1054,7 +957,9 @@
                 title: title,
                 price: parseFloat(price),
                 desc: desc || "100% शुद्ध उत्पाद",
-                img: img || "https://via.placeholder.com/300x300?text=" + encodeURIComponent(title)
+                img: img || "https://via.placeholder.com/300x300?text=" + encodeURIComponent(title),
+                videoUrl: videoUrl,
+                infoText: infoText
             };
 
             CUSTOM_PRODUCTS.push(newProd);
@@ -1064,6 +969,8 @@
             document.getElementById('newProdPrice').value = "";
             document.getElementById('newProdDesc').value = "";
             document.getElementById('newProdImg').value = "";
+            document.getElementById('newProdYt').value = "";
+            document.getElementById('newProdInfo').value = "";
 
             renderProductsGrid();
             alert("✅ नया उत्पाद स्टोर में जुड़ गया है!");
@@ -1114,7 +1021,7 @@
             CUSTOM_VILLAGES.forEach((v, idx) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'village-item';
-                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ बताएं</span>`;
+                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ हटाएं</span>`;
                 adminDisplay.appendChild(itemDiv);
             });
         }
