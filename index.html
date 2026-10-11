@@ -166,7 +166,6 @@
             text-align: center;
         }
 
-        /* PRODUCT INNER BUTTONS FOR VIDEO AND SCIENTIFIC INFO */
         .prod-extra-btns {
             display: flex;
             flex-direction: column;
@@ -323,7 +322,6 @@
             font-size: 0.85rem;
         }
 
-        /* FIXED PAYMENT BUTTONS STYLES */
         .app-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -431,27 +429,35 @@
         .timeline-step.completed::before { background: #2e7d32; }
         .timeline-step.cancelled::before { background: #d32f2f; content: '✕'; }
 
-        /* FIXED ADMIN TABLE LAYOUT & RESPONISVENESS */
+        /* SCROLLABLE TABLE CONTAINER SO NO COLUMNS ARE HIDDEN ON MOBILE */
+        .table-responsive-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
         .order-table {
             width: 100%;
-            min-width: 480px;
+            min-width: 500px;
             border-collapse: collapse;
-            margin-top: 10px;
             font-size: 0.78rem;
         }
 
         .order-table th, .order-table td {
             border: 1px solid #ddd;
-            padding: 6px 4px;
+            padding: 6px 5px;
             text-align: left;
             vertical-align: top;
         }
 
-        .order-table th { background-color: #2e7d32; color: white; }
+        .order-table th { background-color: #2e7d32; color: white; white-space: nowrap; }
 
         .status-select {
             width: 100%;
-            padding: 4px;
+            padding: 3px;
             font-size: 0.75rem;
             border-radius: 4px;
             border: 1px solid #aaa;
@@ -572,14 +578,16 @@
         <!-- ADMIN ORDERS DASHBOARD -->
         <div class="card" id="adminOrdersSection" style="display:none;">
             <h2>📋 सभी ग्राहकों के ऑर्डर (Admin Panel)</h2>
-            <div style="overflow-x:auto;">
+            <small style="color:#666;">(बाएं/दाएं स्वाइप करें agar sabhi columns na dikhein):</small>
+            
+            <div class="table-responsive-wrapper">
                 <table class="order-table">
                     <thead>
                         <tr>
-                            <th style="width:25%;">Order ID</th>
-                            <th style="width:22%;">Mobile</th>
-                            <th style="width:25%;">Product</th>
-                            <th style="width:28%;">Status & Action</th>
+                            <th style="width:22%;">Order ID & Name</th>
+                            <th style="width:20%;">Mobile</th>
+                            <th style="width:25%;">Product & Total</th>
+                            <th style="width:33%;">Status & Action</th>
                         </tr>
                     </thead>
                     <tbody id="adminOrdersTableBody"></tbody>
@@ -766,7 +774,6 @@
             }
         }
 
-        // RENDER PRODUCTS AS COMPACT BOXES WITH INSIDE BUTTONS FOR YOUTUBE/INFO
         function renderProductsGrid() {
             const gridContainer = document.getElementById('productsGridContainer');
             const adminDisplay = document.getElementById('adminProductListDisplay');
@@ -858,7 +865,6 @@
             gridContainer.innerHTML = gridHTML;
         }
 
-        // OPEN MODAL FORM WHEN A PRODUCT BOX IS CLICKED
         function openOrderModal(title, price) {
             currentActiveProduct = { title: title, price: price };
             document.getElementById('modalProdTitle').value = title;
@@ -971,7 +977,6 @@
             renderTrackingUI(newOrder);
         }
 
-        // ADD & MANAGE PRODUCTS (ADMIN)
         function addNewProductAdmin() {
             const title = document.getElementById('newProdTitle').value.trim();
             const price = document.getElementById('newProdPrice').value.trim();
@@ -1054,7 +1059,7 @@
             CUSTOM_VILLAGES.forEach((v, idx) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'village-item';
-                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ हटाएं</span>`;
+                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ बनाएं</span>`;
                 adminDisplay.appendChild(itemDiv);
             });
         }
@@ -1230,7 +1235,7 @@
                             <option value="Delivered" ${o.status==='Delivered'?'selected':''}>Delivered</option>
                             <option value="Cancelled" ${o.status==='Cancelled'?'selected':''}>Cancelled</option>
                         </select>
-                        <button class="btn-view-track" onclick="adminViewOrderTrack('${o.id}')">👁️ View Track</button>
+                        <button class="btn-view-track" onclick="adminViewOrderTrack('${o.id}')">👁️ Track Status</button>
                         <button class="notify-whatsapp-btn" onclick="sendWhatsAppNotification('${o.phone}', '${o.id}', '${o.status}', '${trackingLink}')">📤 Notify</button>
                     </td>
                 `;
@@ -1266,7 +1271,7 @@
             let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
             orders[index].status = newStatus;
             localStorage.setItem('hwmd_all_orders', JSON.stringify(orders));
-            alert("✅ ऑर्डर स्टेटस अपडेट हो गया! (ग्राहक अब लाइव स्टेटस देख सकता है)");
+            alert("✅ ऑर्डर स्टेटस अपडेट हो गया!");
             loadAdminOrdersTable();
         }
 
