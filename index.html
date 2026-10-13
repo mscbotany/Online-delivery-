@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HWMD Health & Wellness Store</title>
+    
+    <!-- Firebase App & Realtime Database CDN (Compat version for seamless global usage) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -429,9 +434,18 @@
         .timeline-step.completed::before { background: #2e7d32; }
         .timeline-step.cancelled::before { background: #d32f2f; content: '✕'; }
 
-        /* TABLE CSS FIX */
+        .table-responsive-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+
         .order-table {
             width: 100%;
+            min-width: 500px;
             border-collapse: collapse;
             font-size: 0.78rem;
         }
@@ -443,7 +457,7 @@
             vertical-align: middle;
         }
 
-        .order-table th { background-color: #2e7d32; color: white; }
+        .order-table th { background-color: #2e7d32; color: white; white-space: nowrap; }
 
         .status-select {
             width: 100%;
@@ -570,7 +584,7 @@
         <!-- ADMIN ORDERS DASHBOARD -->
         <div class="card" id="adminOrdersSection" style="display:none;">
             <h2>📋 सभी ग्राहकों के ऑर्डर (Admin Panel)</h2>
-            <div style="overflow-x:auto; margin-top:8px;">
+            <div class="table-responsive-wrapper">
                 <table class="order-table">
                     <thead>
                         <tr>
@@ -726,17 +740,76 @@
     </div>
 
     <script>
-        let BASE_PRICE = parseFloat(localStorage.getItem('hwmd_base_price')) || 280;
-        let RATE_PER_KM = parseFloat(localStorage.getItem('hwmd_rate_km')) || 2;
-        let WHATSAPP_NUMBER = localStorage.getItem('hwmd_whatsapp') || "916267637741";
-        let UPI_ID = localStorage.getItem('hwmd_upi') || "msccreate7@okhdfcbank";
-        let ADMIN_PIN = localStorage.getItem('hwmd_pin') || "1234";
-        let CUSTOM_VILLAGES = JSON.parse(localStorage.getItem('hwmd_custom_villages')) || [];
-        let CUSTOM_PRODUCTS = JSON.parse(localStorage.getItem('hwmd_custom_products')) || [];
+        // FIREBASE INITIALIZATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyBjkScnXVG1ZawtJBsIG77ffj3eGRXjPZ0",
+            authDomain: "hwmd-store.firebaseapp.com",
+            databaseURL: "https://hwmd-store-default-rtdb.firebaseio.com",
+            projectId: "hwmd-store",
+            storageBucket: "hwmd-store.firebasestorage.app",
+            messagingSenderId: "558970676696",
+            appId: "1:558970676696:web:4451fab16502b99429bead"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // GLOBAL APP STATES SYNCED FROM FIREBASE
+        let BASE_PRICE = 280;
+        let RATE_PER_KM = 2;
+        let WHATSAPP_NUMBER = "916267637741";
+        let UPI_ID = "msccreate7@okhdfcbank";
+        let ADMIN_PIN = "1234";
+        let CUSTOM_VILLAGES = [];
+        let CUSTOM_PRODUCTS = [];
+        let ALL_ORDERS = [];
 
         let currentActiveProduct = null;
 
-        function initSettings() {
+        // REAL-TIME LISTENERS TO SYNC DATA ACROSS ALL DEVICES
+        function initFirebaseListeners() {
+            // Listen to Settings
+            db.ref('hwmd_settings').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    BASE_PRICE = data.basePrice !== undefined ? data.basePrice : 280;
+                    RATE_PER_KM = data.rateKm !== undefined ? data.rateKm : 2;
+                    WHATSAPP_NUMBER = data.whatsapp || "916267637741";
+                    UPI_ID = data.upi || "msccreate7@okhdfcbank";
+                    ADMIN_PIN = data.pin || "1234";
+                }
+                updateSettingsUI();
+                renderProductsGrid();
+            });
+
+            // Listen to Custom Products
+            db.ref('hwmd_custom_products').on('value', (snapshot) => {
+                const data = snapshot.val();
+                CUSTOM_PRODUCTS = data ? Object.values(data) : [];
+                renderProductsGrid();
+            });
+
+            // Listen to Custom Villages
+            db.ref('hwmd_custom_villages').on('value', (snapshot) => {
+                const data = snapshot.val();
+                CUSTOM_VILLAGES = data ? Object.values(data) : [];
+                loadCustomVillagesUI();
+            });
+
+            // Listen to Orders
+            db.ref('hwmd_all_orders').on('value', (snapshot) => {
+                const data = snapshot.val();
+                ALL_ORDERS = data ? Object.values(data) : [];
+                // Sort descending by timestamp
+                ALL_ORDERS.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                
+                if(document.getElementById('adminOrdersSection').style.display === "block") {
+                    loadAdminOrdersTable();
+                }
+                checkUrlForTracking();
+            });
+        }
+
+        function updateSettingsUI() {
             document.getElementById('adminBasePrice').value = BASE_PRICE;
             document.getElementById('adminRateKm').value = RATE_PER_KM;
             document.getElementById('adminPhone').value = WHATSAPP_NUMBER;
@@ -745,14 +818,10 @@
             
             document.getElementById('modalPhonepe').onclick = (e) => { e.preventDefault(); openApp('com.phonepe.app'); };
             document.getElementById('modalGpay').onclick = (e) => { e.preventDefault(); openApp('com.google.android.apps.nbu.paisa.user'); };
-
-            loadCustomVillagesUI();
-            renderProductsGrid();
         }
 
         window.onload = function() {
-            initSettings();
-            checkUrlForTracking();
+            initFirebaseListeners();
         };
 
         function toggleProdBox(id) {
@@ -795,7 +864,7 @@
                     adminListHTML += `
                         <div class="village-item">
                             <span><b>${p.title}</b> - ₹${p.price}</span> 
-                            <span class="del-btn" onclick="removeProductAdmin(${idx})">🗑️ हटाएं</span>
+                            <span class="del-btn" onclick="removeProductAdmin('${p.firebaseKey || idx}')">🗑️ हटाएं</span>
                         </div>
                     `;
                 });
@@ -944,9 +1013,8 @@
                 status: "Confirmed"
             };
 
-            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
-            orders.unshift(newOrder);
-            localStorage.setItem('hwmd_all_orders', JSON.stringify(orders));
+            // Save order to Firebase Database
+            db.ref('hwmd_all_orders/' + orderId).set(newOrder);
 
             const trackingLink = window.location.origin + window.location.pathname + `?orderId=${orderId}`;
 
@@ -967,6 +1035,7 @@
             renderTrackingUI(newOrder);
         }
 
+        // ADD & REMOVE PRODUCTS IN FIREBASE
         function addNewProductAdmin() {
             const title = document.getElementById('newProdTitle').value.trim();
             const price = document.getElementById('newProdPrice').value.trim();
@@ -980,7 +1049,9 @@
                 return;
             }
 
+            const newProdRef = db.ref('hwmd_custom_products').push();
             const newProd = {
+                firebaseKey: newProdRef.key,
                 id: "PROD-" + Date.now(),
                 title: title,
                 price: parseFloat(price),
@@ -990,8 +1061,7 @@
                 infoText: infoText
             };
 
-            CUSTOM_PRODUCTS.push(newProd);
-            localStorage.setItem('hwmd_custom_products', JSON.stringify(CUSTOM_PRODUCTS));
+            newProdRef.set(newProd);
 
             document.getElementById('newProdTitle').value = "";
             document.getElementById('newProdPrice').value = "";
@@ -1000,16 +1070,16 @@
             document.getElementById('newProdYt').value = "";
             document.getElementById('newProdInfo').value = "";
 
-            renderProductsGrid();
-            alert("✅ नया उत्पाद स्टोर में जुड़ गया है!");
+            alert("✅ नया उत्पाद स्टोर में लाइव जुड़ गया है!");
         }
 
-        function removeProductAdmin(index) {
-            CUSTOM_PRODUCTS.splice(index, 1);
-            localStorage.setItem('hwmd_custom_products', JSON.stringify(CUSTOM_PRODUCTS));
-            renderProductsGrid();
+        function removeProductAdmin(key) {
+            if(confirm("क्या आप वाकई इस प्रोडक्ट को हटाना चाहते हैं?")) {
+                db.ref('hwmd_custom_products/' + key).remove();
+            }
         }
 
+        // ADD & REMOVE VILLAGES IN FIREBASE
         function addCustomVillage() {
             const name = document.getElementById('newVillageName').value.trim();
             const km = document.getElementById('newVillageKm').value.trim();
@@ -1020,22 +1090,19 @@
                 return;
             }
 
-            const item = { name: name, km: parseFloat(km), charge: parseFloat(charge) };
-            CUSTOM_VILLAGES.push(item);
-            localStorage.setItem('hwmd_custom_villages', JSON.stringify(CUSTOM_VILLAGES));
+            const newVilRef = db.ref('hwmd_custom_villages').push();
+            const item = { firebaseKey: newVilRef.key, name: name, km: parseFloat(km), charge: parseFloat(charge) };
+            newVilRef.set(item);
             
             document.getElementById('newVillageName').value = "";
             document.getElementById('newVillageKm').value = "";
             document.getElementById('newVillageCharge').value = "";
 
-            loadCustomVillagesUI();
             alert("✅ नया गांव और डिलीवरी चार्ज जुड़ गया!");
         }
 
-        function removeCustomVillage(index) {
-            CUSTOM_VILLAGES.splice(index, 1);
-            localStorage.setItem('hwmd_custom_villages', JSON.stringify(CUSTOM_VILLAGES));
-            loadCustomVillagesUI();
+        function removeCustomVillage(key) {
+            db.ref('hwmd_custom_villages/' + key).remove();
         }
 
         function loadCustomVillagesUI() {
@@ -1044,12 +1111,13 @@
 
             if (CUSTOM_VILLAGES.length === 0) {
                 adminDisplay.innerHTML = "<small style='color:#777;'>कोई कस्टम गांव नहीं जुड़ा है।</small>";
+                return;
             }
 
-            CUSTOM_VILLAGES.forEach((v, idx) => {
+            CUSTOM_VILLAGES.forEach((v) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'village-item';
-                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage(${idx})">🗑️ हटाएं</span>`;
+                itemDiv.innerHTML = `<span><b>${v.name}</b> (${v.km} KM) - ₹${v.charge}</span> <span class="del-btn" onclick="removeCustomVillage('${v.firebaseKey}')">🗑️ हटाएं</span>`;
                 adminDisplay.appendChild(itemDiv);
             });
         }
@@ -1080,8 +1148,7 @@
                 return;
             }
 
-            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
-            const foundOrder = orders.find(o => o.id === query || o.phone === query);
+            const foundOrder = ALL_ORDERS.find(o => o.id === query || o.phone === query);
 
             if (foundOrder) {
                 renderTrackingUI(foundOrder);
@@ -1095,8 +1162,7 @@
             const urlParams = new URLSearchParams(window.location.search);
             const orderId = urlParams.get('orderId');
             if (orderId) {
-                let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
-                const found = orders.find(o => o.id === orderId);
+                const found = ALL_ORDERS.find(o => o.id === orderId);
                 if (found) renderTrackingUI(found);
             }
         }
@@ -1166,24 +1232,11 @@
         function cancelCustomerOrder(orderId) {
             if (!confirm("क्या आप वाकई अपना ऑर्डर रद्द करना चाहते हैं?")) return;
 
-            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
-            const index = orders.findIndex(o => o.id === orderId);
-
-            if (index !== -1) {
-                let order = orders[index];
+            const order = ALL_ORDERS.find(o => o.id === orderId);
+            if (order) {
                 order.status = "Cancelled";
-                
-                let refundMsg = "";
-                if (order.payment === "Online Payment") {
-                    let refundAmount = order.total - 30;
-                    if (refundAmount < 0) refundAmount = 0;
-                    refundMsg = `\n\n⚠️ चूंकि भुगतान ऑनलाइन हुआ था, इसलिए नियमतः ₹30 कैंसिलेशन शुल्क काटकर शेष ₹${refundAmount} आपके खाते में रिफंड कर दिया जाएगा।`;
-                } else {
-                    refundMsg = `\n\n⚠️ आपका Cash on Delivery ऑर्डर रद्द कर दिया गया है।`;
-                }
-
-                localStorage.setItem('hwmd_all_orders', JSON.stringify(orders));
-                alert("✅ आपका ऑर्डर सफलतापूर्वक रद्द कर दिया गया है।" + refundMsg);
+                db.ref('hwmd_all_orders/' + orderId).update({ status: "Cancelled" });
+                alert("✅ आपका ऑर्डर सफलतापूर्वक रद्द कर दिया गया है।");
                 renderTrackingUI(order);
             }
         }
@@ -1201,24 +1254,23 @@
         }
 
         function loadAdminOrdersTable() {
-            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
             const tbody = document.getElementById('adminOrdersTableBody');
             tbody.innerHTML = "";
 
-            if (orders.length === 0) {
+            if (ALL_ORDERS.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">कोई ऑर्डर नहीं मिला।</td></tr>`;
                 return;
             }
 
-            orders.forEach((o, index) => {
+            ALL_ORDERS.forEach((o) => {
                 const trackingLink = window.location.origin + window.location.pathname + `?orderId=${o.id}`;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><b>${o.id}</b><br>${o.name}</td>
+                    <td><b>${o.id}</b><br><small>${o.name}</small></td>
                     <td><a href="tel:${o.phone}" style="font-weight:bold; color:#1b5e20; text-decoration:none;">${o.phone}</a></td>
                     <td>${o.product || 'मोरिंगा'}<br><b>₹${o.total}</b><br><small>(${o.payment})</small></td>
                     <td>
-                        <select class="status-select" onchange="updateOrderStatus(${index}, this.value)">
+                        <select class="status-select" onchange="updateOrderStatus('${o.id}', this.value)">
                             <option value="Confirmed" ${o.status==='Confirmed'?'selected':''}>Confirmed</option>
                             <option value="Packed" ${o.status==='Packed'?'selected':''}>Packed</option>
                             <option value="OutForDelivery" ${o.status==='OutForDelivery'?'selected':''}>Out for Delivery</option>
@@ -1234,8 +1286,7 @@
         }
 
         function adminViewOrderTrack(orderId) {
-            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
-            const found = orders.find(o => o.id === orderId);
+            const found = ALL_ORDERS.find(o => o.id === orderId);
             if (found) {
                 renderTrackingUI(found);
             }
@@ -1257,12 +1308,9 @@
             window.open(`https://wa.me/91${phone}?text=${msg}`, '_blank');
         }
 
-        function updateOrderStatus(index, newStatus) {
-            let orders = JSON.parse(localStorage.getItem('hwmd_all_orders')) || [];
-            orders[index].status = newStatus;
-            localStorage.setItem('hwmd_all_orders', JSON.stringify(orders));
-            alert("✅ ऑर्डर स्टेटस अपडेट हो गया!");
-            loadAdminOrdersTable();
+        function updateOrderStatus(orderId, newStatus) {
+            db.ref('hwmd_all_orders/' + orderId).update({ status: newStatus });
+            alert("✅ ऑर्डर स्टेटस लाइव अपडेट हो गया!");
         }
 
         function toggleAdminPanel() {
@@ -1276,15 +1324,16 @@
         }
 
         function saveAdminSettings() {
-            BASE_PRICE = parseFloat(document.getElementById('adminBasePrice').value) || 280;
-            RATE_PER_KM = parseFloat(document.getElementById('adminRateKm').value) || 2;
-            WHATSAPP_NUMBER = document.getElementById('adminPhone').value.trim() || "916267637741";
-            UPI_ID = document.getElementById('adminUPI').value.trim() || "msccreate7@okhdfcbank";
+            const newBasePrice = parseFloat(document.getElementById('adminBasePrice').value) || 280;
+            const newRateKm = parseFloat(document.getElementById('adminRateKm').value) || 2;
+            const newWhatsapp = document.getElementById('adminPhone').value.trim() || "916267637741";
+            const newUpi = document.getElementById('adminUPI').value.trim() || "msccreate7@okhdfcbank";
 
             const currentPinInput = document.getElementById('currentPinInput').value.trim();
             const newPinInput = document.getElementById('newPinInput').value.trim();
             const confirmPinInput = document.getElementById('confirmPinInput').value.trim();
 
+            let updatedPin = ADMIN_PIN;
             if (newPinInput !== "") {
                 if (currentPinInput !== ADMIN_PIN) {
                     alert("❌ पुराना पासवर्ड/PIN गलत है!");
@@ -1294,18 +1343,20 @@
                     alert("❌ नया PIN और Confirm PIN आपस में मेल नहीं खा रहे हैं!");
                     return;
                 }
-                ADMIN_PIN = newPinInput;
-                localStorage.setItem('hwmd_pin', ADMIN_PIN);
-                alert("🔐 एडमिन PIN सफलतापूर्वक बदल दिया गया है!");
+                updatedPin = newPinInput;
+                alert("🔐 एडमिन PIN बदल दिया गया है!");
             }
 
-            localStorage.setItem('hwmd_base_price', BASE_PRICE);
-            localStorage.setItem('hwmd_rate_km', RATE_PER_KM);
-            localStorage.setItem('hwmd_whatsapp', WHATSAPP_NUMBER);
-            localStorage.setItem('hwmd_upi', UPI_ID);
+            // Save settings to Firebase Realtime Database
+            db.ref('hwmd_settings').set({
+                basePrice: newBasePrice,
+                rateKm: newRateKm,
+                whatsapp: newWhatsapp,
+                upi: newUpi,
+                pin: updatedPin
+            });
 
-            initSettings();
-            alert("✅ सेटिंग्स सफलतापूर्वक सेव हो गईं!");
+            alert("✅ सेटिंग्स क्लाउड पर सफलतापूर्वक सेव हो गईं!");
             document.getElementById('adminPanel').style.display = "none";
             
             document.getElementById('currentPinInput').value = "";
