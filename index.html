@@ -738,6 +738,19 @@
         let currentActiveProduct = null;
         let editingDistrictKey = null;
 
+        // Image URL converter function for Google Drive / Share links
+        function getDirectImageUrl(url) {
+            if (!url) return '';
+            // Agar Google Drive ka view link hai
+            if (url.includes('drive.google.com') && url.includes('/file/d/')) {
+                let match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                if (match && match[1]) {
+                    return `https://lh3.googleusercontent.com/d/${match[1]}`;
+                }
+            }
+            return url;
+        }
+
         function initFirebaseListeners() {
             db.ref('hwmd_settings').on('value', (snapshot) => {
                 const data = snapshot.val();
@@ -861,7 +874,9 @@
                     `;
                 }
 
-                const imgSrc = (p.img && p.img.trim() !== "") ? p.img : 'https://via.placeholder.com/300x300?text=Product';
+                // Apply image converter function here
+                let rawImg = (p.img && p.img.trim() !== "") ? p.img : 'https://via.placeholder.com/300x300?text=Product';
+                const imgSrc = getDirectImageUrl(rawImg);
 
                 gridHTML += `
                     <div class="grid-product-box">
